@@ -1,8 +1,13 @@
+// 각종 라우팅을 연결하는 코드
 const express = require('express');
 const router = express.Router();
 
 //user
-const user = require('./user/user_routes');
-router.use('/', user);
+const login = require('./controller/user');
+router.use('/', login);
+
+
+
+
 
 module.exports = router;
