@@ -13,7 +13,7 @@ router.post('/', async(req, res, next) => {
     
     if(inserted == undefined) {
         res.status(405).send({
-            message: 'please check email or username'
+            message: 'please check email'
         });
     }else {
         res.status(201).send({
