@@ -2,11 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
-//user
-const login = require('./controller/user');
-router.use('/', login);
 
-
+const user = require('./controller/user/user_routes');
+router.use('/', user);
 
 
 

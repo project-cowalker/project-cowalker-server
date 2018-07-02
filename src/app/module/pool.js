@@ -10,9 +10,8 @@ module.exports = {
     execute1 : async (...args) => {
         const query = args[0];
         let result;
-        let connection;
         try {
-            connection = await pool.getConnection();
+            var connection = await pool.getConnection();
             result = await connection.query(query) || null;
         }
         catch(err) {
@@ -28,9 +27,8 @@ module.exports = {
         const query = args[0];
         const data = args[1];
         let result;
-        let connection;
         try {
-            connection = await pool.getConnection();
+            var connection = await pool.getConnection();
             result = await connection.query(query, data) || null;
         }
         catch(err) {
@@ -47,9 +45,8 @@ module.exports = {
         const data = args[1];
         const data2 = args[2];
         let result;
-        let connection;
         try {
-            connection = await pool.getConnection();
+            var connection = await pool.getConnection();
             result = await connection.query(query, [data, data2]) || null;
         }
         catch(err) {
@@ -67,9 +64,8 @@ module.exports = {
         const data2 = args[2];
         const data3 = args[3];
         let result;
-        let connection;
         try {
-            connection = await pool.getConnection();
+            var connection = await pool.getConnection();
             result = await connection.query(query, [data, data2, data3]) || null;
         }
         catch(err) {
