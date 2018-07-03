@@ -5,8 +5,10 @@ const router = express.Router();
 const user = require('./controller/user/user_routes');
 router.use('/', user);
 
-const recruit = require('./controller/recruit/recruit_routes.js');
+const recruit = require('./controller/recruit/recruit_routes');
 router.use('/', recruit);
 
+const message = require('./controller/message/message_routes');
+router.use('/', message);
 
 module.exports = router;

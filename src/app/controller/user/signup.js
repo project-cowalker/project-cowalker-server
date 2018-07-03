@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
+const signup = require('../../model/req/SignupReq');
 
 // 이메일 중복 체크
-router.get('/check/:email', async (req, res, next) => {
-    const email = req.params.email;
+router.get('/check', async (req, res, next) => {
+    const email = req.query.email;
     const checkEmail = 'select * from USER where email = ?';
 
     let checkResult = await db.execute2(checkEmail, email);

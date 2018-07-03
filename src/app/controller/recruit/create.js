@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
 const signup = require('../../model/req/SignupReq');
-const apply=require('../../model/schema/apply');
+const apply = require('../../model/schema/apply');
 
 router.post('/', async(req, res) => {
     
