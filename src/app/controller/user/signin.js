@@ -8,7 +8,7 @@ router.post('/', async(req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     
-    let query = 'select * from USER where email = ?';
+    const QUERY = 'select * from USER where email = ?';
     let data = await db.execute2(query, email);
 
     //아이디가 존재하지 않을 경우
