@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../../module/pool.js');
 const signup = require('../../model/req/SignupReq');
 
+
 // 이메일 중복 체크
 router.get('/check', async (req, res, next) => {
     const email = req.query.email;
@@ -21,7 +22,6 @@ router.get('/check', async (req, res, next) => {
             });
         }
     }
-
 });
 
 //회원가입 
@@ -29,9 +29,7 @@ router.get('/check', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
 
     const QUERY = 'insert into USER set ?';
-
     let newUser = signup.new(req.body);
-
     let inserted = await db.execute2(QUERY, newUser);
 
     if (inserted == undefined) {
