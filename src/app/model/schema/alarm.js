@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var alarmSchema = new Schema({
     user_idx : String,
     content : String,
-    create_at : {type : Date, default : Data.now},
+    create_at : {type : Date, default : Date.now},
     read : Boolean
 })
 
