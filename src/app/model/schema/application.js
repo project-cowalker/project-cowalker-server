@@ -6,7 +6,7 @@ var applicationSchema = new Schema({
     introduce : String,
     recruit_idx : String,
     applicant_idx : String,
-    recruit_at : {type : Date, default : Data.now},
+    recruit_at : {type : Date, default : Date.now},
     join : Boolean
 })
 

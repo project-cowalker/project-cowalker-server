@@ -17,6 +17,7 @@ router.post('/', async(req, res, next) => {
             message: 'wrong email'
         });
     }
+    
     //비밀번호가 틀릴 경우
     else if (password != hash.decoding(data[0].password)) {
         res.status(401).send({
