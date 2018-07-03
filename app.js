@@ -5,13 +5,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
 
-var mongoose = require('./src/config/mongoose.js');
-mongoose();
-
 var config = require('./src/config/secretKey');
 var hash = require('./src/config/hashKey');
 
 var routes = require('./src/app/routes');
+
+var mongoose = require('./src/config/mongoose.js');
+mongoose();
 
 var app = express();
 
