@@ -3,9 +3,10 @@ const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
 const signup = require('../../model/req/SignupReq');
-const apply=require('../../model/schema/application');
+const apply=require('../../model/schema/apply');
 
 router.post('/', async(req, res) => {
+    
    apply.create({
        portfolio_url : req.body.portfolio_url,
        introduce : req.body.introduce,
