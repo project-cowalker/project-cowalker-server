@@ -10,5 +10,4 @@ const recruit = require('./controller/recruit/recruit_routes.js');
 router.use('/recruit', recruit);
 
 
-
 module.exports = router;

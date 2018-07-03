@@ -6,6 +6,7 @@ const signup = require('../../model/req/SignupReq');
 const apply=require('../../model/schema/apply');
 
 router.post('/', async(req, res) => {
+
    apply.create({
        portfolio_url : req.body.portfolio_url,
        introduce : req.body.introduce,
