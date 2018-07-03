@@ -7,7 +7,7 @@ const user = require('./controller/user/user_routes');
 router.use('/', user);
 
 const recruit = require('./controller/recruit/recruit_routes.js');
-router.use('/', recruit);
+router.use('/recruit', recruit);
 
 
 
