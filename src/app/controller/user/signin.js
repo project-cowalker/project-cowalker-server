@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
-const signup = require('../../model/req/SignupReq');
+const hash = require('../../module/hash.js');
 
 router.post('/', async(req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     
-    let query = 'select * from user where email = ?';
-    let data = await db.execute(query, email);
+    let query = 'select * from USER where email = ?';
+    let data = await db.execute2(query, email);
 
     //아이디가 존재하지 않을 경우
     if (data.length == 0) {
