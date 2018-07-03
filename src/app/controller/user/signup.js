@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
 
+
 // 이메일 중복 체크
 router.get('/check/:email', async(req, res, next) => {
     const email = req.params.email;
@@ -24,9 +25,10 @@ router.get('/check/:email', async(req, res, next) => {
         } 
     
 });
-    
 
-// signup : 회원가입 
+
+//회원가입 
+
 router.post('/', async(req, res, next) => {
     
     const QUERY = 'insert into USER set ?';
