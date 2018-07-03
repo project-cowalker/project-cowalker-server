@@ -8,7 +8,7 @@ var projectSchema = new Schema({
     department : Number,
     aim : Number,
     explain : String,
-    signup_date : {type : Date, default : Data.now},
+    signup_date : {type : Date, default : Date.now},
     user_idx : Number
 })
 
