@@ -22,7 +22,6 @@ router.get('/check', async (req, res, next) => {
             });
         }
     }
-
 });
 
 //회원가입 

@@ -14,13 +14,15 @@ router.post('/', async(req, res, next) => {
     //아이디가 존재하지 않을 경우
     if (data.length == 0) {
         res.status(401).send({
-            message: 'wrong email'
+            message: 'wrong password',
+            token : 'undefined'
         });
     }
     //비밀번호가 틀릴 경우
     else if (password != hash.decoding(data[0].password)) {
         res.status(401).send({
-            message: 'wrong password'
+            message: 'wrong password',
+            token : 'undefined'
         });
     } else {
         const token = jwt.sign(data[0].user_idx);
