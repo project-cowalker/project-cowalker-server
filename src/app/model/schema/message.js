@@ -6,7 +6,7 @@ var messageSchema = new Schema({
     from_idx : Number,
     create_at : {type : Date, default : Date.now},
     read : Boolean,
-    message : String
+    content : String
 })
 
 module.exports = mongoose.model('message', messageSchema);

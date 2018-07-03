@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
 
+var db = require('./src/config/mongoose.js');
+
 var config = require('./src/config/secretKey');
 var hash = require('./src/config/hashKey');
 
@@ -27,6 +29,8 @@ app.set('jwt-secret', config.key);
 //해쉬 키
 app.set('hash-secret', hash.key);
 
+db();
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -36,10 +40,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', routes);
-
-
-// DEFINE MODEL 
-// var Book = require('./models/book'); 
 
 
 // catch 404 and forward to error handler
