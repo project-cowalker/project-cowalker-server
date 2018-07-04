@@ -6,7 +6,7 @@ const hash = require('../../module/hash.js');
 let project = require('../../model/schema/project');
 
 //전체 프로젝트 가져오기
-router.get('/:0', function(req, res){
+router.get('/', function(req, res){
 	project.find(function(err, projects){
        if(err) return res.status(500).send({error: 'database failure'});
        res.json(projects);
