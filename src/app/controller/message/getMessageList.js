@@ -4,12 +4,22 @@ const jwt = require('../../module/jwt.js');
 const db = require('../../module/pool.js');
 const message = require('../../model/schema/message');
 
-router.get('/:user_idx', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
     const QUERY = 'select * from USER where user_idx = ?';
-    const partner = req.params.user_idx;
-    
+
     let data = new Array();
+    let temp = {
+        to_user_idx : "",
+        to_user_name : "",
+        to_user_photo_url : "",
+        from_user_idx : "",
+        from_user_name : "",
+        from_user_photo_url : "",
+        contents : "",
+        read : "",
+        create_at : ""
+    }
 
     if (ID != -1) {
         message.find({
@@ -23,18 +33,7 @@ router.get('/:user_idx', async (req, res, next) => {
                 for(i = 0; i < obj.length; i++) {
                     let to_user = await db.execute2(QUERY, ID);
                     let from_user = await db.execute2(QUERY, obj[i].from_idx);
-                    let temp = {
-                        to_user_idx : "",
-                        to_user_name : "",
-                        to_user_photo_url : "",
-                        from_user_idx : "",
-                        from_user_name : "",
-                        from_user_photo_url : "",
-                        contents : "",
-                        contents : "",
-                        read : "",
-                        create_at : ""
-                    }
+                    
                     temp.to_user_idx = to_user[0].user_idx;
                     temp.to_user_name = to_user[0].name;
                     temp.to_user_phtot_url = to_user[0].photo_url;
@@ -46,7 +45,7 @@ router.get('/:user_idx', async (req, res, next) => {
                     temp.create_at = obj[i].create_at;
                     data.push(temp);
                 }
-                console.log(data);
+
                 res.status(200).send({
                     message: 'get message success',
                     result: data
