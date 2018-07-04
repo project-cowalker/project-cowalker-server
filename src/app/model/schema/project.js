@@ -11,8 +11,7 @@ var projectSchema = new Schema({
     signup_date : {type : Date, default : Date.now},
     user_idx : Number
 },{
-   versionKey: false // You should be aware of the outcome after set to false
-
+    versionKey: false // You should be aware of the outcome after set to false
 });
 
 module.exports = mongoose.model('project', projectSchema);

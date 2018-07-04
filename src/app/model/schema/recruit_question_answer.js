@@ -7,8 +7,7 @@ var recruitQuestionAnswerSchema = new Schema({
     question_idx : String,
     application_idx : String
 },{
-   versionKey: false // You should be aware of the outcome after set to false
-
+    versionKey: false // You should be aware of the outcome after set to false
 });
 
 module.exports = mongoose.model('recruit_question_answer', recruitQuestionAnswerSchema);
