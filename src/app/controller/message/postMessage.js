@@ -10,10 +10,12 @@ router.post('/:to_idx', async (req, res, next) => {
         message.create({
             to_idx : req.params.to_idx,
             from_idx : ID,
-            content : req.body.content
+            contents : req.body.contents
         }, function(err, obj){
             if(err){
-                return res.status(500).send("send message fail");
+                return res.status(500).send({
+                    message: 'send message fail'
+                });
             }
             res.status(201).send({
                 message: 'send message success'
