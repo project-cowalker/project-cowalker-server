@@ -10,12 +10,15 @@ router.post('/', multiUpload, async (req, res) => {
     const ID = jwt.verify(req.headers.authorization);
 
     let tempArray = [];
-    console.log(req.files.img);
-    for (let i = 0 ; i < req.files.img.length ; i++) {
-    	tempArray.push(req.files.img[i].location);
-    	console.log("tempArray : ", tempArray);
+    //console.log(req.files);
+    if (req.files === {}){
+	    for (let i = 0 ; i < req.files.img.length ; i++) {
+	    	tempArray.push(req.files.img[i].location);
+	//    	console.log("tempArray : ", tempArray);
+		}
 	}
-	console.log(tempArray);
+
+//	console.log(tempArray);
     if (ID != -1) {
         project.create({
             title: req.body.title,
