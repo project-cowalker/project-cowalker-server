@@ -3,20 +3,21 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const message = require('../../model/schema/message');
 
-router.delete('/', async (req, res, next) => {
+router.delete('/:_id', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
+
     if (ID != -1) {
-        message.create({
-            to_idx : ID,
-            from_idx : req.body.from_idx,
-            read : false,
-            content : req.body.content
+        message.remove({
+            _id : req.params._id
         }, function(err, obj){
             if(err){
-                console.log(err);
-                return res.status(405).send("실패");
+                return res.status(500).send({
+                    message: 'delete message fail'
+                });
             }
-            res.status(200).send(obj);
+            res.status(204).send({
+                message: 'delete message success'
+            });
         });
         return; 
     }

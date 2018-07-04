@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
 
     if (ID != -1) {
         message.find({
-            to_idx : ID
+            from_idx : ID
         }, async function(err, obj){
             if(err){
                 console.log(err);
