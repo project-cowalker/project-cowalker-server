@@ -9,19 +9,26 @@ const recruitQuestion=require('../../model/schema/recruit_question');
 
 
 //팀원 모집
-router.post('/create', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
     console.log(ID);
 
     if (ID != -1) {						         // case 1: -1이 아니면, 즉, token값이 제대로 들어오면,  
         let question_list=req.body.question_list;   // 클라한테 배열형태로 질문 리스트를 받는다. 
         let recruit_idx=req.body.recruit_idx;
-        
+ 
+        // string to date 
+        let start_date=req.body.start_date;
+        let end_date=req.body.end_date;
+        var startdate=new Date(start_date);
+        var enddate=new Date(end_date);
+
+        // db insert 
         recruit.create({
             project_idx : req.body.project_idx,
             position : req.body.position,
-            start_date : req.body.start_date,
-            end_date : req.body.end_date,
+            start_date : startdate,
+            end_date : enddate,
             number : req.body.number,
             task : req.body.task,
             activity : req.body.activity,
@@ -74,22 +81,7 @@ router.post('/create', async (req, res, next) => {
 });
 
 
-// router.post('/', async(req, res) => {
-    
-//    apply.create({
-//        portfolio_url : req.body.portfolio_url,
-//        introduce : req.body.introduce,
-//        recruit_idx : req.body.recruit_idx,
-//        applicant_idx : req.body.applicant_idx,
-//        join : req.body.join
-//    },
-//    function(err, docs){
-//        console.log(err);
-//        if(err) return res.status(405).send("실패");
-//        res.status(200).send(docs);
-//    })
-// });
-
+//이건 잠시 임시용.
 router.get('/create', async(req, res) => {
    recruitQuestion.find(function(err, applies){
        if(err) return res.status(500).send({error: 'database failure'});
