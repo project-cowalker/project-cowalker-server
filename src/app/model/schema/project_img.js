@@ -8,5 +8,4 @@ var projectImgSchema = new Schema({
     versionKey: false // You should be aware of the outcome after set to false
 });
 
-
 module.exports = mongoose.model('project_img', projectImgSchema);

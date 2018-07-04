@@ -10,7 +10,6 @@ var applySchema = new Schema({
     join : Boolean
 },{
     versionKey: false // You should be aware of the outcome after set to false
-
 });
 
 module.exports = mongoose.model('apply', applySchema);
