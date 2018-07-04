@@ -21,8 +21,7 @@ const recruit_question_answer = require('../../model/schema/recruit_question_ans
 router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
 
     const ID = jwt.verify(req.headers.authorization);
-
-    var reqanswers = req.body.answers;
+    var reqAnswers = req.body.answers;
 
     if(ID != -1){
         await apply.create({
@@ -35,28 +34,29 @@ router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
         function(err, docs){
             if(err) {
                 res.status(405).send({
-                    message: "failed save apply"
+                    message: "fail"
                 });
                 return;
             } else {
-                var application_idx = docs._id;
-                var answers = new Array()
+                var apply_idx = docs._id;
+                var answers = new Array();
 
-                for(var i = 0 ; i < reqanswers.length; i++){
-                    reqanswers[i].application_idx = application_idx;
-                    reqanswers[i].applicant_idx = ID;
-                    answers.push(reqanswers[i]);
+                console.log(apply_idx);
+                for(var i = 0 ; i < reqAnswers.length; i++){
+                    reqAnswers[i].apply_idx = apply_idx;
+                    reqAnswers[i].applicant_idx = ID;
+                    answers.push(reqAnswers[i]);
                 }
-                
+                console.log(answers);
                 recruit_question_answer.create(answers, function(err, answers){
                     if(err) {
                         res.status(405).send({
-                            message: "failed save answer"
+                            message: "database failure"
                         });
                         return;
                     } else {
                         res.status(200).send({
-                            message: "success apply"
+                            message: "success"
                         });
                     }
                 });
@@ -68,13 +68,5 @@ router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
         });
     }
 });
-/*
-router.get('/', async(req, res) => {
-    apply.find(function(err, applies){
-        if(err) return res.status(500).send({error: 'database failure'});
-        res.json(applies);
-    })
-});
-*/
 
 module.exports = router;

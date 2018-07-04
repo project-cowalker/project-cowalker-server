@@ -9,7 +9,4 @@ router.use('/project', postProject);
 const getProject = require('./getProject');
 router.use('/project', getProject);
 
-
-
-
 module.exports = router;
