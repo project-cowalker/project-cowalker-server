@@ -8,6 +8,8 @@ var applySchema = new Schema({
     applicant_idx : String,
     recruit_at : {type : Date, default : Date.now},
     join : Boolean
+},{
+    versionKey : false
 });
 
 module.exports = mongoose.model('apply', applySchema);
