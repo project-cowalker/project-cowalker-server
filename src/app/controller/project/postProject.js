@@ -12,11 +12,8 @@ let project = require('../../model/schema/project');
         project.create({
 			title : req.body.title,
 			summary : req.body.summary,
-			//301 ; 서울, 302 ; 경기도 ... 
 			area : req.body.area,
-			//201 ; 블록체인, 202 ; IOT ...
 			department : req.body.department,
-			//101 ; 창업, 102 ; 공모전 참여 ...
 			aim : req.body.aim,
 			explain : req.body.explain,
 			// user_idx : req.body.user_idx
