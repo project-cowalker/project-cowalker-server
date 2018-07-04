@@ -13,8 +13,7 @@ var messageSchema = new Schema({
     //내용
     content : String
 },{
-   versionKey: false // You should be aware of the outcome after set to false
-
+    versionKey: false // You should be aware of the outcome after set to false
 });
 
 module.exports = mongoose.model('message', messageSchema);

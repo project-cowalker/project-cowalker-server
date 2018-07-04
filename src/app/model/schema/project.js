@@ -9,10 +9,10 @@ var projectSchema = new Schema({
     aim : Number,
     explain : String,
     signup_date : {type : Date, default : Date.now},
-    user_idx : Number
+    user_idx : Number,
+    img_url : Array
 },{
-   versionKey: false // You should be aware of the outcome after set to false
-
+    versionKey: false // You should be aware of the outcome after set to false
 });
 
 module.exports = mongoose.model('project', projectSchema);

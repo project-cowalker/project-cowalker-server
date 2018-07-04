@@ -13,8 +13,7 @@ var journeySchema = new Schema({
     //프로젝트 id
     project_idx : String
 },{
-   versionKey: false // You should be aware of the outcome after set to false
-
+    versionKey: false // You should be aware of the outcome after set to false
 });
 
 module.exports = mongoose.model('journey', journeySchema);
