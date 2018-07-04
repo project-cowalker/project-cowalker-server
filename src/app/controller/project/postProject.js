@@ -17,7 +17,6 @@ router.post('/', multiUpload, async (req, res) => {
 	//    	console.log("tempArray : ", tempArray);
 		}
 	}
-
 //	console.log(tempArray);
     if (ID != -1) {
         project.create({
