@@ -6,8 +6,8 @@ const postProject = require('./postProject');
 router.use('/project', postProject);
 
 // //project read
-// const getProject = require('./getProject');
-// router.use('/project', getProject);
+const getProject = require('./getProject');
+router.use('/project', getProject);
 
 
 
