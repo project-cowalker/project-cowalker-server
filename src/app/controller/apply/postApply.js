@@ -19,7 +19,6 @@ const recruit_question_answer = require('../../model/schema/recruit_question_ans
 
   */
 router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
-
     const ID = jwt.verify(req.headers.authorization);
     var reqAnswers = req.body.answers;
 
@@ -41,13 +40,12 @@ router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
                 var apply_idx = docs._id;
                 var answers = new Array();
 
-                console.log(apply_idx);
                 for(var i = 0 ; i < reqAnswers.length; i++){
                     reqAnswers[i].apply_idx = apply_idx;
                     reqAnswers[i].applicant_idx = ID;
                     answers.push(reqAnswers[i]);
                 }
-                console.log(answers);
+                
                 recruit_question_answer.create(answers, function(err, answers){
                     if(err) {
                         res.status(405).send({

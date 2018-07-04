@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
+//apply
+const postApply = require('./postApply');
+router.use('/apply', postApply);
+
 //signup
-const apply = require('./postApply');
-router.use('/apply', apply);
+const getApply = require('./getApply');
+router.use('/apply', getApply);
 
 module.exports = router;
