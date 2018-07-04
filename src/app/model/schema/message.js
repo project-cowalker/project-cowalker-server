@@ -11,7 +11,9 @@ var messageSchema = new Schema({
     //읽음 여부
     read : {type : Boolean, default : false},
     //내용
-    contents : String
-})
+    content : String
+},{
+    versionKey: false // You should be aware of the outcome after set to false
+});
 
 module.exports = mongoose.model('message', messageSchema);
