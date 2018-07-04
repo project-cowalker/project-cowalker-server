@@ -7,9 +7,9 @@ const signup = require('../../model/req/SignupReq');
 // 이메일 중복 체크
 router.get('/check', async (req, res, next) => {
     const email = req.query.email;
-    const checkEmail = 'select * from USER where email = ?';
+    const QUERY = 'select * from USER where email = ?';
 
-    let checkResult = await db.execute2(checkEmail, email);
+    let checkResult = await db.execute2(QUERY, email);
 
     if (checkResult) {
         if (checkResult.length === 1) {

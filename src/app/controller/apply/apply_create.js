@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
-const signup = require('../../model/req/SignupReq');
-const upload = require('../../config/multer.js');
+const upload = require('../../../config/multer');
 const apply = require('../../model/schema/apply');
 
 router.post('/', upload.array('portfolio'), async (req, res) => {
