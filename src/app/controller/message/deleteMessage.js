@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const message = require('../../model/schema/message');
 
-router.post('/', async (req, res, next) => {
+router.delete('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
     if (ID != -1) {
         message.create({

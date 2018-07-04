@@ -5,12 +5,15 @@ const router = express.Router();
 const user = require('./controller/user/user_routes');
 router.use('/', user);
 
+//application
+const apply = require('./controller/apply/apply_routes');
+router.use('/', apply);
 
 const recruit = require('./controller/recruit/recruit_routes');
 router.use('/', recruit);
 
 const message = require('./controller/message/message_routes');
 router.use('/', message);
->>>>>>> ff165fa99e7ebe14b67cf6595cf47b5324071aad
+
 
 module.exports = router;
