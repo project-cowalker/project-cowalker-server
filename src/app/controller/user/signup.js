@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
-const signup - require('../../model/req/SignupReq');
+const signup = require('../../model/req/SignupReq');
 
 // 이메일 중복 체크
 
