@@ -15,4 +15,9 @@ router.use('/', recruit);
 const message = require('./controller/message/message_routes');
 router.use('/', message);
 
+//project
+const project = require('./controller/project/project_routes');
+router.use('/', project);
+
+
 module.exports = router;
