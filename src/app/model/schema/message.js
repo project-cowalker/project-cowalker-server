@@ -11,7 +11,7 @@ var messageSchema = new Schema({
     //읽음 여부
     read : {type : Boolean, default : false},
     //내용
-    content : String
+    contents : String
 })
 
 module.exports = mongoose.model('message', messageSchema);

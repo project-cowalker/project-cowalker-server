@@ -3,14 +3,14 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const message = require('../../model/schema/message');
 
-router.post('/to/:to_idx', async (req, res, next) => {
+router.post('/:to_idx', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
     
     if (ID != -1) {
         message.create({
             to_idx : req.params.to_idx,
             from_idx : ID,
-            content : req.body.content
+            contents : req.body.contents
         }, function(err, obj){
             if(err){
                 return res.status(500).send({
