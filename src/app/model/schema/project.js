@@ -8,7 +8,7 @@ var projectSchema = new Schema({
     department : String,
     aim : String,
     explain : String,
-    signup_date : {type : Date, default : Date.now},
+    create_at : {type : Date, default : Date.now},
     user_idx : Number,
     img_url : Array
 },{
