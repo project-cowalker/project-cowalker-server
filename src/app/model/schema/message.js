@@ -8,8 +8,6 @@ var messageSchema = new Schema({
     from_idx : Number,
     //보낸 시간
     create_at : {type : Date, default : Date.now},
-    //읽음 여부
-    read : {type : Boolean, default : false},
     //내용
     content : String
 },{
