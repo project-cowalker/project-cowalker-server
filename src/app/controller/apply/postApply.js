@@ -3,7 +3,6 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const upload = require('../../../config/multer.js');
 const apply = require('../../model/schema/apply');
-const recruit_question_answer = require('../../model/schema/recruit_question_answer');
 
 /**  주소 = ip:3000/api/apply
   *  기능 = 지원하기
@@ -20,15 +19,15 @@ const recruit_question_answer = require('../../model/schema/recruit_question_ans
   */
 router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
-    var reqAnswers = req.body.answers;
 
     if(ID != -1){
         await apply.create({
             introduce : req.body.introduce, 
-            portfolio_url : req.file ? req.file.location : req.body.portfolio_url, 
+            portfolio_url : req.file ? req.file.location : req.body.portfolio_url,
+            phone : req.body.phone,
             recruit_idx : req.body.recruit_idx, 
             applicant_idx : ID,
-//            join : req.body.join,
+            answers : req.body.answers
         },
         function(err, docs){
             if(err) {
@@ -36,29 +35,10 @@ router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
                     message: "fail"
                 });
                 return;
-            } else {
-                var apply_idx = docs._id;
-                var answers = new Array();
-
-                for(var i = 0 ; i < reqAnswers.length; i++){
-                    reqAnswers[i].apply_idx = apply_idx;
-                    reqAnswers[i].applicant_idx = ID;
-                    answers.push(reqAnswers[i]);
-                }
-                
-                recruit_question_answer.create(answers, function(err, answers){
-                    if(err) {
-                        res.status(405).send({
-                            message: "database failure"
-                        });
-                        return;
-                    } else {
-                        res.status(200).send({
-                            message: "success"
-                        });
-                    }
-                });
             }
+            res.status(201).send({
+                message: "success"
+            });
         });
     } else {
         res.status(401).send({
