@@ -9,7 +9,12 @@ router.use('/project', postProject);
 const getProject = require('./getProject');
 router.use('/project', getProject);
 
+// //project delete
+const deleteProject = require('./deleteProject');
+router.use('/project', deleteProject);
 
-
+// //project delete
+const updateProject = require('./updateProject');
+router.use('/project', updateProject);
 
 module.exports = router;
