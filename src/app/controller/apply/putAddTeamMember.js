@@ -90,7 +90,9 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                             });
                             return;
                         }
-                        res.json(findApply(applies));
+                        res.status(201).send({
+                            message: "success"
+                        });
                     });
                 });
             });
