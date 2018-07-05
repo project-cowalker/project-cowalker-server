@@ -8,6 +8,34 @@ const pool = require('../../module/pool.js');
 /**  주소 = ip:3000/api/apply/:apply_idx/:applicant_idx/join/:join
   *  기능 = 팀멤버 추가
   */
+var findApply = function(applies){
+    var resultObj = new Array();
+
+    for(let i = 0; i < applies.length; i++){
+        var object = {
+            apply_idx: '',
+            introduce: '',
+            portfolio_url: '',
+            phone : '',
+            recruit_idx: '',
+            applicant_idx: '',
+            recruit_at: '',
+            answers: []
+        };
+
+        object.apply_idx = applies[i]._id;
+        object.introduce = applies[i].introduce;
+        object.portfolio_url = applies[i].portfolio_url;
+        object.phone = applies[i].phone;
+        object.recruit_idx = applies[i].recruit_idx;
+        object.applicant_idx = applies[i].applicant_idx;
+        object.recruit_at = applies[i].recruit_at;
+        object.answers = applies[i].answers;
+        resultObj.push(object);
+
+    }
+    return resultObj;
+}
 
 router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
@@ -62,10 +90,7 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                             });
                             return;
                         }
-                        
-                        res.status(201).send({
-                            message: "success"
-                        });
+                        res.json(findApply(applies));
                     });
                 });
             });
