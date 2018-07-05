@@ -26,7 +26,6 @@ router.post('/', multiUpload, async (req, res) => {
             department: req.body.department,
             aim: req.body.aim,
             explain: req.body.explain,
-            // user_idx : req.body.user_idx
             user_idx: ID,
             img_url: tempArray
 
