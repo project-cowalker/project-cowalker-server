@@ -69,5 +69,44 @@ router.get('/:apply_idx', async(req, res) => {
     }
 });
 
+router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
+    const ID = jwt.verify(req.headers.authorization);
+    var project_manage = false;
+    
+    if(ID != -1){
+        await apply.find({
+            _id : req.params.apply_idx
+        }, function(err, applies){
+            recruit.find({
+                _id : applies.recruit_idx
+            }, function(err, recruits){
+                if(ID === recruits.user_idx)
+                project_manage = true;
+            });
+        });
+
+        if(project_manage){
+            await apply.find({
+                _id : req.params.apply_idx,
+                applicant_idx : req.params.applicant_idx
+            }, async function(err, applies){  
+                if(err){
+                    return res.status(405).send({
+                        message: "database failure"
+                    });
+                }
+                res.json(findApply(applies));
+            });
+        } else {
+            res.status(400).send({
+                message: "fail (no rights)"
+            });
+        }
+    } else {
+        res.status(401).send({
+            message: "access denied"
+        });
+    }
+});
 
 module.exports = router;

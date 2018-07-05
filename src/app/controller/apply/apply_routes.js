@@ -13,8 +13,9 @@ router.use('/apply', getApply);
 const putAddTeamMember = require('./putAddTeamMember');
 router.use('/apply', putAddTeamMember);
 
-/*//getApply
-const putAddTeamMember = require('./putAddTeamMember');
-router.use('/apply', putAddTeamMember);
-*/
+//delete
+const deleteApply = require('./deleteApply');
+router.use('/apply', deleteApply);
+
+
 module.exports = router;
