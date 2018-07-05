@@ -6,7 +6,7 @@ const apply = require('../../model/schema/apply');
 //applies, applyAnswer을 하나의 response data로 합침
 var findApply = function(applies){
     var resultObj = new Array();
-    console.log(applies.length);
+
     for(let i = 0; i < applies.length; i++){
         var object = {
             apply_idx: '',
@@ -27,7 +27,6 @@ var findApply = function(applies){
         object.applicant_idx = applies[i].applicant_idx;
         object.recruit_at = applies[i].recruit_at;
         object.answers = applies[i].answers;
-
         resultObj.push(object);
 
     }
@@ -69,4 +68,6 @@ router.get('/:apply_idx', async(req, res) => {
         });
     }
 });
+
+
 module.exports = router;
