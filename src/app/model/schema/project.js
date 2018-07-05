@@ -4,11 +4,11 @@ var Schema = mongoose.Schema;
 var projectSchema = new Schema({
     title : String,
     summary : String,
-    area : Number,
-    department : Number,
-    aim : Number,
+    area : String,
+    department : String,
+    aim : String,
     explain : String,
-    signup_date : {type : Date, default : Date.now},
+    create_at : {type : Date, default : Date.now},
     user_idx : Number,
     img_url : Array
 },{
