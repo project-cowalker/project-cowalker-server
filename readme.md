@@ -1,8 +1,8 @@
 # project_cowalker_server
 
-* 
+* **API** - (https://github.com/project-cowalker/project-cowalker-server/wiki)
 
-## 저자
+## 개발자
 
 - **배다슬** - [bghgu](https://github.com/bghgu)
 - **임규희** - [KYUHEELIM](https://github.com/KYUHEELIM)
