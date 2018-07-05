@@ -11,7 +11,7 @@ router.post('/', multiUpload, async (req, res) => {
 
     let tempArray = [];
     //console.log(req.files);
-    if (req.files === {}){
+    if (req.files !== {}){
 	    for (let i = 0 ; i < req.files.img.length ; i++) {
 	    	tempArray.push(req.files.img[i].location);
 	//    	console.log("tempArray : ", tempArray);
