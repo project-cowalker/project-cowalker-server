@@ -3,26 +3,26 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 let project = require('../../model/schema/project');
 const upload = require('../../../config/multer');
-const db = require('../../module/pool.js');
+const pool = require('../../module/pool.js');
 
 
-var multiUpload = upload.fields([{ name: 'img'}])
+var multiUpload = upload.fields([{ name: 'img'}]);
 
-router.post('/', multiUpload, async (req, res) => {
+router.post('/', multiUpload, async (req, res, next) => {
 
     const ID = jwt.verify(req.headers.authorization);
 
     let tempArray = [];
-    //console.log(req.files);
-    if (req.files === {}){
+    console.log(req.files);
+    if (req.files !== {}){
 	    for (let i = 0 ; i < req.files.img.length ; i++) {
 	    	tempArray.push(req.files.img[i].location);
-	//    	console.log("tempArray : ", tempArray);
+	    	console.log("tempArray : ", tempArray);
 		}
 	}
 //	console.log(tempArray);
     if (ID != -1) {
-        project.create({
+        await project.create({
             title: req.body.title,
             summary: req.body.summary,
             area: req.body.area,
@@ -31,34 +31,42 @@ router.post('/', multiUpload, async (req, res) => {
             explain: req.body.explain,
             user_idx: ID,
             img_url: tempArray
-
         }, async function (err, docs) {
             if (err) {
                 console.log(err);
                 res.status(405).send({
                     message: "fail"
                 });
-            } else {
+                return;
+            } 
                 //res.status(200).send(docs);
                 console.log(docs._id);
-                const project_idx = docs.id;
-                const member_idx = ID;
-                const position = "PM";
-    
+                let project_idx = docs._id.toString();
+                let member_idx = ID;
+                let position = 'PM';
+
+                console.log(typeof project_idx);
+                console.log(member_idx);
+                console.log(position);
+
                 const QUERY = 'INSERT INTO TEAM (project_idx, member_idx, position) VALUES (?, ?, ?)';
-                let inserted = await db.execute4(QUERY,project_idx, member_idx, position);
+                let inserted = await pool.execute4(QUERY, project_idx, member_idx, position);
                 
-                if (inserted == undefined) {
+                console.log(inserted);
+
+                if (!inserted) {
+                  console.log(err);
                   res.status(405).send({
-                    message: 'fail'
+                    message: 'team insert fail'
                  });
                 } else {
                     res.status(201).send({
                         message: "success"
                    }); 
                 }
-            }
+            
         });
+
 
     } else {
         res.status(401).send({
