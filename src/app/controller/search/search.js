@@ -59,8 +59,6 @@ router.get('/', function(req, res){
                 return res.status(405).send({
                     message : "get project fail"
                 });
-            } else{
-                console.log(result);
             }
             res.status(201).send({
                 message : "success",
