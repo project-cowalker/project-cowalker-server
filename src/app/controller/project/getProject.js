@@ -21,7 +21,6 @@ router.get('/:project_id', function(req, res){
 	// 로그인하지않은 상태 -> 참여대기로 보내주기
 
     const QUERY = 'select * from USER where user_idx = ?';
-   //const QUERY = 
     var data = new Array();
     var user_status = "null";
 
@@ -36,7 +35,7 @@ router.get('/:project_id', function(req, res){
 				});
 			} else{
 				//let project_user_id = result[0].user_idx;
-				console.log(result);
+				//console.log(result);
 				for(let i=0;i<result.length;i++){
 					let project_user_id = result[0].user_idx;
 					let select_project = await db.execute2(QUERY, ID);
