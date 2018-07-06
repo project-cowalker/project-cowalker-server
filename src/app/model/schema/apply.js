@@ -8,6 +8,8 @@ var applySchema = new Schema({
     applicant_idx : String,
     phone : String,
     recruit_at : {type : Date, default : Date.now},
+    project_idx: String,
+    position: String,
     join : {type : Number, default : 0},
     answers : Array
 },{
