@@ -27,4 +27,8 @@ router.use('/', search);
 const question = require('./controller/question/question_routes');
 router.use('/', question);
 
+//mypage
+const mypage = require('./controller/mypage/mypage_routes');
+router.use('/', mypage);
+
 module.exports = router;
