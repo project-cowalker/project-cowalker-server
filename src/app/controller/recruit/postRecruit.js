@@ -6,8 +6,6 @@ const recruit = require('../../model/schema/recruit');
 const recruitQuestion=require('../../model/schema/recruit_question');
 
 
-
-
 //팀원 모집
 router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
@@ -37,7 +35,8 @@ router.post('/', async (req, res, next) => {
             ability : req.body.ability,
             career : req.body.career,
             preference : req.body.preference,
-            comment : req.body.comment
+            comment : req.body.comment,
+            user_idx : ID
 
 
         }, function(err, result){

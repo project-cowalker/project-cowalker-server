@@ -12,7 +12,7 @@ router.put('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
     console.log(ID);
 
-  if (ID != -1) {                    // case 1: -1이 아니면, 즉, token값이 제대로 들어오면,  
+    if (ID != -1) {                    // case 1: -1이 아니면, 즉, token값이 제대로 들어오면,  
        let project_idx=req.params.project_idx;
        let recruit_idx=req.params.recruit_idx;
 
@@ -24,8 +24,7 @@ router.put('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
             message: "database failure"
           });
         }else{
-        
-
+          console.log(result);
             // recruitQuestion update
           let questions=req.body.question_list;
           console.log(questions);
@@ -36,6 +35,7 @@ router.put('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
               message: "database failure"
             });
             }else{
+          
               res.status(201).send({
                   message: "success"
               });
@@ -52,15 +52,6 @@ router.put('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
 
 });
 
-// //임시용
-// router.put('/:project_id', function(req, res){
-//     project.update({ _id: req.params.project_id }, { $set: req.body }, function(err, output){
-//         if(err) res.status(500).json({ error: 'database failure' });
-//         console.log(output);
-//         if(!output.n) return res.status(404).json({ error: 'project not found' });
-//         res.json( { message: 'success' } );
-//     })
-// });
 
 module.exports = router;
 
