@@ -10,19 +10,22 @@ router.get('/:user_idx', async (req, res, next) => {
     const partner = req.params.user_idx;
     
     let data = new Array();
+    
+    console.log("받는 사람" + ID);
+    console.log("보내는 사람" + partner);
 
     if (ID != -1) {
         message.find({
-            from_idx : ID
+            to_idx : ID,
         }, async function(err, obj){
             if(err){
-                return res.status(500).send({
+                return res.status(405).send({
                     message: 'get message fail'
                 });
             }else {
                 for(i = 0; i < obj.length; i++) {
                     let to_user = await db.execute2(QUERY, ID);
-                    let from_user = await db.execute2(QUERY, obj[i].from_idx);
+                    let from_user = await db.execute2(QUERY, partner);
                     let temp = {
                         to_user_idx : "",
                         to_user_name : "",
