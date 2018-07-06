@@ -3,7 +3,6 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const upload = require('../../../config/multer.js');
 const apply = require('../../model/schema/apply');
-const recruit_question_answer = require('../../model/schema/recruit_question_answer');
 
 /**  주소 = ip:3000/api/apply
   *  기능 = 지원하기
@@ -24,7 +23,8 @@ router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
     if(ID != -1){
         await apply.create({
             introduce : req.body.introduce, 
-            portfolio_url : req.file ? req.file.location : req.body.portfolio_url, 
+            portfolio_url : req.file ? req.file.location : req.body.portfolio_url,
+            phone : req.body.phone,
             recruit_idx : req.body.recruit_idx, 
             applicant_idx : ID,
             answers : req.body.answers
@@ -35,11 +35,10 @@ router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
                     message: "fail"
                 });
                 return;
-            } else {
-                res.status(200).send({
-                    message: "success"
-                });
             }
+            res.status(201).send({
+                message: "success"
+            });
         });
     } else {
         res.status(401).send({

@@ -2,8 +2,12 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
+const recruit = require('../../model/schema/recruit');
+const pool = require('../../module/pool.js');
 
-//applies, applyAnswer을 하나의 response data로 합침
+/**  주소 = ip:3000/api/apply/:apply_idx/:applicant_idx/join/:join
+  *  기능 = 팀멤버 추가
+  */
 var findApply = function(applies){
     var resultObj = new Array();
 
@@ -33,46 +37,9 @@ var findApply = function(applies){
     return resultObj;
 }
 
-router.get('/', async(req, res) => {
-    const ID = jwt.verify(req.headers.authorization);
-
-    if(ID != -1){
-        apply.find({applicant_idx : ID}, function(err, applies){
-            if(err) 
-                return res.stauts(500).send({message: 'database failure'});
-            res.json(findApply(applies));
-        });
-    } else {
-        res.status(401).send({
-            message: "access denied"
-        });
-    }
-});
-
-router.get('/:apply_idx', async(req, res) => {
-    const ID = jwt.verify(req.headers.authorization);
-
-    if(ID != -1){
-        apply.find({
-            _id : req.params.apply_idx, 
-            applicant_idx : ID
-        }, function(err, applies){
-            if(err) 
-                return res.stauts(500).send({message: 'database failure'});
-
-            res.json(findApply(applies));
-        });
-    } else {
-        res.status(401).send({
-            message: "access denied"
-        });
-    }
-});
-
-router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
+router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
     var project_manage = false;
-    
     if(ID != -1){
         await apply.find({
             _id : req.params.apply_idx
@@ -84,18 +51,50 @@ router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
                 project_manage = true;
             });
         });
-
         if(project_manage){
-            await apply.find({
+            await apply.update({
                 _id : req.params.apply_idx,
                 applicant_idx : req.params.applicant_idx
-            }, async function(err, applies){  
+            },{
+                join : req.params.join
+            },
+            async function(err, applies){  
                 if(err){
                     return res.status(405).send({
                         message: "database failure"
                     });
                 }
-                res.json(findApply(applies));
+                await apply.find({
+                    _id : req.params.apply_idx,
+                    applicant_idx : req.params.applicant_idx
+                }, async function(err, appliesFind){  
+                    if(err){
+                        return res.status(405).send({
+                            message: "database failure"
+                        });
+                    }
+                    await recruit.find({_id : appliesFind[0].recruit_idx}, async function(err, recruits){
+                        var project_idx = recruits[0].project_idx;
+                        var position = recruits[0].position;
+
+                        const QUERY = 'INSERT INTO TEAM (project_idx, member_idx, position) VALUES (?, ?, ?)';
+                        var data;
+
+                        if(req.params.join === 1){
+                            data = await pool.execute4(QUERY, project_idx, req.params.applicant_idx, position);
+                        }
+                        
+                        if(!data && data != undefined){
+                            res.status(405).send({
+                                message: "database failure"
+                            });
+                            return;
+                        }
+                        res.status(201).send({
+                            message: "success"
+                        });
+                    });
+                });
             });
         } else {
             res.status(400).send({
