@@ -12,19 +12,25 @@ router.get('/', async (req, res, next) => {
     const QUERY = 'select * from USER where user_idx = ?';
 
     let data = new Array();
-    let temp = {
-        from_user_idx : "",
-        from_user_name : "",
-        from_user_photo_url : "",
-        contents : "",
-        read : "",
-        create_at : ""
-    }
-    console.log(ID);
+
     if (ID != -1) {
-        message.distinct({
-            to_idx : ID
-        }, async function(err, obj){
+        // // 2. find( ) 함수에 query 입력
+        // message.find({$or : [{ to_idx : ID },{ from_idx : ID}]})
+        //         .distinct('to_idx', function(err, obj) {
+        //             if(err) {
+        //                 console.log(err);
+        //             }else {
+        //                 console.log(obj);
+        //             }
+        //         })
+        //         .sort({create_at : -1});
+
+        // ///////////
+
+
+        
+        message.find({ $or : [{ to_idx : ID }, { from_idx : ID }] }, 
+            async function(err, obj){
             if(err){
                 return res.status(405).send({
                     message: 'get message fail'
@@ -32,22 +38,44 @@ router.get('/', async (req, res, next) => {
             }else {
                 console.log(obj);
                 for(i = 0; i < obj.length; i++) {
-                    // let from_user = await db.execute2(QUERY, obj[i].from_idx);
-                    // temp.from_user_idx = from_user[0].user_idx;
-                    // temp.from_user_name = from_user[0].name;
-                    // temp.from_user_photo_url = from_user[0].photo_url;
+                    
+                    for(j = 0; j < data.length; j++) {
+                        if(obj[i].to_idx == ID) {
+                            if(obj[i].from_idx == data[i].partner) continue;
+
+                            var partner = obj[i].from_idx;
+                        }else {
+                            if(obj[i].to_idx == data[i].partner) continue;
+                            
+                            var partner = obj[i].to_idx;
+                        }
+                    }
+
+                    if(obj[i].to_idx == ID) {
+                        var partner = obj[i].from_idx;
+                    }else {
+                        var partner = obj[i].to_idx;
+                    }
+                    let partner_info = await db.execute2(QUERY, partner);
+                    let temp = {
+                        partner_idx : "",
+                        partner_name : "",
+                        partner_profile_url : "",
+                        contents : "",
+                        create_at : ""
+                    }
+                    partner_name = partner_info[0].name;
+                    partner_profile_url = partner_info[0].profile_url
                     temp.contents = obj[i].contents;
-                    temp.read = obj[i].read;
                     temp.create_at = obj[i].create_at;
                     data.push(temp);
                 }
-
                 res.status(200).send({
                     message: 'get message success',
                     result: data
                 });
             }
-        });
+        }).sort({create_at : -1});
         return; 
     }
 
