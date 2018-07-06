@@ -13,8 +13,10 @@ var findApply = function(applies){
             apply_idx: '',
             introduce: '',
             portfolio_url: '',
-            phone : '',
+            phone: '',
             recruit_idx: '',
+            project_idx: '',
+            position: '',
             applicant_idx: '',
             recruit_at: '',
             answers: []
@@ -83,6 +85,7 @@ router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
             }, function(err, recruits){
                 if(ID == recruits[0].user_idx)
                     project_manage = true;
+                
                 if(project_manage){
                     apply.find({
                         _id : req.params.apply_idx,

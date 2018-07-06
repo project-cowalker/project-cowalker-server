@@ -13,7 +13,7 @@ router.use('/project', getProject);
 const deleteProject = require('./deleteProject');
 router.use('/project', deleteProject);
 
-// //project delete
+// //project update
 const updateProject = require('./updateProject');
 router.use('/project', updateProject);
 

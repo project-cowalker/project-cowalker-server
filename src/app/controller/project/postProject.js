@@ -45,10 +45,12 @@ router.post('/', multiUpload, async (req, res, next) => {
                 if (!inserted) {
                   res.status(405).send({
                     message: 'team insert fail'
+                    
                  });
                 } else {
                     res.status(201).send({
-                        message: "success"
+                        message: "success",
+                        project_idx : project_idx
                    }); 
                 }
             
