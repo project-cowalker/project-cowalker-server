@@ -9,7 +9,9 @@ let recruit_question = require('../../model/schema/recruit_question');
 router.get('/:recruit_idx', function(req, res){
 		
 	let recruit_idx=req.params.recruit_idx;
-
+	let resultmessage;
+	let data = new Array();
+	
 	recruit_question.find({
         recruit_idx : recruit_idx
     }, function(err,result){
@@ -18,18 +20,18 @@ router.get('/:recruit_idx', function(req, res){
         message : "database failure"
       });
     }else{
-    	if(result[0]){
-    		console.log("result값 없다");
-    		res.status(400).send({
-    			message: "Bad Request"
-    		});
-    	}else{
-    		res.status(200).send({
-    		message:"success",
-    		result : result[0].question
-    	});
+    	console.log(result);
+    	if(!result[0].question)				// question이 없는 경우 
+    		resultmessage="";
+    	else
+    		resultmessage=result[0].question;		// question이 있는 경우
 
-    	}
+
+    	res.status(200).send({
+    		message:"success",
+    		result : resultmessage
+    	});
+    	
     	
 	}
 
