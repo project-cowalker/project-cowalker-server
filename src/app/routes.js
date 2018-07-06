@@ -23,4 +23,8 @@ router.use('/', project);
 const search = require('./controller/search/search_routes');
 router.use('/', search);
 
+//question
+const question = require('./controller/question/question_routes');
+router.use('/', question);
+
 module.exports = router;
