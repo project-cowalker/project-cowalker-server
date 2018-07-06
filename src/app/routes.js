@@ -20,4 +20,8 @@ router.use('/', message);
 const project = require('./controller/project/project_routes');
 router.use('/', project);
 
+//mypage
+const mypage = require('./controller/mypage/mypage_routes');
+router.use('/', mypage);
+
 module.exports = router;

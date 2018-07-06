@@ -6,8 +6,11 @@ var applySchema = new Schema({
     introduce : String,
     recruit_idx : String,
     applicant_idx : String,
+    phone : String,
     recruit_at : {type : Date, default : Date.now},
-    join : {type : Boolean, default : false},
+    project_idx: String,
+    position: String,
+    join : {type : Number, default : 0},
     answers : Array
 },{
     versionKey : false

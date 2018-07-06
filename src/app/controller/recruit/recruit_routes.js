@@ -2,8 +2,22 @@ const express = require('express');
 const router = express.Router();
 
 
-///recruit/create : 팀원 모집
-const create = require('./recruit_create');
-router.use('/recruit', create);
+// postRecruit 
+const postRecruit = require('./postRecruit');
+router.use('/project/recruit', postRecruit);
+
+// getRecruit
+const getRecruit=require('./getRecruit');
+router.use('/project',getRecruit);
+
+
+// putRecruit
+const putRecruit=require('./putRecruit');
+router.use('/project',putRecruit);
+
+// deleteRecruit
+const deleteRecruit=require('./deleteRecruit');
+router.use('/project',deleteRecruit);
+
 
 module.exports = router;
