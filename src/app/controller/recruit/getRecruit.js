@@ -140,10 +140,10 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
               btnResult="참여하기";
             }else{
               // case 2-1: 개발자가 아닌데, 팀에 지원은 했고, 아직 수락을 못받은 경우 -> "참여 대기"
-              if(result[0].join==true){
+              if(result[0].join==1){
                 btnResult="참여완료";
                 // case 2-2: 개발자가 아닌데, 팀에 지원은 했고, 거절을 당한경우 -> "참여 하기 "
-              }else if(result[0].join==false){
+              }else if(result[0].join==2){
                 btnResult="참여하기";
               }else{
                 // case 2-3: 개발자가 아닌데, 팀에 지원은 했고, 거절을 당한경우 -> "참여 대기 "
