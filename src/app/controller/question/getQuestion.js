@@ -18,12 +18,19 @@ router.get('/:recruit_idx', function(req, res){
         message : "database failure"
       });
     }else{
-
-    	res.status(200).send({
+    	if(result[0]){
+    		console.log("result값 없다");
+    		res.status(400).send({
+    			message: "Bad Request"
+    		});
+    	}else{
+    		res.status(200).send({
     		message:"success",
     		result : result[0].question
     	});
 
+    	}
+    	
 	}
 
 });
