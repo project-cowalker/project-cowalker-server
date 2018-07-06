@@ -20,17 +20,17 @@ router.post('/:to_idx', async (req, res, next) => {
             }
         });
 
-        message.create({
-            from_idx : req.params.to_idx,
-            to_idx : ID,
-            contents : req.body.contents
-        }, function(err, obj){
-            if(err){
-                return res.status(500).send({
-                    message: 'send message fail'
-                });
-            }
-        });
+        // message.create({
+        //     from_idx : req.params.to_idx,
+        //     to_idx : ID,
+        //     contents : req.body.contents
+        // }, function(err, obj){
+        //     if(err){
+        //         return res.status(500).send({
+        //             message: 'send message fail'
+        //         });
+        //     }
+        // });
 
         return res.status(201).send({
             message: 'send message success'

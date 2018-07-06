@@ -41,7 +41,6 @@ router.post('/', multiUpload, async (req, res, next) => {
 
                 const QUERY = 'INSERT INTO TEAM (project_idx, member_idx, position) VALUES (?, ?, ?)';
                 let inserted = await pool.execute4(QUERY, project_idx, member_idx, position);
-               
 
                 if (!inserted) {
                   res.status(405).send({
