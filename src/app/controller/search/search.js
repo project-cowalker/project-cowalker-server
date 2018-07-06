@@ -17,7 +17,7 @@ router.get('/', function(req, res){
 
     let query = {
         $or : []
-    };    
+    };
 
     if(aim != undefined) {
         query.$or.push({aim : aim});
@@ -40,10 +40,8 @@ router.get('/', function(req, res){
         project.find({}, async function(err, result){
             if(err){
                 return res.status(405).send({
-                    message : "get project fail"
+                    message : "get project list fail"
                 });
-            } else{
-                console.log(result);
             }
             res.status(201).send({
                 message : "success",
