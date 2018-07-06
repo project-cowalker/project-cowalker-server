@@ -7,9 +7,7 @@ router.delete('/:_id', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
 
     if (ID != -1) {
-        message.remove({
-            from_idx : req.params._id
-        }, function(err, obj){
+        message.remove({from_idx : req.params._id}, function(err, obj){
             if(err){
                 return res.status(500).send({
                     message: 'delete message fail'

@@ -9,7 +9,7 @@ var messageSchema = new Schema({
     //보낸 시간
     create_at : {type : Date, default : Date.now},
     //내용
-    content : String
+    contents : String
 },{
     versionKey: false // You should be aware of the outcome after set to false
 });

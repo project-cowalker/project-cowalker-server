@@ -27,7 +27,8 @@ router.post('/', upload.single('portfolio_url'), async (req, res, next) => {
             phone : req.body.phone,
             recruit_idx : req.body.recruit_idx, 
             applicant_idx : ID,
-            answers : req.body.answers
+            answers : req.body.answers,
+            join : 0
         },
         function(err, docs){
             if(err) {
