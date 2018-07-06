@@ -6,8 +6,6 @@ const recruit = require('../../model/schema/recruit');
 const recruitQuestion=require('../../model/schema/recruit_question');
 
 
-
-
 //팀원 모집
 router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
@@ -37,32 +35,34 @@ router.post('/', async (req, res, next) => {
             ability : req.body.ability,
             career : req.body.career,
             preference : req.body.preference,
-            comment : req.body.comment
+            comment : req.body.comment,
+            user_idx : ID
+
 
         }, function(err, result){
 
             if(err){                        // 결과값이 만약 에러가 난다면, 405에서
                 console.log(err);
                 res.status(405).send({
-                    message:"fail"
-                });
+                    message:"database failure"
+            });
 
             }else{                          // 성공
 
 
                 recruitQuestion.create({
-                    recruit_idx : req.body.recruit_idx,
+                    recruit_idx : result._id,
                     question : question_list
 
                 },function(err,result){
                      if(err){
                       // console.log(err);
                       res.status(405).send({
-                          message:"fail"
+                          message:"database failure"
                       });
                     }else{
                       // console.log(result);
-                      res.status(200).send({
+                      res.status(201).send({
                         message:"success"
                       });
                     }
@@ -80,14 +80,6 @@ router.post('/', async (req, res, next) => {
 
 });
 
-
-//이건 잠시 임시용.
-router.get('/create', async(req, res) => {
-   recruitQuestion.find(function(err, applies){
-       if(err) return res.status(500).send({error: 'database failure'});
-       res.json(applies);
-   })
-});
 
 
 
