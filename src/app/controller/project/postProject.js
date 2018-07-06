@@ -45,10 +45,6 @@ router.post('/', multiUpload, async (req, res, next) => {
                 let member_idx = ID;
                 let position = 'PM';
 
-                console.log(typeof project_idx);
-                console.log(member_idx);
-                console.log(position);
-
                 const QUERY = 'INSERT INTO TEAM (project_idx, member_idx, position) VALUES (?, ?, ?)';
                 let inserted = await pool.execute4(QUERY, project_idx, member_idx, position);
                 
@@ -58,10 +54,12 @@ router.post('/', multiUpload, async (req, res, next) => {
                   console.log(err);
                   res.status(405).send({
                     message: 'team insert fail'
+                    
                  });
                 } else {
                     res.status(201).send({
-                        message: "success"
+                        message: "success",
+                        project_idx : project_idx
                    }); 
                 }
             
