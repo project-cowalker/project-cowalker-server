@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../module/pool.js');
-const jwt = require('../../module/jwt.js');
-const hash = require('../../module/hash.js');
 let project = require('../../model/schema/project');
 
 //탐색
@@ -16,29 +13,33 @@ router.get('/', function(req, res){
 	const area = req.query.area;
 	const position = req.query.position;
 	const department = req.query.department;
-	const keyword = req.query.keyword;
+    const keyword = req.query.keyword;
 
-    if(aim == undefined) {
+    let query = {
+        $or : []
+    };    
 
+    if(aim != undefined) {
+        query.$or.push({aim : aim});
     }
-    if(area == undefined) {
-        
+    if(area != undefined) {
+        query.$or.push({area : area});
     }
-    if(position == undefined) {
-        
+    if(position != undefined) {
+        query.$or.push({position : position});
     }
-    if(department == undefined) {
-
+    if(department != undefined) {
+        query.$or.push({department : department});
     }
-    if(keyword == undefined) {
-
+    if(keyword != undefined) {
+        query.$or.push({keyword : keyword});
     }
 
     //탐색
     if(aim == area && area == position && position == department && department == keyword && keyword == undefined) {
         project.find({}, async function(err, result){
             if(err){
-                return res.status(500).send({
+                return res.status(405).send({
                     message : "get project fail"
                 });
             } else{
@@ -49,13 +50,25 @@ router.get('/', function(req, res){
                 result : result
             });
             return;
-        }).sort({create_at : -1});
+        }).sort({create_at : -1}).limit(10);
     }
     //검색
     else {
-
+        project.find(query, async function(err, result){
+            if(err){
+                return res.status(405).send({
+                    message : "get project fail"
+                });
+            } else{
+                console.log(result);
+            }
+            res.status(201).send({
+                message : "success",
+                result : result
+            });
+            return;
+        }).sort({create_at : -1}).limit(10);
     }
-
 });
 
 module.exports = router;
