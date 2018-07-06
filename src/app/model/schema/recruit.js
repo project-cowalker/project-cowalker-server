@@ -15,7 +15,8 @@ var recruitSchema = new Schema({
     career : String,
     preference : String,
     comment : String,
-    creat_at : {type : Date, default : Date.now}
+    creat_at : {type : Date, default : Date.now},
+    user_idx : String
 },{
     versionKey: false // You should be aware of the outcome after set to false
 });
