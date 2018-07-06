@@ -8,22 +8,16 @@ let apply = require('../../model/schema/apply');
 
 //프로젝트 id값으로 검색하기
 router.get('/:project_id', function(req, res){
-
 	const ID = jwt.verify(req.headers.authorization);
-
 	// 프로젝트 아이디와 유저 아이디 비교 => 같으면 개설자임을 보내주기
 	// 다르면, 프로젝트 참여자와 지원자로 나뉜다.
-
 	// 프로젝트 id로 team의 member_idx 확인(mysql) => select문
 	// 유저 id가 member_idx로 존재하면 => 참여완료
 	// 존재하지 않으면 => 참여대기
-
 	// 로그인하지않은 상태 -> 참여대기로 보내주기
-
     const QUERY = 'select * from USER where user_idx = ?';
     var data = new Array();
     var user_status = "null";
-
 
 	if(ID!=-1){
 		project.find({
@@ -39,7 +33,6 @@ router.get('/:project_id', function(req, res){
 				for(let i=0;i<result.length;i++){
 					let project_user_id = result[0].user_idx;
 					let select_project = await db.execute2(QUERY, ID);
-
 					var temp = {
 				        title : "",
 				        summary : "",
@@ -61,16 +54,12 @@ router.get('/:project_id', function(req, res){
 					temp.img_url = result[i].img_url;
 					data.push(temp);
 
-					// 개설자 
+					// 개설자
+					//참여중인지...대기인지..지원하기인지...
 					if (ID == project_user_id){
 						user_status = "개설자";
-					}
-					
-					
+					}	
 				}
-
-				
-				
 			}
 			res.status(201).send({
 				message : "success",
@@ -78,9 +67,7 @@ router.get('/:project_id', function(req, res){
 				user :user_status
 			});
 			return;
-
 		});
-	
 
 	}else{
 		res.status(401).send({
@@ -88,6 +75,7 @@ router.get('/:project_id', function(req, res){
         });
 	}
 });
+
 
 
 module.exports = router;
