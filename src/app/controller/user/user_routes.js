@@ -9,8 +9,8 @@ router.use('/signup', signup);
 const signin = require('./signin');
 router.use('/signin', signin);
 
-// //signup
-// const test = require('./test');
-// router.use('/test', test);
+// user's projects
+const user_project = require('./user_project');
+router.use('/user/project', user_project);
 
 module.exports = router;
