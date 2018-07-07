@@ -14,6 +14,7 @@ router.get('/', async (req, res, next) => {
     let data = new Array();
 
     if (ID != -1) {
+        
         // // 2. find( ) 함수에 query 입력
         // message.find({$or : [{ to_idx : ID },{ from_idx : ID}]})
         //         .distinct('to_idx', function(err, obj) {
@@ -25,7 +26,7 @@ router.get('/', async (req, res, next) => {
         //         })
         //         .sort({create_at : -1});
 
-        // ///////////
+        //
 
         message.find({ $or : [{ to_idx : ID }, { from_idx : ID }] }, 
             async function(err, obj){
@@ -50,7 +51,7 @@ router.get('/', async (req, res, next) => {
                                 break;
                             }
                         }
-                        
+
                         //나에게 온 쪽지라면
                         else {
                             //보낸사람 있는지 검사, 있으면 탈출
