@@ -31,7 +31,6 @@ var findApply = function(applies){
         object.recruit_at = applies[i].recruit_at;
         object.answers = applies[i].answers;
         resultObj.push(object);
-
     }
     return resultObj;
 }
@@ -40,10 +39,12 @@ router.get('/', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
 
     if(ID != -1){
-        apply.find({applicant_idx : ID}, function(err, applies){
-            if(err) 
-                return res.stauts(500).send({message: 'database failure'});
-            res.json(findApply(applies));
+        apply.aggregate([{'$group' : {'_id' : {'project_idx' : "$project_idx", 'join' : '$join'}}}], function(err, applies){
+            if(err) {
+                console.log(err);
+                return res.status(500).send({message: 'database failure'});
+            }
+            res.json(applies);
         });
     } else {
         res.status(401).send({
@@ -85,7 +86,7 @@ router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
             }, function(err, recruits){
                 if(ID == recruits[0].user_idx)
                     project_manage = true;
-                
+
                 if(project_manage){
                     apply.find({
                         _id : req.params.apply_idx,

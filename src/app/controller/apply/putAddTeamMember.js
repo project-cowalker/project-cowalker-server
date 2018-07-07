@@ -56,7 +56,7 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                         var data;
 
                         if(req.params.join === 1){
-                            data = await pool.execute4(QUERY, project_idx, req.params.applicant_idx, position);
+                            data = await pool.execute2(QUERY, [project_idx, req.params.applicant_idx, position]);
                         }
                         
                         if(!data && data != undefined){

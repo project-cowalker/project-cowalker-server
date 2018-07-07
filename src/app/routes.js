@@ -19,7 +19,7 @@ router.use('/', message);
 const project = require('./controller/project/project_routes');
 router.use('/', project);
 
-//project
+//search
 const search = require('./controller/search/search_routes');
 router.use('/', search);
 
@@ -34,5 +34,10 @@ router.use('/', mypage);
 //home
 const home = require('./controller/home/home_routes');
 router.use('/', home);
+
+
+const recommend = require('./controller/recommend/recommend_routes');
+router.use('/', recommend);
+
 
 module.exports = router;
