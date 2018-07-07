@@ -21,7 +21,7 @@ var findApply = function(applies){
             recruit_at: '',
             answers: []
         };
-        
+
         object.apply_idx = applies[i]._id;
         object.introduce = applies[i].introduce;
         object.portfolio_url = applies[i].portfolio_url;
@@ -39,10 +39,12 @@ router.get('/', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
 
     if(ID != -1){
-        apply.find({applicant_idx : ID}, function(err, applies){
-            if(err) 
-                return res.stauts(500).send({message: 'database failure'});
-            res.json(findApply(applies));
+        apply.aggregate([{'$group' : {'_id' : {'project_idx' : "$project_idx", 'join' : '$join'}}}], function(err, applies){
+            if(err) {
+                console.log(err);
+                return res.status(500).send({message: 'database failure'});
+            }
+            res.json(applies);
         });
     } else {
         res.status(401).send({
