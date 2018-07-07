@@ -7,7 +7,6 @@ const recruit = require('../../model/schema/recruit');
 const apply = require('../../model/schema/apply');
 const recruitQuestion=require('../../model/schema/recruit_question');
 
-
 // //프로젝트 선택 -> 모집 공고 전체 조회
 router.get('/:project_idx/recruit', async (req, res, next) => {
     let project_idx=req.params.project_idx;
@@ -22,27 +21,25 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
         res.status(405).send({
         message : "database failure"
       });
-    }else{
+    } else {
 
       for(let i = 0; i < result.length; i++) {
-            
-      let temp = {
-        recruit_idx: "",
-        position : "",
-        number : "",
-        task : "",
-        dday:""
-      }
+        let temp = {
+          recruit_idx: "",
+          position : "",
+          number : "",
+          task : "",
+          dday:""
+        }
 
-      // dday계산
-      var gap=result[i].end_date.getTime()-now.getTime();
-      var calculateDday = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
-             
+        // dday계산
+        var gap=result[i].end_date.getTime()-now.getTime();
+        var calculateDday = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
 
-      // 양수면 앞에 +를 붙여야해 
-      if(calculateDday>0){
-        calculateDday='+'+calculateDday;
-      }
+        // 양수면 앞에 +를 붙여야해 
+        if(calculateDday>0){
+          calculateDday='+'+calculateDday;
+        }
 
         temp.recruit_idx = result[i]._id;
         temp.position=result[i].position;
@@ -60,8 +57,6 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
       }        
   });
   });
-
-   
 
 //프로젝트 선택 -> 모집 공고 세부 조회
 router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
