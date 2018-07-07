@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
+const pool = require('../../module/pool.js');
 
 /**  주소 = ip:3000/api/apply
   *  기능 = 지원하기
@@ -31,12 +32,40 @@ router.post('/', async (req, res, next) => {
             answers : req.body.answers,
             join : 0
         },
-        function(err, docs){
+        async function(err, docs){
             if(err) {
                 res.status(405).send({
                     message: "fail"
                 });
                 return;
+            }
+
+            if(req.query.recommender_idx){
+                console.log("hi");
+                let UPDATERECOMMEND = 'UPDATE RECOMMEND SET recommendee_idx = ? and join = 0 WHERE recommender_idx = ?';
+                const UPDATEUSER = 'UPDATE USER SET point = point + 20 WHERE user_idx in (?, ?)';
+                let data;
+
+                if(req.query.project_idx){
+                    UPDATERECOMMEND += ' and project_idx = ?';
+                    data = req.query.project_idx;
+                }
+
+                if(req.query.recruit_idx){
+                    UPDATERECOMMEND += ' and recruit_idx = ?';
+                    data = req.query.recruit_idx;
+                }
+
+                let updateRecommend = await pool.execute2(UPDATERECOMMEND, [ID, req.query.recommender_idx, data]);
+                let updatePoint = await pool.execute2(UPDATEUSER, [ID, req.query.recommender_idx]);
+
+                if(!updateRecommend && updateRecommend != undefined
+                    && !updatePoint && updatePoint != undefined){
+                    res.status(405).send({
+                        message: "database failure"
+                    });
+                    return;
+                }
             }
             res.status(201).send({
                 message: "success"
