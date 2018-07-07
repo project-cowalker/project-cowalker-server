@@ -8,7 +8,7 @@ const pool = require('../../module/pool.js');
 /**  주소 = ip:3000/api/apply/:apply_idx/:applicant_idx/join/:join
   *  기능 = 팀멤버 추가
   */
-  
+
 router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
     var project_manage = false;
@@ -56,7 +56,7 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                         var data;
 
                         if(req.params.join === 1){
-                            data = await pool.execute4(QUERY, project_idx, req.params.applicant_idx, position);
+                            data = await pool.execute2(QUERY, [project_idx, req.params.applicant_idx, position]);
                         }
                         
                         if(!data && data != undefined){
