@@ -31,4 +31,8 @@ router.use('/', question);
 const mypage = require('./controller/mypage/mypage_routes');
 router.use('/', mypage);
 
+//home
+const home = require('./controller/home/home_routes');
+router.use('/', home);
+
 module.exports = router;

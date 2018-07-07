@@ -50,6 +50,7 @@ router.get('/', async (req, res, next) => {
                                 break;
                             }
                         }
+                        
                         //나에게 온 쪽지라면
                         else {
                             //보낸사람 있는지 검사, 있으면 탈출
