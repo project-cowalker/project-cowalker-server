@@ -21,7 +21,7 @@ var findApply = function(applies){
             recruit_at: '',
             answers: []
         };
-
+        
         object.apply_idx = applies[i]._id;
         object.introduce = applies[i].introduce;
         object.portfolio_url = applies[i].portfolio_url;
@@ -31,7 +31,6 @@ var findApply = function(applies){
         object.recruit_at = applies[i].recruit_at;
         object.answers = applies[i].answers;
         resultObj.push(object);
-
     }
     return resultObj;
 }
@@ -85,7 +84,7 @@ router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
             }, function(err, recruits){
                 if(ID == recruits[0].user_idx)
                     project_manage = true;
-                
+
                 if(project_manage){
                     apply.find({
                         _id : req.params.apply_idx,
