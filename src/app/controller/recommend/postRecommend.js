@@ -17,9 +17,9 @@ router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
 
     if(ID != -1){
-        const INSERTQUERY = 'INSERT INTO RECOMMEND(recommender_idx, reason, project_idx, recruit_idx) VALUES(?, ?, ?, ?)';
+        const INSERTQUERY = 'INSERT INTO RECOMMEND(recommender_idx, reason, project_idx, recruit_idx, temp_url) VALUES(?, ?, ?, ?, ?)';
         const UPDATEQUERY = 'UPDATE USER SET point = point + 10 where user_idx = ?';
-        let insertRecommend = await pool.execute2(QUERY, [ID, req.body.reason, req.body.project_idx, req.body.recruit_idx]);
+        let insertRecommend = await pool.execute2(INSERTQUERY, [ID, req.body.reason, req.body.project_idx, req.body.recruit_idx, Date.now()]);
         let pointUpdate = await pool.execute2(UPDATEQUERY, ID);
         
         if(!insertRecommend && insertRecommend != undefined 
