@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 
-
 const user = require('./controller/user/user_routes');
 router.use('/', user);
 
@@ -19,5 +18,17 @@ router.use('/', message);
 //project
 const project = require('./controller/project/project_routes');
 router.use('/', project);
+
+//project
+const search = require('./controller/search/search_routes');
+router.use('/', search);
+
+//question
+const question = require('./controller/question/question_routes');
+router.use('/', question);
+
+//mypage
+const mypage = require('./controller/mypage/mypage_routes');
+router.use('/', mypage);
 
 module.exports = router;
