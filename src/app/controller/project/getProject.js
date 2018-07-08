@@ -67,19 +67,19 @@ router.get('/:project_id', function (req, res) {
                                 });
                             } else {
                                 console.log(obj[0]);
-                                // case 2-1: 개발자가 아니고, 팀에 아직 지원도 아직 안한 상태 ->"지원자"
-                                if (!obj[0]) {
+                                // case 2-1: 개설자가 아니고, 팀에 아직 지원도 아직 안한 상태 ->"지원자"
+                                if (!obj) {
                                     user_status = "참여하기";
-                                    //console.log(user_status);
+                                console.log(user_status);
                                 } else {
-                                    // case 2-1: 개발자가 아닌데, 팀에 지원은 했고, 아직 수락/거절을 못받은 경우 -> "참여 대기"
+                                    // case 2-1: 개설자가 아닌데, 팀에 지원은 했고, 아직 수락/거절을 못받은 경우 -> "참여 대기"
                                     if (obj[0].join == 0) {
                                         user_status = "참여대기";
-                                        // case 2-2: 개발자가 아닌데, 팀에 지원은 했고, 수락을 받음 -> "참여 완료 "
+                                        // case 2-2: 개설자가 아닌데, 팀에 지원은 했고, 수락을 받음 -> "참여 완료 "
                                     } else if (obj[0].join == 1) {
                                         user_status = "참여완료";
                                     } else {
-                                        // case 2-3: 개발자가 아닌데, 팀에 지원은 했고, 거절을 당한경우 -> "참여 하기"
+                                        // case 2-3: 개설자가 아닌데, 팀에 지원은 했고, 거절을 당한경우 -> "참여 하기"
                                         user_status = "참여하기"
                                     }
                                 }
