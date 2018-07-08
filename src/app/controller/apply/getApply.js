@@ -46,7 +46,26 @@ router.get('/', async(req, res) => {
                 console.log(err);
                 return res.status(500).send({message: 'database failure'});
             }
-            res.json(applies);
+            console.log(applies[0]._id);
+            console.log(applies[1]._id.project_idx);
+            console.log(applies.length);
+
+            var data = new Array();
+
+            for(let i=0;i<applies.length;i++){
+                console.log(applies[i]._id.project_idx);
+
+                data.push(applies[i]._id.project_idx);
+
+            }
+
+            console.log(data);
+
+
+
+            
+            // res.json(applies);
+
         });
     } else {
         res.status(401).send({
