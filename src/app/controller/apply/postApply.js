@@ -42,19 +42,6 @@ router.post('/', async (req, res, next) => {
             }
 
             if(req.query.recommender_idx){
-                if(req.query.temp_url){
-                    let SELECTURL = 'UPDATE RECOMMEND SET temp_url = 1 WHERE temp_url = ?';
-                    let selectData = await pool.execute2(SELECTURL, req.query.temp_url);
-
-                    if(!selectData && selectData != undefined){
-                        res.status(405).send({
-                            message: "database failure"
-                        });
-                        
-                        return;
-                    }
-                }
-
                 let UPDATERECOMMEND = 'UPDATE RECOMMEND SET recommendee_idx = ? and join = 0 WHERE recommender_idx = ?';
                 const UPDATEUSER = 'UPDATE USER SET point = point + 20 WHERE user_idx in (?, ?)';
                 let data;
@@ -68,7 +55,6 @@ router.post('/', async (req, res, next) => {
                     UPDATERECOMMEND += ' and recruit_idx = ?';
                     data = req.query.recruit_idx;
                 }
-
 
                 let updateRecommend = await pool.execute2(UPDATERECOMMEND, [ID, req.query.recommender_idx, data]);
                 
