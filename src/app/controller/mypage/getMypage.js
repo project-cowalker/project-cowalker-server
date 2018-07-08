@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
-
+const apply = require('../../model/schema/apply');
 
 // 나의 마이페이지 get
 router.get('/', async(req, res) => {
@@ -16,13 +16,13 @@ router.get('/', async(req, res) => {
         //console.log(result);
         
         var temp = {
-          profile_url: "",//
-          background_url: "",//
-          name : "",//
-          position: "",//
-          introduce: "",//
-          introduce_detail: "",
-          portfolio_url: "",//
+          profile_url: "",
+          background_url: "",
+          name : "",
+          position: "",
+          point: "",
+          introduce: "",
+          portfolio_url: "",
           aim : "",
           department : "",
           area  : ""
@@ -32,8 +32,8 @@ router.get('/', async(req, res) => {
         temp.background_url = result[0].background_url,
         temp.name = result[0].name,
         temp.position = result[0].position,
+        temp.point = result[0].point,
         temp.introduce = result[0].introduce,
-        temp.introduce_detail = result[0].introduce_detail,
         temp.portfolio_url = result[0].portfolio_url,
         temp.aim = result[0].aim,
         temp.department = result[0].department,
@@ -82,8 +82,8 @@ router.get('/:user_idx', async(req, res) => {
           background_url: "",//
           name : "",//
           position: "",//
+          point: "",
           introduce: "",//
-          introduce_detail: "",
           portfolio_url: "",//
           aim : "",
           department : "",
@@ -94,8 +94,8 @@ router.get('/:user_idx', async(req, res) => {
         temp.background_url = result[0].background_url,
         temp.name = result[0].name,
         temp.position = result[0].position,
+        temp.point = result[0].point,
         temp.introduce = result[0].introduce,
-        temp.introduce_detail = result[0].introduce_detail,
         temp.portfolio_url = result[0].portfolio_url,
         temp.aim = result[0].aim,
         temp.department = result[0].department,
