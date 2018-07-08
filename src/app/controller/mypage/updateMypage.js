@@ -30,10 +30,16 @@ router.put('/',multiUpload,async(req, res, next) => {
         		area : req.body.area ? req.body.area : profile[0].area
             };
             let result = await db.execute3(updateProfile, data, ID);
-            console.log(result);
-            res.status(200).send({
-                message: 'update success'
-            });
+            //console.log(result);
+            if(result){
+                res.status(200).send({
+                    message: 'update success'
+                });
+            }else{
+                res.status(405).send({
+                    message: 'fail'
+                }); 
+            }
         }
 
     }else{
