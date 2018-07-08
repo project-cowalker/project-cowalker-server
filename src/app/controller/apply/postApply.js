@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
+const alarm = require('../../module/alaram.js');
 
 /**  주소 = ip:3000/api/apply
   *  기능 = 지원하기
@@ -38,6 +39,9 @@ router.post('/', async (req, res, next) => {
                 });
                 return;
             }
+
+            alarm.apply(project_idx, ID);
+
             res.status(201).send({
                 message: "success"
             });
