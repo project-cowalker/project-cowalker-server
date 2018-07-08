@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
-
+const apply = require('../../model/schema/apply');
 
 // 나의 마이페이지 get
 router.get('/', async(req, res) => {
@@ -131,6 +131,28 @@ router.get('/:user_idx', async(req, res) => {
     	
     }else {
     	res.status(401).send({
+            message: "access denied"
+        });
+    }
+});
+
+//참여 및 지원한 프로젝트 모아보기
+router.get('/', async(req, res) => {
+    const ID = jwt.verify(req.headers.authorization);
+
+    if(ID != -1){
+        apply.aggregate([{'$group' : {'_id' : {'project_idx' : "$project_idx", 'join' : '$join'}}}], function(err, applies){
+            if(err) {
+                console.log(err);
+                return res.status(500).send({message: 'database failure'});
+            }
+            /*project.find({
+              '_id' : applies[0]
+            })*/
+            res.json(applies);
+        });
+    } else {
+        res.status(401).send({
             message: "access denied"
         });
     }
