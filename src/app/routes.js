@@ -31,6 +31,10 @@ router.use('/', question);
 const mypage = require('./controller/mypage/mypage_routes');
 router.use('/', mypage);
 
+//alarm
+const alarm = require('./controller/alarm/alarm_routes');
+router.use('/', alarm);
+
 //test
 const test = require('./controller/test');
 router.use('/test', test);

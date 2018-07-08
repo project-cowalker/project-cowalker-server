@@ -119,6 +119,7 @@ module.exports = {
                     var msg = "아쉽지만 " + project_name + "의 참여 멤버가 되지 못하셨습니다.";
                 }
                 alarm.create({
+                    project_name : project_name,
                     user_idx: target,
                     contents: msg
                 });
