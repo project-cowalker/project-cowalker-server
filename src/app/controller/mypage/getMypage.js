@@ -84,7 +84,6 @@ router.get('/:user_idx', async(req, res) => {
           position: "",//
           point: "",
           introduce: "",//
-          introduce_detail: "",
           portfolio_url: "",//
           aim : "",
           department : "",
@@ -97,7 +96,6 @@ router.get('/:user_idx', async(req, res) => {
         temp.position = result[0].position,
         temp.point = result[0].point,
         temp.introduce = result[0].introduce,
-        temp.introduce_detail = result[0].introduce_detail,
         temp.portfolio_url = result[0].portfolio_url,
         temp.aim = result[0].aim,
         temp.department = result[0].department,
