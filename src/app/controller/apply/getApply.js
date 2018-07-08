@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
 const recruit = require('../../model/schema/recruit');
+const project = require('../../model/schema/project');
 
 //applies, applyAnswer을 하나의 response data로 합침
 var findApply = function(applies){
@@ -37,6 +38,7 @@ var findApply = function(applies){
     return resultObj;
 }
 
+//참여 및 지원한 프로젝트 모아보기
 router.get('/', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
 
@@ -49,12 +51,124 @@ router.get('/', async(req, res) => {
             res.json(applies);
         });
     } else {
+        res.status(401).send({  
+            message: "access denied"
+        });
+    }
+});
+
+
+// 지원한 프로젝트 모아보기
+router.get('/apply_project', async(req, res) => {
+    const ID = jwt.verify(req.headers.authorization);
+
+    if(ID != -1){
+        apply.find({
+            'applicant_idx' : ID,
+            'join' : 0
+        }, function(err, applies){
+            if(err) {
+              console.log(err);
+              return res.status(500).send({message: 'database failure'});
+            }
+
+            var project_list = new Array();
+            
+            for(let i = 0 ; i < applies.length; i++){
+                project_list.push(applies[i].project_idx);
+            }
+
+            project.find({
+              '_id' : {  $in :  project_list  }
+            }, function(err, projects){
+                if(err) {
+                    console.log(err);
+                    return res.status(500).send({message: 'database failure'});
+                }
+                res.json(projects);
+
+                return
+            });
+        });
+    } else {
         res.status(401).send({
             message: "access denied"
         });
     }
 });
 
+//참여한 프로젝트 모아보기
+router.get('/enter_project', async(req, res) => {
+    const ID = jwt.verify(req.headers.authorization);
+
+    if(ID != -1){
+        apply.find({
+            'applicant_idx' : ID,
+            'join' : 1
+        }, function(err, applies){
+            if(err) {
+              console.log(err);
+              return res.status(500).send({message: 'database failure'});
+            }
+
+            var project_list = new Array();
+            
+            for(let i = 0 ; i < applies.length; i++){
+                project_list.push(applies[i].project_idx);
+            }
+
+            project.find({
+              '_id' : {  $in :  project_list  }
+            }, function(err, projects){
+                if(err) {
+                    console.log(err);
+                    return res.status(500).send({message: 'database failure'});
+                }
+                res.json(projects);
+
+                return;
+            });
+        });
+    } else {
+        res.status(401).send({
+            message: "access denied"
+        });
+    }
+});
+
+
+//지원 멤버 보기
+router.get('/:recruit_idx', async(req, res) => {
+    const ID = jwt.verify(req.headers.authorization);
+
+    if(ID != -1){
+        apply.find({
+            'recruit_idx' : req.params.recruit_idx,
+            'join' : 0
+        }, function(err, applies){
+            if(err) {
+                console.log(err);
+                return res.status(500).send({message: 'database failure'});
+            }
+            var array = new Array();
+
+            for(let i = 0; i < applies.length; i++){
+                let obj = {
+                    applicant_idx : ''
+                }
+                obj.applicant_idx = applies[i].applicant_idx;
+                array.push(obj);
+            }
+            res.json(array);
+        });
+    } else {
+        res.status(401).send({
+            message: "access denied"
+        });
+    }
+});
+
+//지원서 보기(참여자)
 router.get('/:apply_idx', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
 
@@ -75,6 +189,7 @@ router.get('/:apply_idx', async(req, res) => {
     }
 });
 
+//지원서 보기(개설자)
 router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
     var project_manage = false;

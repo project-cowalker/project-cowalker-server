@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
-
+const apply = require('../../model/schema/apply');
 
 // 나의 마이페이지 get
 router.get('/', async(req, res) => {
