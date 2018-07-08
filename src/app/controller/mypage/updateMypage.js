@@ -24,13 +24,13 @@ router.put('/',multiUpload,async(req, res, next) => {
         		name : req.body.name ? req.body.name : profile[0].name,
         		position : req.body.position ? req.body.position : profile[0].position,
         		introduce : req.body.introduce ? req.body.introduce : profile[0].introduce,
-                introduce_detail : req.body.introduce_detail ? req.body.introduce_detail : profile[0].introduce_detail,
         		portfolio_url : req.body.portfolio_url ? req.body.portfolio_url : profile[0].portfolio_url,
         		aim : req.body.aim ? req.body.aim : profile[0].aim,
         		department : req.body.department ? req.body.department : profile[0].department,
         		area : req.body.area ? req.body.area : profile[0].area
             };
             let result = await db.execute3(updateProfile, data, ID);
+            console.log(result);
             res.status(200).send({
                 message: 'update success'
             });
