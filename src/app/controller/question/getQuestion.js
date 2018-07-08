@@ -10,7 +10,7 @@ router.get('/:recruit_idx', function(req, res){
 		
 	let recruit_idx=req.params.recruit_idx;
 	let resultmessage;
-	let data = new Array();
+	
 	
 	recruit_question.find({
         recruit_idx : recruit_idx

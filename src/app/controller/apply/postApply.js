@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
 const alarm = require('../../module/alaram.js');
+const pool = require('../../module/pool.js');
 
 /**  주소 = ip:3000/api/apply
   *  기능 = 지원하기
@@ -17,6 +18,7 @@ const alarm = require('../../module/alaram.js');
                      ]
 
   */
+
 router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
 
@@ -32,7 +34,7 @@ router.post('/', async (req, res, next) => {
             answers : req.body.answers,
             join : 0
         },
-        function(err, docs){
+        async function(err, docs){
             if(err) {
                 res.status(405).send({
                     message: "fail"
@@ -40,7 +42,39 @@ router.post('/', async (req, res, next) => {
                 return;
             }
 
-            alarm.apply(project_idx, ID);
+            if(req.query.recommender_idx){
+                let UPDATERECOMMEND = 'UPDATE RECOMMEND SET recommendee_idx = ? and join = 0 WHERE recommender_idx = ?';
+                const UPDATEUSER = 'UPDATE USER SET point = point + 20 WHERE user_idx in (?, ?)';
+                let data;
+                
+                if(req.query.project_idx){
+                    UPDATERECOMMEND += ' and project_idx = ?';
+                    data = req.query.project_idx;
+                }
+
+                if(req.query.recruit_idx){ 
+                    UPDATERECOMMEND += ' and recruit_idx = ?';
+                    data = req.query.recruit_idx;
+                }
+
+                let updateRecommend = await pool.execute2(UPDATERECOMMEND, [ID, req.query.recommender_idx, data]);
+                
+                if(!updateRecommend && updateRecommend != undefined){
+                    res.status(405).send({
+                        message: "database failure"
+                    });
+                    return;
+                }
+
+                let updatePoint = await pool.execute2(UPDATEUSER, [ID, req.query.recommender_idx]);
+
+                if(!updatePoint && updatePoint != undefined){
+                    res.status(405).send({
+                        message: "database failure"
+                    });
+                    return;
+                }
+            }
 
             res.status(201).send({
                 message: "success"

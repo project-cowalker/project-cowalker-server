@@ -1,45 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('../../module/jwt.js');
-const recommend = require('../../model/schema/recommend');
+const pool = require('../../module/pool.js');
 
 /**  주소 = ip:3000/api/apply
-  *  기능 = 지원하기
+  *  기능 = 추천하기
   *  요청 =
-        1. introduce : 자기소개
-        2. portfolio_url : 포트폴리오 링크  
-        3. recruit_idx : 모집 idx
-        4. answers : 배열. 
-                     [
-                         { "answer" : "1234", "question_idx" : "1" },
-                         { "answer" : "2222", "question_idx" : "2" }
-                     ]
-
+        1. recommendee_idx : 추천 받는 사람 idx
+        2. recommender_idx : 추천인 idx  
+        3. reason : 추천 이유,
+        4. project_idx : 프로젝트 고유 idx,
+        5. recruit_idx : 모집 고유 idx
   */
 
 router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
 
     if(ID != -1){
-        const QUERY = 'INSERT INTO RECOMMEND(recommendee_idx, recommender_idx, recommend_at, recruit_idx, project_idx, join ) VALUES(?, ?, ?, ?, ?, ?)'
-        await recommend.create({
-            recommendee_idx : req.body.recommendee_idx, 
-            recommender_idx : req.body.recommender_idx,
-            recommend_at : req.body.recommend_at,
-            recruit_idx : req.body.recruit_idx, 
-            project_idx : req.body.project_idx,
-            join : 0
-        },
-        function(err, docs){
-            if(err) {
-                res.status(405).send({
-                    message: "fail"
-                });
-                return;
-            }
-            res.status(201).send({
-                message: "success"
+        const INSERTQUERY = 'INSERT INTO RECOMMEND(recommender_idx, reason, project_idx, recruit_idx, temp_url) VALUES(?, ?, ?, ?, ?)';
+        const UPDATEQUERY = 'UPDATE USER SET point = point + 10 where user_idx = ?';
+        let insertRecommend = await pool.execute2(INSERTQUERY, [ID, req.body.reason, req.body.project_idx, req.body.recruit_idx, Date.now()]);
+        let pointUpdate = await pool.execute2(UPDATEQUERY, ID);
+        
+        if(!insertRecommend && insertRecommend != undefined 
+            && !pointUpdate && pointUpdate != undefined){
+            res.status(405).send({
+                message: "database failure"
             });
+            return;
+        }
+        res.status(201).send({
+            message: "success"
         });
     } else {
         res.status(401).send({
