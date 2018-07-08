@@ -31,13 +31,19 @@ router.use('/', question);
 const mypage = require('./controller/mypage/mypage_routes');
 router.use('/', mypage);
 
+//alarm
+const alarm = require('./controller/alarm/alarm_routes');
+router.use('/', alarm);
+
 //home
 const home = require('./controller/home/home_routes');
 router.use('/', home);
 
-
+//recommend
 const recommend = require('./controller/recommend/recommend_routes');
 router.use('/', recommend);
 
+const share = require('./controller/share/share_routes');
+router.use('/', share);
 
 module.exports = router;

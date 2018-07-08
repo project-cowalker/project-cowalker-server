@@ -17,20 +17,36 @@ router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
 
     if(ID != -1){
+        if(!req.body.project_idx && !req.body.recruit_idx){
+            res.status(400).send({
+                message: "please check data"
+            });
+        }
+
         const INSERTQUERY = 'INSERT INTO RECOMMEND(recommender_idx, reason, project_idx, recruit_idx) VALUES(?, ?, ?, ?)';
         const UPDATEQUERY = 'UPDATE USER SET point = point + 10 where user_idx = ?';
-        let insertRecommend = await pool.execute2(QUERY, [ID, req.body.reason, req.body.project_idx, req.body.recruit_idx]);
-        let pointUpdate = await pool.execute2(UPDATEQUERY, ID);
         
-        if(!insertRecommend && insertRecommend != undefined 
-            && !pointUpdate && pointUpdate != undefined){
+        let insertRecommend = await pool.execute2(INSERTQUERY, [ID, req.body.reason, req.body.project_idx, req.body.recruit_idx]);
+        
+        if(!insertRecommend && insertRecommend != undefined){
             res.status(405).send({
                 message: "database failure"
             });
             return;
         }
+
+        let pointUpdate = await pool.execute2(UPDATEQUERY, ID);
+        
+        if(!pointUpdate && pointUpdate != undefined){
+            res.status(405).send({
+                message: "database failure"
+            });
+            return;
+        }
+
         res.status(201).send({
-            message: "success"
+            message: "success",
+            recommend_idx : insertRecommend.insertId
         });
     } else {
         res.status(401).send({

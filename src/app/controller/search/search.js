@@ -45,8 +45,6 @@ router.get('/', function (req, res) {
         });
     }
 
-    
-
     //탐색
     if (aim == area && area == position && position == department && department == keyword && keyword == undefined) {
         project.find({}, async function (err, result) {

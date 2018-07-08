@@ -29,7 +29,7 @@ router.get('/:project_id', function (req, res) {
             //console.log(result);
             for (let i = 0; i < result.length; i++) {
                 let project_user_id = result[0].user_idx;
-                let select_project = await db.execute2(QUERY, ID);
+                let select_project = await db.execute2(QUERY, project_user_id);
                 var temp = {
                     title: "",
                     summary: "",
@@ -38,7 +38,9 @@ router.get('/:project_id', function (req, res) {
                     aim: "",
                     explain: "",
                     create_at: "",
-                    img_url: []
+                    img_url: [],
+                    project_user_name : "",
+                    project_user_profile_url : ""
                 }
                 temp.title = result[i].title;
                 temp.summary = result[i].summary;
@@ -48,6 +50,8 @@ router.get('/:project_id', function (req, res) {
                 temp.explain = result[i].explain;
                 temp.create_at = result[i].create_at;
                 temp.img_url = result[i].img_url;
+                temp.project_user_name = select_project[i].name;
+                temp.project_user_profile_url = select_project[i].profile_url;
                 data.push(temp);
                 // 개설자 
                 if(ID!=-1){
@@ -80,15 +84,16 @@ router.get('/:project_id', function (req, res) {
                                     }
                                 }
                             }
-                            //
+                        });
+                    }
+                    //
+                            if(data){
                             res.status(201).send({
                                 message: "success",
                                 result: data,
                                 user: user_status
                             });
-                            return;
-                        });
-                    }
+                        }
                 }else{
                     user_status = "참여하기";
 

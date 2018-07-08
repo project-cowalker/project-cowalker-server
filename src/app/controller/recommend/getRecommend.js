@@ -1,21 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('../../module/jwt.js');
-const apply = require('../../model/schema/apply');
+const pool = require('../../module/pool.js');
 
 router.get('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
 
     if(ID != -1){
-        if(err) {
+        const SELECTRECOMMEND = 'SELECT recommend_idx, recommender_idx, reason, project_idx, recruit_idx '
+                          + 'FROM RECOMMEND WHERE recommend_idx = ?';
+        let selectRecommend = await pool.execute2(SELECTRECOMMEND, req.query.recommend_idx);
+
+        if(!selectRecommend) {
             res.status(405).send({
                 message: "fail"
             });
             return;
         }
-        res.status(201).send({
-            message: "success"
-        });
+        res.json(selectRecommend);
     } else {
         res.status(401).send({
             message: "access denied"
