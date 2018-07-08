@@ -16,14 +16,13 @@ router.get('/', async(req, res) => {
         //console.log(result);
         
         var temp = {
-          profile_url: "",
-          background_url: "",
-          user_email: "",
-          name : "",
-          point: "",
-          position: "",
-          introduce: "",
-          portfolio_url: "",
+          profile_url: "",//
+          background_url: "",//
+          name : "",//
+          position: "",//
+          introduce: "",//
+          introduce_detail: "",
+          portfolio_url: "",//
           aim : "",
           department : "",
           area  : ""
@@ -31,11 +30,10 @@ router.get('/', async(req, res) => {
 
         temp.profile_url = result[0].profile_url,
         temp.background_url = result[0].background_url,
-        temp.email = result[0].email,
         temp.name = result[0].name,
-        temp.point = result[0].point,
         temp.position = result[0].position,
         temp.introduce = result[0].introduce,
+        temp.introduce_detail = result[0].introduce_detail,
         temp.portfolio_url = result[0].portfolio_url,
         temp.aim = result[0].aim,
         temp.department = result[0].department,
@@ -80,14 +78,13 @@ router.get('/:user_idx', async(req, res) => {
       let result = await db.execute2(profile, user_idx);
 
       var temp = {
-          profile_url: "",
-          background_url: "",
-          user_email: "",
-          name : "",
-          point: "",
-          position: "",
-          introduce: "",
-          portfolio_url: "",
+          profile_url: "",//
+          background_url: "",//
+          name : "",//
+          position: "",//
+          introduce: "",//
+          introduce_detail: "",
+          portfolio_url: "",//
           aim : "",
           department : "",
           area  : ""
@@ -95,11 +92,10 @@ router.get('/:user_idx', async(req, res) => {
 
         temp.profile_url = result[0].profile_url,
         temp.background_url = result[0].background_url,
-        temp.email = result[0].email,
         temp.name = result[0].name,
-        temp.point = result[0].point,
         temp.position = result[0].position,
         temp.introduce = result[0].introduce,
+        temp.introduce_detail = result[0].introduce_detail,
         temp.portfolio_url = result[0].portfolio_url,
         temp.aim = result[0].aim,
         temp.department = result[0].department,
