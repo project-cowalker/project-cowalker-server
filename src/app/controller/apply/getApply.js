@@ -38,7 +38,7 @@ var findApply = function(applies){
     return resultObj;
 }
 
-//참여 및 지원한 프로젝트 모아보기
+/*//참여 및 지원한 프로젝트 모아보기
 router.get('/', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
 
@@ -56,7 +56,7 @@ router.get('/', async(req, res) => {
         });
     }
 });
-
+*/
 
 // 지원한 프로젝트 모아보기
 router.get('/apply_project', async(req, res) => {
@@ -85,9 +85,14 @@ router.get('/apply_project', async(req, res) => {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }
-                res.json(projects);
+                var resultObj = {
+                    message : "success",
+                    result : ''
+                }
+                resultObj.result = projects;
+                res.json(resultObj);
 
-                return
+                return;
             });
         });
     } else {
@@ -124,7 +129,12 @@ router.get('/enter_project', async(req, res) => {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }
-                res.json(projects);
+                var resultObj = {
+                    message : "success",
+                    result : ''
+                }
+                resultObj.result = projects;
+                res.json(resultObj);
 
                 return;
             });
@@ -136,12 +146,39 @@ router.get('/enter_project', async(req, res) => {
     }
 });
 
-
 //지원 멤버 보기
 router.get('/:recruit_idx', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
 
     if(ID != -1){
+        await apply.find({
+            _id : req.params.apply_idx
+        }, function(err, applies){
+            recruit.find({
+                _id : applies[0].recruit_idx
+            }, function(err, recruits){
+                if(ID == recruits[0].user_idx)
+                    project_manage = true;
+
+                if(project_manage){
+                    apply.find({
+                        _id : req.params.apply_idx,
+                        applicant_idx : req.params.applicant_idx
+                    }, async function(err, applies){  
+                        if(err){
+                            return res.status(405).send({
+                                message: "database failure"
+                            });
+                        }
+                        res.json(findApply(applies));
+                    });
+                } else {
+                    res.status(400).send({
+                        message: "fail (no rights)"
+                    });
+                }
+            });
+        });
         apply.find({
             'recruit_idx' : req.params.recruit_idx,
             'join' : 0
@@ -150,16 +187,34 @@ router.get('/:recruit_idx', async(req, res) => {
                 console.log(err);
                 return res.status(500).send({message: 'database failure'});
             }
-            var array = new Array();
+            if(ID == recruits[0].user_idx)
+                project_manage = true;
+            
+            if(project_manage){
+                var array = new Array();
 
-            for(let i = 0; i < applies.length; i++){
-                let obj = {
-                    applicant_idx : ''
+                for(let i = 0; i < applies.length; i++){
+                    let obj = {
+                        applicant_idx : ''
+                    }
+                    obj.applicant_idx = applies[i].applicant_idx;
+                    array.push(obj);
                 }
-                obj.applicant_idx = applies[i].applicant_idx;
-                array.push(obj);
+                var resultObj = {
+                    message : "success",
+                    result : ''
+                }
+                resultObj.result = array;
+                res.json(resultObj);
+
+                return;
             }
-            res.json(array);
+
+            res.status(400).send({
+                message: "fail (no rights)"
+            });
+
+            return;
         });
     } else {
         res.status(401).send({
@@ -179,8 +234,14 @@ router.get('/:apply_idx', async(req, res) => {
         }, function(err, applies){
             if(err) 
                 return res.stauts(500).send({message: 'database failure'});
+            var resultObj = {
+                message : "success",
+                result : ''
+            }
+            resultObj.result = findApply(applies);
+            res.json(resultObj);
 
-            res.json(findApply(applies));
+            return;
         });
     } else {
         res.status(401).send({
@@ -214,7 +275,14 @@ router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
                                 message: "database failure"
                             });
                         }
-                        res.json(findApply(applies));
+                        var resultObj = {
+                            message : "success",
+                            result : ''
+                        }
+                        resultObj.result = findApply(applies);
+                        res.json(resultObj);
+
+                        return;
                     });
                 } else {
                     res.status(400).send({
