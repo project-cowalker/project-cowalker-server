@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var pointSchema = new Schema({
     user_idx : String,
-    contents : String,
+    log : String,
     create_at :  {type : Date, default : Date.now},
 },{
     versionKey : false
