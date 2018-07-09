@@ -1,21 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('../../module/jwt.js');
-const db = require('../../module/pool.js');
 const myIntro = require('../../model/schema/myIntro');
 
-router.delete('/', async (req, res, next) => {
-    const ID = jwt.verify(req.headers.authorization);
-    const QUERY = 'select * from USER where user_idx = ?';
-    
-    let data = new Array();
-    
-    if (ID != -1) {
-        
-    }
-
-    res.status(401).send({
-        message: "access denied"
+router.delete('/:intro_id', async (req, res, next) => {
+   
+    myIntro.remove({_id: req.params.intro_id }, function(err, output){
+        if(err){
+			res.status(405).json({ error: "database failure" });
+		}else{
+        	if(output.n === 0){
+	        res.status(400).send({
+		       	error : "Bad Request"
+		    });
+		    } else{
+		    	res.status(201).send({
+			       	message : "delete success"
+			    });
+		    }
+	    }
     });
 
 });

@@ -1,22 +1,47 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('../../module/jwt.js');
-const db = require('../../module/pool.js');
 const myIntro = require('../../model/schema/myIntro');
+const upload = require('../../../config/multer');
 
-router.post('/', async (req, res, next) => {
+var multiUpload = upload.fields([{ name: 'img' }]);
+
+router.post('/', multiUpload, async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
-    const QUERY = 'select * from USER where user_idx = ?';
-    
+
     let data = new Array();
-    
-    if (ID != -1) {
-        
+
+    let tempArray = [];
+    if (req.files.img) {
+        for (let i = 0; i < req.files.img.length; i++) {
+            tempArray.push(req.files.img[i].location);
+        }
     }
 
-    res.status(401).send({
-        message: "access denied"
-    });
+    if (ID != -1) {
+        myIntro.create({
+            user_idx: ID,
+            intro_contents: req.body.contents,
+            intro_img_url: tempArray
+        }, function (err, result) {
+            if (err) {
+                return res.status(405).send({
+                    message: 'save myIntro fail'
+                });
+            } else {
+                return res.status(201).send({
+                    message: 'save myIntro success'
+                });
+            }
+        });
+    }
+    else {
+        res.status(401).send({
+            message: "access denied"
+        });
+        return;
+    }
+
 
 });
 
