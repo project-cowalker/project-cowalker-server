@@ -56,6 +56,7 @@ router.get('/:project_id', function (req, res) {
                 temp.project_user_name = select_project[i].name;
                 temp.project_user_profile_url = select_project[i].profile_url;
                 data.push(temp);
+
             }
 
                 // 개설자 

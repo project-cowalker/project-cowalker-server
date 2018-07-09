@@ -48,7 +48,26 @@ router.get('/', async(req, res) => {
                 console.log(err);
                 return res.status(500).send({message: 'database failure'});
             }
+            console.log(applies[0]._id);
+            console.log(applies[1]._id.project_idx);
+            console.log(applies.length);
+
+            var data = new Array();
+
+            for(let i=0;i<applies.length;i++){
+                console.log(applies[i]._id.project_idx);
+
+                data.push(applies[i]._id.project_idx);
+
+            }
+
+            console.log(data);
+
+
+
+            
             res.json(applies);
+
         });
     } else {
         res.status(401).send({  
@@ -61,7 +80,7 @@ router.get('/', async(req, res) => {
 // 지원한 프로젝트 모아보기
 router.get('/apply_project', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
-
+    console.log(ID);
     if(ID != -1){
         apply.find({
             'applicant_idx' : ID,
@@ -85,7 +104,11 @@ router.get('/apply_project', async(req, res) => {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }
-                res.json(projects);
+
+                res.status(200).send({
+                    message:"success",
+                    result : projects
+                });
 
                 return
             });
@@ -124,7 +147,10 @@ router.get('/enter_project', async(req, res) => {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }
-                res.json(projects);
+                res.status(200).send({
+                    message:"success",
+                    result:projects
+                })
 
                 return;
             });
