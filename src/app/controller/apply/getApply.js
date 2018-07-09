@@ -80,7 +80,7 @@ router.get('/', async(req, res) => {
 // 지원한 프로젝트 모아보기
 router.get('/apply_project', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
-
+    console.log(ID);
     if(ID != -1){
         apply.find({
             'applicant_idx' : ID,
@@ -104,7 +104,11 @@ router.get('/apply_project', async(req, res) => {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }
-                res.json(projects);
+
+                res.status(200).send({
+                    message:"success",
+                    result : projects
+                });
 
                 return
             });
@@ -143,7 +147,10 @@ router.get('/enter_project', async(req, res) => {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }
-                res.json(projects);
+                res.status(200).send({
+                    message:"success",
+                    result:projects
+                })
 
                 return;
             });
