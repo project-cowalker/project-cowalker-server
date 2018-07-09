@@ -4,6 +4,7 @@ const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
 const recruit = require('../../model/schema/recruit');
 const pool = require('../../module/pool.js');
+const alarm = require('../../module/alaram.js');
 
 /**  주소 = ip:3000/api/apply/:apply_idx/:applicant_idx/join/:join
   *  기능 = 팀멤버 추가
@@ -14,12 +15,10 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
     var project_manage = false;
     
     if(ID != -1){
-        apply.find({
-            _id : req.params.apply_idx
-        }, function(err, applies){
-            recruit.find({
-                _id : applies[0].recruit_idx
-            }, function(err, recruits){
+        apply.find({ _id : req.params.apply_idx }, function(err, applies){
+
+            recruit.find({ _id : applies[0].recruit_idx }, function(err, recruits){
+
                 if(ID == recruits[0].user_idx)
                     project_manage = true;
 
@@ -31,9 +30,10 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                 apply.update({
                     _id : req.params.apply_idx,
                     applicant_idx : req.params.applicant_idx
-                },{
-                    join : req.params.join
-                }, async function(err, applies){  
+                },{ join : req.params.join }, 
+
+                async function(err, applies){
+
                     if(err){
                         return res.status(405).send({
                             message: "database failure"
@@ -43,7 +43,10 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                     await apply.find({
                         _id : req.params.apply_idx,
                         applicant_idx : req.params.applicant_idx
-                    }, async function(err, appliesFind){  
+                    },
+
+                    async function(err, appliesFind){  
+
                         if(err){
                             return res.status(405).send({
                                 message: "database failure"
@@ -57,8 +60,14 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
 
                         if(req.params.join === 1){
                             data = await pool.execute2(QUERY, [project_idx, req.params.applicant_idx, position]);
+                            //project_idx, join, ID
+                            alarm.join(project_idx, 1, ID);
                         }
-                        
+                        else {
+                            //project_idx, join, ID
+                            alarm.join(project_idx, 2, ID);
+                        }
+
                         if(!data && data != undefined){
                             res.status(405).send({
                                 message: "database failure"
@@ -72,6 +81,7 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                 });
             });
         });
+
     } else {
         res.status(401).send({
             message: "access denied"
