@@ -90,7 +90,7 @@ router.get('/apply_project', async(req, res) => {
               console.log(err);
               return res.status(500).send({message: 'database failure'});
             }
-
+            
             var project_list = new Array();
             
             for(let i = 0 ; i < applies.length; i++){

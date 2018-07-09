@@ -11,7 +11,6 @@ var multiUpload = upload.fields([{
 router.put('/', multiUpload, async (req, res, next) => {
 
     const ID = jwt.verify(req.headers.authorization);
-    console.log(ID);
 
     let tempArray = [];
     if (req.files.img) {
@@ -32,7 +31,6 @@ router.put('/', multiUpload, async (req, res, next) => {
                     message: 'update myIntro fail'
                 });
             } else {
-                console.log(result);
                 if (!result.n) return res.status(404).json({
                     error: 'intro not found'
                 });
