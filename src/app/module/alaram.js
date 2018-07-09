@@ -1,7 +1,6 @@
 const db = require('../module/pool.js');
 let alarm = require('../model/schema/alarm');
 let project = require('../model/schema/project');
-let apply = require('../model/schema/apply');
 
 /*
 알림 db 삽입
@@ -22,9 +21,9 @@ module.exports = {
 
     /**
      * [(지원멤버 이름) 님이 참여를 희망했습니다.]
-[축하합니다! [프로젝트 제목]의 참여 멤버가 되셨습니다.]
-[아쉽지만 [프로젝트 제목]의 참여 멤버가 되지 못하셨습니다.]
-     */
+    [축하합니다! [프로젝트 제목]의 참여 멤버가 되셨습니다.]
+    [아쉽지만 [프로젝트 제목]의 참여 멤버가 되지 못하셨습니다.]
+    */
 
     //내 프로젝트에 누군가 지원서를 작성했을 경우
     //추천자가 지원한 경우
