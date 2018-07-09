@@ -12,7 +12,6 @@ const pool = require('../../module/pool.js');
         2. portfolio_url : 포트폴리오 링크  
         3. recruit_idx : 모집 idx
         4. answers : 배열
-
   */
 
 router.post('/', async (req, res, next) => {

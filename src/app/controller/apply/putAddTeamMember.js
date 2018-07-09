@@ -4,7 +4,7 @@ const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
 const recruit = require('../../model/schema/recruit');
 const pool = require('../../module/pool.js');
-const alarm = require('../../module/alarm');
+const alarm = require('../../module/alarm.js');
 
 /**  주소 = ip:3000/api/apply/:apply_idx/:applicant_idx/join/:join
   *  기능 = 팀멤버 추가
@@ -39,7 +39,6 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                             message: "database failure"
                         });
                     }
-
                     await apply.find({
                         _id : req.params.apply_idx,
                         applicant_idx : req.params.applicant_idx
