@@ -26,7 +26,9 @@ module.exports = {
     */
 
     //내 프로젝트에 누군가 지원서를 작성했을 경우
+
     //추천자가 지원한 경우
+
     //모집idx, 프로젝트
     //alarm.apply(recruit_idx, ID);
     //프사 프로젝트 이름 프로젝트 idx 이름 시간
@@ -59,6 +61,7 @@ module.exports = {
 
     //타겟 : 프로젝트 개설자
     //추천인 이름, 추천 받은 사람 = 지원서 작성자
+    //추천id, 프로젝트id, 추천받은사람
     //[(추천인 이름) 님이 추천한 (추천멤버) 님이 참여를 희망했습니다.]
 
     recommendation: async (...args) => {
@@ -93,13 +96,18 @@ module.exports = {
         })
     },
 
+    //공유 없고
+    
+    //모집 공고 없고
+  
     //3. 내가 합격한경우, 불합격한 경우
-    //project_idx, ID
+    //project_idx, join, ID
     //1이 수락, 2가 거절
     //내 아이디, 프로젝트 아이디
     join: async (...args) => {
         const project_idx = args[0];
         const join = args[1];
+        const ID = args[2];
 
         await project.find({
             _id: project_idx
@@ -107,7 +115,6 @@ module.exports = {
             if (err) {
                 return -1;
             } else {
-                target = docs[0].user_idx;
                 project_name = docs[0].title;
                 //합격
                 if (join == 1) {
@@ -119,7 +126,7 @@ module.exports = {
                 }
                 alarm.create({
                     project_name : project_name,
-                    user_idx: target,
+                    user_idx: ID,
                     contents: msg
                 });
                 return;
