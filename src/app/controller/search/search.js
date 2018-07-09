@@ -15,38 +15,9 @@ router.get('/', function (req, res) {
     const department = req.query.department;
     const keyword = req.query.keyword;
 
-    let query = {
-        $or: []
-    };
-
-    if (aim != undefined) {
-        query.$or.push({
-            aim: aim
-        });
-    }
-    if (area != undefined) {
-        query.$or.push({
-            area: area
-        });
-    }
-    if (position != undefined) {
-        query.$or.push({
-            position: position
-        });
-    }
-    if (department != undefined) {
-        query.$or.push({
-            department: department
-        });
-    }
-    if (keyword != undefined) {
-        query.$or.push({
-            keyword: keyword
-        });
-    }
-
     //탐색
     if (aim == area && area == position && position == department && department == keyword && keyword == undefined) {
+        console.log("탐색");
         project.find({}, async function (err, result) {
             if (err) {
                 return res.status(405).send({
@@ -91,6 +62,49 @@ router.get('/', function (req, res) {
     }
     //검색
     else {
+
+        let query = {
+            $or: []
+        };
+    
+        if (aim != undefined) {
+            query.$or.push({
+                aim: aim
+            });
+        }
+        if (area != undefined) {
+            query.$or.push({
+                area: area
+            });
+        }
+        if (position != undefined) {
+            query.$or.push({
+                position: position
+            });
+        }
+        if (department != undefined) {
+            query.$or.push({
+                department: department
+            });
+        }
+        if (keyword != undefined) {
+            query.$or.push({
+                aim: keyword
+            });
+            query.$or.push({
+                area: keyword
+            });
+            query.$or.push({
+                department: keyword
+            });
+            query.$or.push({
+                position: keyword
+            });
+        }
+    
+        console.log(query);
+
+        console.log("검색");
         project.find(query, async function (err, result) {
             if (err) {
                 return res.status(405).send({

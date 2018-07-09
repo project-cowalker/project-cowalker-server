@@ -13,17 +13,15 @@ router.get('/:user_idx', async (req, res, next) => {
                 message: 'get myIntro fail'
             });
         }else {
-            for(i = 0; i < result.length; i++) {
-                let temp = {
-                    intro_idx : "",
-                    intro_contents : "",
-                    intro_img_url : ""
-                }
-                temp.intro_idx = result[i]._id;
-                temp.intro_contents = result[i].intro_contents;
-                temp.intro_img_url = result[i].intro_img_url;
-                data.push(temp);
+            let temp = {
+                intro_idx : "",
+                intro_contents : "",
+                intro_img_url : ""
             }
+            temp.intro_idx = result[0]._id;
+            temp.intro_contents = result[0].intro_contents;
+            temp.intro_img_url = result[0].intro_img_url;
+            data.push(temp);
             
             res.status(200).send({
                 message: "success",
@@ -44,17 +42,15 @@ router.get('/', async (req, res, next) => {
                 message: 'get myIntro fail'
             });
         }else {
-            for(i = 0; i < result.length; i++) {
-                let temp = {
-                    intro_idx : "",
-                    intro_contents : "",
-                    intro_img_url : ""
-                }
-                temp.intro_idx = result[i]._id;
-                temp.intro_contents = result[i].intro_contents;
-                temp.intro_img_url = result[i].intro_img_url;
-                data.push(temp);
+            let temp = {
+                intro_idx : "",
+                intro_contents : "",
+                intro_img_url : ""
             }
+            temp.intro_idx = result[0]._id;
+            temp.intro_contents = result[0].intro_contents;
+            temp.intro_img_url = result[0].intro_img_url;
+            data.push(temp);
             
             res.status(200).send({
                 message: "success",
