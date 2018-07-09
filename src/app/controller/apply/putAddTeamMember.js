@@ -39,7 +39,6 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                             message: "database failure"
                         });
                     }
-
                     await apply.find({
                         _id : req.params.apply_idx,
                         applicant_idx : req.params.applicant_idx

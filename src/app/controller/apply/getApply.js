@@ -63,9 +63,6 @@ router.get('/', async(req, res) => {
 
             console.log(data);
 
-
-
-            
             res.json(applies);
 
         });
@@ -227,6 +224,7 @@ router.get('/:recruit_idx', async(req, res) => {
     }
 });
 
+/*
 //지원서 보기(참여자)
 router.get('/:apply_idx', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
@@ -253,6 +251,7 @@ router.get('/:apply_idx', async(req, res) => {
         });
     }
 });
+*/
 
 //지원서 보기(개설자)
 router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
