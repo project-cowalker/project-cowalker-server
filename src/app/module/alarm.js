@@ -26,7 +26,9 @@ module.exports = {
     */
 
     //내 프로젝트에 누군가 지원서를 작성했을 경우
+
     //추천자가 지원한 경우
+
     //모집idx, 프로젝트
     //alarm.apply(recruit_idx, ID);
     //프사 프로젝트 이름 프로젝트 idx 이름 시간
@@ -94,6 +96,10 @@ module.exports = {
         })
     },
 
+    //공유 없고
+    
+    //모집 공고 없고
+  
     //3. 내가 합격한경우, 불합격한 경우
     //project_idx, join, ID
     //1이 수락, 2가 거절

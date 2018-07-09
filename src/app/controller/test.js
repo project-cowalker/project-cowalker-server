@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const alarm = require('../module/alaram.js');
+const alarm = require('../module/alarm.js');
 const point = require('../module/point.js');
 
 router.get('/', async (req, res, next) => {
