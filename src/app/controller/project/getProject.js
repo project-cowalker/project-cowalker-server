@@ -14,7 +14,7 @@ router.get('/:project_id', function (req, res) {
 
     const QUERY = 'select * from USER where user_idx = ?';
     var data = new Array();
-    let user_status = "null";
+    var user_status = "null";
 
 
     project.find({
@@ -27,9 +27,11 @@ router.get('/:project_id', function (req, res) {
         } else {
             //let project_user_id = result[0].user_idx;
             //console.log(result);
+            let project_user_id = result[0].user_idx;
+            let select_project = await db.execute2(QUERY, project_user_id);
+            console.log(result);
             for (let i = 0; i < result.length; i++) {
-                let project_user_id = result[0].user_idx;
-                let select_project = await db.execute2(QUERY, project_user_id);
+                
                 var temp = {
                     title: "",
                     summary: "",
@@ -42,6 +44,7 @@ router.get('/:project_id', function (req, res) {
                     project_user_name : "",
                     project_user_profile_url : ""
                 }
+
                 temp.title = result[i].title;
                 temp.summary = result[i].summary;
                 temp.area = result[i].area;
@@ -53,25 +56,28 @@ router.get('/:project_id', function (req, res) {
                 temp.project_user_name = select_project[i].name;
                 temp.project_user_profile_url = select_project[i].profile_url;
                 data.push(temp);
-                
+
+            }
+
                 // 개설자 
                 if(ID!=-1){
                     if (ID == project_user_id) {
                         user_status = "개설자";
                     } else {
                         apply.find({
-                            project_idx : project_idx
+                            project_idx : project_idx,
+                            applicant_idx : ID
                         }, async function (err, obj) {
                             if (err) {
                                 res.status(405).send({
                                     message: "database failure"
                                 });
                             } else {
-                                console.log(obj[0]);
+                                //console.log(obj[0]);
                                 // case 2-1: 개설자가 아니고, 팀에 아직 지원도 아직 안한 상태 ->"지원자"
-                                if (!obj) {
+                                if (!obj[0]) {
                                     user_status = "참여하기";
-                                console.log(user_status);
+                                //console.log(user_status);
                                 } else {
                                     // case 2-1: 개설자가 아닌데, 팀에 지원은 했고, 아직 수락/거절을 못받은 경우 -> "참여 대기"
                                     if (obj[0].join == 0) {
@@ -85,16 +91,23 @@ router.get('/:project_id', function (req, res) {
                                     }
                                 }
                             }
+                            if(data){
+                                res.status(201).send({
+                                    message: "success",
+                                    result: data,
+                                    user: user_status
+                                });
+                            }
+
                         });
                     }
-                    //
-                            if(data){
-                            res.status(201).send({
-                                message: "success",
-                                result: data,
-                                user: user_status
-                            });
-                        }
+                    // if(data){
+                    //     res.status(201).send({
+                    //         message: "success",
+                    //         result: data,
+                    //         user: user_status
+                    //     });
+                    // }
                 }else{
                     user_status = "참여하기";
 
@@ -103,9 +116,8 @@ router.get('/:project_id', function (req, res) {
                         result: data,
                         user: user_status
                     });
-                    return;
                 }
-            }
+            
         }
     });
 
