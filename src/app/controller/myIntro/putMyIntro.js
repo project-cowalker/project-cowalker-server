@@ -17,7 +17,7 @@ router.put('/:intro_id', multiUpload, async (req, res, next) => {
     myIntro.update(
         { _id: req.params.intro_id },
         {
-            $set: req.body,
+            intro_contents: req.body.contents,
             intro_img_url: tempArray
         }, function (err, result) {
             if (err) {
