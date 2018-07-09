@@ -47,8 +47,13 @@ router.use('/', recommend);
 const share = require('./controller/share/share_routes');
 router.use('/', share);
 
-//share
+//myIntro
+const myIntro = require('./controller/myIntro/myIntro_routes');
+router.use('/', myIntro);
+
+//test
 const test = require('./controller/test');
 router.use('/test', test);
+
 
 module.exports = router;
