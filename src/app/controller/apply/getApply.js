@@ -66,7 +66,7 @@ router.get('/', async(req, res) => {
 
 
             
-            // res.json(applies);
+            res.json(applies);
 
         });
     } else {
