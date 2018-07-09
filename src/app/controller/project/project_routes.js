@@ -17,4 +17,7 @@ router.use('/project', deleteProject);
 const updateProject = require('./updateProject');
 router.use('/project', updateProject);
 
+const project_team = require('./project_team');
+router.use('/project/team', project_team);
+
 module.exports = router;

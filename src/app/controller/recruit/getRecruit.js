@@ -79,7 +79,7 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
               message:"database failure"
           });
         }else{
-          
+            console.log("result: " + result[0]);
 
           for(let i = 0; i < result.length; i++) {
             
@@ -118,6 +118,7 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
 
           if(result[0].user_idx==ID){     // case 1: 개발자인 경우, 
             btnResult="개발자";
+            console.log(btnResult);
           }else{                          // case 2: 개발자가 아닌경우 
           // 4. recruit_idx로 apply테이블 접근해서 application_idx를 가지고 와야해 
           apply.find({
@@ -149,22 +150,15 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
 
 
           }
-          res.status(200).send({
+          
+          });
+        }
+        
+        res.status(200).send({
             message:"success",
             result: data,
             btnResult: btnResult
-          });
-        });
-      }
-
-        // // team 테이블 접근해서 member_idx찾자.
-        // const QUERY = 'select member_idx from TEAM where member_idx=? and project_idx=?';
-        // let selected = await db.execute3(QUERY,ID,project_idx);
-        // console.log(selected);
-        // else if(selected[0]){        // 두번 째 조건 : 0이 있으면, "참여완료"버튼 
-        //   resultresult="참여완료";
-        // }
-     
+        });    
       }
     });
 

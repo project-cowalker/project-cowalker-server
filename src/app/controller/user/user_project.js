@@ -8,7 +8,7 @@ let project = require('../../model/schema/project');
 router.get('/', async function (req, res) {
 
 	const ID = jwt.verify(req.headers.authorization);
-    console.log('ID : ',ID);
+    //console.log('ID : ',ID);
 
     const QUERY = 'select * from USER where user_idx = ?';
     var data = new Array();
