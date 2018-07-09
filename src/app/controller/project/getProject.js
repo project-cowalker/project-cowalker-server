@@ -11,6 +11,7 @@ router.get('/:project_id', function (req, res) {
     let project_idx = req.params.project_id;
     const ID = jwt.verify(req.headers.authorization);
     const QUERY = 'select * from USER where user_idx = ?';
+
     var data = new Array();
     var user_status = "null";
 
@@ -59,6 +60,12 @@ router.get('/:project_id', function (req, res) {
 
                     if (ID == project_user_id) {
                         user_status = "개설자";
+                        res.status(201).send({
+                            message: "success",
+                            result: data,
+                            user: user_status
+                        });
+                        return;
                     } else {
 
                         apply.find({
