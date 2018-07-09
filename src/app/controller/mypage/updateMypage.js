@@ -6,7 +6,7 @@ const upload = require('../../../config/multer');
 
 var multiUpload = upload.fields([{ name: 'profile_img'},{ name : 'background_img' }]);
 
-router.put('/',multiUpload,async(req, res, next) => {
+router.put('/', multiUpload, async(req, res, next) => {
 	const ID = jwt.verify(req.headers.authorization);
     let readProfile = 'select * from USER where user_idx = ?';
     let updateProfile = 'update USER set ? where user_idx = ?';
@@ -19,9 +19,6 @@ router.put('/',multiUpload,async(req, res, next) => {
             });
         else{
         	let data = {
-        		profile_url : req.files.profile_img ? req.files.profile_img[0].location : profile[0].profile_url,
-        		background_url : req.files.background_img ? req.files.background_img[0].location : profile[0].background_url,
-        		name : req.body.name ? req.body.name : profile[0].name,
         		position : req.body.position ? req.body.position : profile[0].position,
         		introduce : req.body.introduce ? req.body.introduce : profile[0].introduce,
         		portfolio_url : req.body.portfolio_url ? req.body.portfolio_url : profile[0].portfolio_url,

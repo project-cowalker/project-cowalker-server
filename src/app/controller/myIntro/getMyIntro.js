@@ -14,11 +14,9 @@ router.get('/:user_idx', async (req, res, next) => {
             });
         }else {
             let temp = {
-                intro_idx : "",
                 intro_contents : "",
                 intro_img_url : ""
             }
-            temp.intro_idx = result[0]._id;
             temp.intro_contents = result[0].intro_contents;
             temp.intro_img_url = result[0].intro_img_url;
             data.push(temp);
