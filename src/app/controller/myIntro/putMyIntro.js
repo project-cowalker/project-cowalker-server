@@ -1,22 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('../../module/jwt.js');
-const db = require('../../module/pool.js');
-const myIntro = require('../../model/schema/myIntro');
+const upload = require('../../../config/multer');
+let myIntro = require('../../model/schema/myIntro');
 
-router.put('/', async (req, res, next) => {
-    const ID = jwt.verify(req.headers.authorization);
-    const QUERY = 'select * from USER where user_idx = ?';
-    
-    let data = new Array();
-    
-    if (ID != -1) {
-        
+var multiUpload = upload.fields([{ name: 'img' }]);
+
+router.put('/:intro_id', multiUpload, async (req, res, next) => {
+
+    let tempArray = [];
+    if (req.files.img) {
+        for (let i = 0; i < req.files.img.length; i++) {
+            tempArray.push(req.files.img[i].location);
+        }
     }
 
-    res.status(401).send({
-        message: "access denied"
-    });
+    myIntro.update(
+        { _id: req.params.intro_id },
+        {
+            $set: req.body,
+            intro_img_url: tempArray
+        }, function (err, result) {
+            if (err) {
+                return res.status(405).send({
+                    message: 'update myIntro fail'
+                });
+            } else {
+                console.log(result);
+                if (!result.n) return res.status(404).json({ error: 'intro not found' });
+                return res.status(201).send({
+                    message: 'update myIntro success'
+                });
+            }
+        });
 
 });
 
