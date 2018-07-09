@@ -17,7 +17,14 @@ router.get('/', async (req, res, next) => {
             });
             return;
         }
-        res.json(selectRecommend);
+        var resultObj = {
+            message : "success",
+            result : ''
+        }
+        resultObj.result = selectRecommend;
+        res.json(resultObj);
+
+        return;
     } else {
         res.status(401).send({
             message: "access denied"
