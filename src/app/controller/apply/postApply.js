@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
-const alarm = require('../../module/alaram.js');
+const alarm = require('../../module/alarm.js');
 const pool = require('../../module/pool.js');
 
 /**  주소 = ip:3000/api/apply
@@ -12,7 +12,6 @@ const pool = require('../../module/pool.js');
         2. portfolio_url : 포트폴리오 링크  
         3. recruit_idx : 모집 idx
         4. answers : 배열
-
   */
 
 router.post('/', async (req, res, next) => {
