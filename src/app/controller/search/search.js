@@ -58,7 +58,7 @@ router.get('/', function (req, res) {
             }
         }).sort({
             create_at: -1
-        }).limit(10);
+        }).limit(12);
     }
     //검색
     else {
@@ -87,23 +87,19 @@ router.get('/', function (req, res) {
                 department: department
             });
         }
+
         if (keyword != undefined) {
             query.$or.push({
-                aim: keyword
+                title: keyword
             });
             query.$or.push({
-                area: keyword
+                summary: keyword
             });
             query.$or.push({
-                department: keyword
-            });
-            query.$or.push({
-                position: keyword
+                explain: keyword
             });
         }
-    
         console.log(query);
-
         console.log("검색");
         project.find(query, async function (err, result) {
             if (err) {
@@ -145,7 +141,7 @@ router.get('/', function (req, res) {
             }
         }).sort({
             create_at: -1
-        }).limit(10);
+        }).limit(12);
     }
 
 });
