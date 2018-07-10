@@ -4,6 +4,7 @@ const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
 let project = require('../../model/schema/project');
 let apply = require('../../model/schema/apply');
+let getProjectRes = require('../../model/res/getProjectRes');
 
 //프로젝트 id값으로 검색하기
 router.get('/:project_id', function (req, res) {
@@ -28,9 +29,10 @@ router.get('/:project_id', function (req, res) {
 
                 let project_user_id = result[0].user_idx;
                 let select_project = await db.execute2(QUERY, project_user_id);
-
+                
                 for (let i = 0; i < result.length; i++) {
                     var temp = {
+                        user_idx : "",
                         title: "",
                         summary: "",
                         area: "",
@@ -42,6 +44,7 @@ router.get('/:project_id', function (req, res) {
                         project_user_name: "",
                         project_user_profile_url: ""
                     }
+                    temp.user_idx = result[0].user_idx;
                     temp.title = result[i].title;
                     temp.summary = result[i].summary;
                     temp.area = result[i].area;
