@@ -4,6 +4,7 @@ const jwt = require('../../module/jwt.js');
 const apply = require('../../model/schema/apply');
 const recruit = require('../../model/schema/recruit');
 const project = require('../../model/schema/project');
+const pool = require('../../module/pool.js');
 
 //applies, applyAnswer을 하나의 response data로 합침
 var findApply = function(applies){
@@ -217,11 +218,12 @@ router.get('/:recruit_idx', async(req, res) => {
             //2. (1)에서 조회한 결과를 바탕으로 recruit 스키마에서 해당 공고의 개설자가 누구인지 find
             recruit.find({
                 _id : applies[0].recruit_idx
-            }, function(err, recruits){
+            }, async function(err, recruits){
                 if(err) {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }   
+                const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
 
                 if(ID == recruits[0].user_idx)
                     project_manage = true;
@@ -231,9 +233,19 @@ router.get('/:recruit_idx', async(req, res) => {
 
                     for(let i = 0; i < applies.length; i++){
                         let obj = {
-                            applicant_idx : ''
+                            applicant_idx : '',
+                            profile_url : '',
+                            user_name : '',
+                            position : ''
                         }
+
+                        let userQuery = await pool.execute2(QUERY, applies[i].applicant_idx);
+                        
                         obj.applicant_idx = applies[i].applicant_idx;
+                        obj.profile_url = userQuery[0].profile_url;
+                        obj.user_name = userQuery[0].name;
+                        obj.position = userQuery[0].position;
+
                         array.push(obj);
                     }
                     var resultObj = {
