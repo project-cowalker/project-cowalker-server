@@ -38,7 +38,7 @@ var findApply = function(applies){
     return resultObj;
 }
 
-//참여 및 지원한 프로젝트 모아보기
+/*//참여 및 지원한 프로젝트 모아보기
 router.get('/', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
 
@@ -63,9 +63,6 @@ router.get('/', async(req, res) => {
 
             console.log(data);
 
-
-
-            
             res.json(applies);
 
         });
@@ -75,7 +72,7 @@ router.get('/', async(req, res) => {
         });
     }
 });
-
+*/
 
 // 지원한 프로젝트 모아보기
 router.get('/apply_project', async(req, res) => {
@@ -83,14 +80,14 @@ router.get('/apply_project', async(req, res) => {
     console.log(ID);
     if(ID != -1){
         apply.find({
-            'applicant_idx' : ID,
+            'applicant_idx' : 34,
             'join' : 0
         }, function(err, applies){
             if(err) {
               console.log(err);
               return res.status(500).send({message: 'database failure'});
             }
-
+            
             var project_list = new Array();
             
             for(let i = 0 ; i < applies.length; i++){
@@ -104,13 +101,14 @@ router.get('/apply_project', async(req, res) => {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }
+                var resultObj = {
+                    message : "success",
+                    result : ''
+                }
+                resultObj.result = projects;
+                res.json(resultObj);
 
-                res.status(200).send({
-                    message:"success",
-                    result : projects
-                });
-
-                return
+                return;
             });
         });
     } else {
@@ -147,10 +145,12 @@ router.get('/enter_project', async(req, res) => {
                     console.log(err);
                     return res.status(500).send({message: 'database failure'});
                 }
-                res.status(200).send({
-                    message:"success",
-                    result:projects
-                })
+                var resultObj = {
+                    message : "success",
+                    result : ''
+                }
+                resultObj.result = projects;
+                res.json(resultObj);
 
                 return;
             });
@@ -162,38 +162,69 @@ router.get('/enter_project', async(req, res) => {
     }
 });
 
-
 //지원 멤버 보기
 router.get('/:recruit_idx', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
-
+    var project_manage = false;
     if(ID != -1){
+        // 1. apply 스키마에서 recruit_idx값이 일치하는 컬럼 중 지원 대기중인 상태의 컬럼 find 
         apply.find({
-            'recruit_idx' : req.params.recruit_idx,
-            'join' : 0
+            'recruit_idx' : req.params.recruit_idx, 
+            'join' : 0  //참여 대기 상태
         }, function(err, applies){
             if(err) {
                 console.log(err);
                 return res.status(500).send({message: 'database failure'});
             }
-            var array = new Array();
+            //2. (1)에서 조회한 결과를 바탕으로 recruit 스키마에서 해당 공고의 개설자가 누구인지 find
+            recruit.find({
+                _id : applies[0].recruit_idx
+            }, function(err, recruits){
+                if(err) {
+                    console.log(err);
+                    return res.status(500).send({message: 'database failure'});
+                }   
 
-            for(let i = 0; i < applies.length; i++){
-                let obj = {
-                    applicant_idx : ''
+                if(ID == recruits[0].user_idx)
+                    project_manage = true;
+                //3. 개설자이면 조회 가능
+                if(project_manage){
+                    var array = new Array();
+
+                    for(let i = 0; i < applies.length; i++){
+                        let obj = {
+                            applicant_idx : ''
+                        }
+                        obj.applicant_idx = applies[i].applicant_idx;
+                        array.push(obj);
+                    }
+                    var resultObj = {
+                        message : "success",
+                        result : ''
+                    }
+                    resultObj.result = array;
+                    res.json(resultObj);
+
+                    return;
+                } else { 
+                    //4. 개설자가 아니면 권한 없음
+                    res.status(400).send({
+                        message: "fail (no rights)"
+                    });
                 }
-                obj.applicant_idx = applies[i].applicant_idx;
-                array.push(obj);
-            }
-            res.json(array);
+            });
+
+            return;
         });
     } else {
+        //토큰이 유효하지 않을 경우
         res.status(401).send({
             message: "access denied"
         });
     }
 });
 
+/*
 //지원서 보기(참여자)
 router.get('/:apply_idx', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
@@ -205,8 +236,14 @@ router.get('/:apply_idx', async(req, res) => {
         }, function(err, applies){
             if(err) 
                 return res.stauts(500).send({message: 'database failure'});
+            var resultObj = {
+                message : "success",
+                result : ''
+            }
+            resultObj.result = findApply(applies);
+            res.json(resultObj);
 
-            res.json(findApply(applies));
+            return;
         });
     } else {
         res.status(401).send({
@@ -214,6 +251,7 @@ router.get('/:apply_idx', async(req, res) => {
         });
     }
 });
+*/
 
 //지원서 보기(개설자)
 router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
@@ -221,15 +259,29 @@ router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
     var project_manage = false;
 
     if(ID != -1){
+        // 1. apply 스키마에서 recruit_idx값이 일치하는 컬럼 중 지원 대기중인 상태의 컬럼 find 
         await apply.find({
             _id : req.params.apply_idx
         }, function(err, applies){
+            if(err){
+                return res.status(405).send({
+                    message: "database failure"
+                });
+            }
+            //2. (1)에서 조회한 결과를 바탕으로 recruit 스키마에서 해당 공고의 개설자가 누구인지 find
             recruit.find({
                 _id : applies[0].recruit_idx
             }, function(err, recruits){
+                if(err){
+                    return res.status(405).send({
+                        message: "database failure"
+                    });
+                }
+
                 if(ID == recruits[0].user_idx)
                     project_manage = true;
 
+                //3. 개설자이면 조회 가능
                 if(project_manage){
                     apply.find({
                         _id : req.params.apply_idx,
@@ -240,12 +292,22 @@ router.get('/:apply_idx/:applicant_idx', async (req, res, next) => {
                                 message: "database failure"
                             });
                         }
-                        res.json(findApply(applies));
+                        var resultObj = {
+                            message : "success",
+                            result : ''
+                        }
+                        resultObj.result = findApply(applies);
+                        res.json(resultObj);
+
+                        return;
                     });
                 } else {
+                    //4. 개설자가 아니면 권한 없음
                     res.status(400).send({
                         message: "fail (no rights)"
                     });
+
+                    return;
                 }
             });
         });
