@@ -162,6 +162,44 @@ router.get('/enter_project', async(req, res) => {
     }
 });
 
+//참여한 프로젝트 모아보기
+router.get('/enter_project/:user_idx', async(req, res) => {
+    const ID = jwt.verify(req.headers.authorization);
+
+    apply.find({
+        'applicant_idx' : req.params.user_idx,
+        'join' : 1
+    }, function(err, applies){
+        if(err) {
+          console.log(err);
+          return res.status(500).send({message: 'database failure'});
+        }
+
+        var project_list = new Array();
+        
+        for(let i = 0 ; i < applies.length; i++){
+            project_list.push(applies[i].project_idx);
+        }
+
+        project.find({
+          '_id' : {  $in :  project_list  }
+        }, function(err, projects){
+            if(err) {
+                console.log(err);
+                return res.status(500).send({message: 'database failure'});
+            }
+            var resultObj = {
+                message : "success",
+                result : ''
+            }
+            resultObj.result = projects;
+            res.json(resultObj);
+
+            return;
+        });
+    });
+});
+
 //지원 멤버 보기
 router.get('/:recruit_idx', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
