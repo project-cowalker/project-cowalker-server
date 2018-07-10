@@ -7,9 +7,15 @@ const hash = require('../../module/hash.js');
 router.post('/', async(req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
-    
+    const fcm_token = req.body.fcm_token;
+
+    console.log(fcm_token);
+
     const QUERY = 'select * from USER where email = ?';
     let data = await db.execute2(QUERY, email);
+
+    const updateFcm = 'update USER set ? where email = ?';
+    //let fcm = await db.execute2(updateFcm,email);
 
     //아이디가 존재하지 않을 경우
     if (data.length == 0) {
@@ -24,6 +30,8 @@ router.post('/', async(req, res, next) => {
         });
     } else {
         const token = jwt.sign(data[0].user_idx);
+        let fcm = await db.execute2(updateFcm,email);
+
         res.status(200).send({
             message: 'login success',
             token: token
