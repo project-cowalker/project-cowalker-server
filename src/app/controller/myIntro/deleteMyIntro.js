@@ -3,7 +3,7 @@ const router = express.Router();
 const myIntro = require('../../model/schema/myIntro');
 
 router.delete('/:intro_id', async (req, res, next) => {
-   
+
     myIntro.remove({_id: req.params.intro_id }, function(err, output){
         if(err){
 			res.status(405).json({ error: "database failure" });
