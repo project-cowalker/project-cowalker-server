@@ -9,8 +9,6 @@ var multiUpload = upload.fields([{ name: 'img' }]);
 router.post('/', multiUpload, async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
 
-    let data = new Array();
-
     let tempArray = [];
     if (req.files.img) {
         for (let i = 0; i < req.files.img.length; i++) {
@@ -18,30 +16,49 @@ router.post('/', multiUpload, async (req, res, next) => {
         }
     }
 
+    let result;
+
     if (ID != -1) {
-        myIntro.create({
-            user_idx: ID,
-            intro_contents: req.body.contents,
-            intro_img_url: tempArray
-        }, function (err, result) {
-            if (err) {
-                return res.status(405).send({
-                    message: 'save myIntro fail'
-                });
-            } else {
-                return res.status(201).send({
-                    message: 'save myIntro success'
-                });
-            }
-        });
-    }
-    else {
-        res.status(401).send({
+        try {
+            result = await myIntro.create({
+                user_idx: ID,
+                intro_contents: req.body.contents,
+                intro_img_url: tempArray
+            });
+        } catch (err) {
+            return res.status(405).send({
+                message: 'save myIntro fail'
+            });
+        }
+
+    } else {
+        return res.status(401).send({
             message: "access denied"
         });
-        return;
     }
 
+    // if (ID != -1) {
+    //     myIntro.create({
+    //         user_idx: ID,
+    //         intro_contents: req.body.contents,
+    //         intro_img_url: tempArray
+    //     }, function (err, result) {
+    //         if (err) {
+    //             return res.status(405).send({
+    //                 message: 'save myIntro fail'
+    //             });
+    //         } else {
+    //             return res.status(201).send({
+    //                 message: 'save myIntro success'
+    //             });
+    //         }
+    //     });
+    // }
+    // else {
+    //     return res.status(401).send({
+    //         message: "access denied"
+    //     });
+    // }
 
 });
 
