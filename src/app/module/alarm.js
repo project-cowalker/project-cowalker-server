@@ -1,4 +1,5 @@
 const db = require('../module/pool.js');
+const fcmmodule = require('../module/fcm.js');
 let alarm = require('../model/schema/alarm');
 let project = require('../model/schema/project');
 let recruit = require('../model/schema/recruit');
@@ -56,6 +57,10 @@ module.exports = {
                     project_name: project_name,
                     contents: msg
                 });
+
+                // 푸시 알람 추가
+                    fcmmodule.fcmSend(target,project_name,msg);
+
                 return;
             }
         })
@@ -99,6 +104,10 @@ module.exports = {
                         project_name: project_name,
                         contents: msg
                     });
+
+                    // 푸시 알람 추가
+                    fcmmodule.fcmSend(target,project_name,msg);
+
                     return;
                 }
             });
@@ -127,6 +136,9 @@ module.exports = {
                             project_name: project_name,
                             contents: msg
                         });
+
+                        // 푸시 알람 추가
+                        fcmmodule.fcmSend(target,project_name,msg);
                         return;
                     });
                 }
