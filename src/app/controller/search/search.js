@@ -16,7 +16,7 @@ router.get('/', function (req, res) {
     const keyword = req.query.keyword;
 
     //탐색
-    if (aim == area && area == position && position == department && department == keyword && keyword == undefined) {
+    if ((aim == undefined || aim == '') && (area == undefined || area == '') && (position == undefined || position == '') && (department == undefined || department == '') && (keyword == undefined || keyword == '')) {
         console.log("탐색");
         project.find({}, async function (err, result) {
             if (err) {
@@ -60,35 +60,57 @@ router.get('/', function (req, res) {
             create_at: -1
         }).limit(12);
     }
+
+
     //검색
     else {
 
         let query = {
             $or: []
         };
-    
-        if (aim != undefined) {
+
+        if (aim != undefined && aim != '') {
             query.$or.push({
                 aim: aim
             });
         }
-        if (area != undefined) {
+        if (area != undefined && area != '') {
             query.$or.push({
                 area: area
             });
         }
-        if (position != undefined) {
+        if (position != undefined && position != '') {
             query.$or.push({
                 position: position
             });
         }
-        if (department != undefined) {
+        if (department != undefined && department != '') {
             query.$or.push({
                 department: department
             });
         }
 
-        if (keyword != undefined) {
+        if (keyword != undefined && keyword != '') {
+            if (position == undefined || position == '') {
+                query.$or.push({
+                    position: keyword
+                });
+            }
+            if (area == undefined || area == '') {
+                query.$or.push({
+                    area: keyword
+                });
+            }
+            if (aim == undefined || aim == '') {
+                query.$or.push({
+                    aim: keyword
+                });
+            }
+            if (department == undefined || department == '') {
+                query.$or.push({
+                    department: keyword
+                });
+            }
             query.$or.push({
                 title: keyword
             });
