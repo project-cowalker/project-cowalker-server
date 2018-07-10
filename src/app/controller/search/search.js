@@ -122,6 +122,7 @@ router.get('/', async (req, res, next) => {
                     message: "get project fail"
                 });
             } else {
+                console.log( projectSearchRes.res(result));
                 return res.status(200).send({
                     message: "success",
                     result: projectSearchRes.res(result)
