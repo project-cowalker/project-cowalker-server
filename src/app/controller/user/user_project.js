@@ -36,4 +36,26 @@ router.get('/', async function (req, res) {
 
 });
 
+router.get('/:user_idx', async function (req, res) {
+
+    const ID = jwt.verify(req.headers.authorization);
+    const QUERY = 'select * from USER where user_idx = ?';
+
+    let result;
+
+    try {
+        result = await project.find({ user_idx: req.params.user_idx });
+    } catch (err) {
+        return res.status(405).send({
+            message: "get project fail"
+        });
+    }
+
+    return res.status(201).send({
+        message: "success",
+        result: userProjectRes.res(result)
+    });
+
+});
+
 module.exports = router;
