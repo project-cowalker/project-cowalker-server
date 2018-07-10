@@ -9,7 +9,7 @@ var multiUpload = upload.fields([{
 }]);
 
 router.put('/', multiUpload, async (req, res, next) => {
-
+    console.log(req.files);
     const ID = jwt.verify(req.headers.authorization);
 
     let tempArray = [];
@@ -18,6 +18,8 @@ router.put('/', multiUpload, async (req, res, next) => {
             tempArray.push(req.files.img[i].location);
         }
     }
+
+    console.log(tempArray);
 
     if (ID != -1) {
         myIntro.update({

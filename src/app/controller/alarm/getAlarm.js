@@ -1,46 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('../../module/jwt.js');
-
 const alarm = require('../../model/schema/alarm');
+let alarmRes = require('../../model/res/alarmRes');
 
 router.get('/', async (req, res, next) => {
-    const ID = jwt.verify(req.headers.authorization);
+    const ID = jwt.verify(req.headers.authorization);   
 
-    let data = new Array();
+    let result;
 
-    if (ID != -1) {
-        alarm.find({user_idx : ID}, async function(err, obj){
-            if(err){
-                return res.status(405).send({
-                    message: 'get alarm fail'
-                });
-            }else {
+    if(ID != -1) {
+        
+        try {
+            result = await alarm.find({user_idx : ID});
+        }catch(err) {
+            return res.status(405).send({
+                message: 'get alarm fail'
+            });
+        }
 
-                for(i = 0; i < obj.length; i++) {
-                    let temp = {
-                        project_name : "",
-                        contents : "",
-                        create_at : ""
-                    }
-                    temp.project_name = obj[i].project_name;
-                    temp.contents = obj[i].contents;
-                    temp.create_at = obj[i].create_at;
-                    data.push(temp);
-                }
-
-                res.status(200).send({
-                    message: 'get alarm success',
-                    result: data
-                });
-            }
+        return res.status(200).send({
+            message: 'get alarm success',
+            result: alarmRes.res(result)
         });
-        return; 
+        
+    }else {
+        return res.status(401).send({
+            message: "access denied"
+        });
     }
-
-    res.status(401).send({
-        message: "access denied"
-    });
 
 });
 

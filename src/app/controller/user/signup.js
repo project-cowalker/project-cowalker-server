@@ -38,7 +38,7 @@ router.post('/', async (req, res, next) => {
             message: 'please check email'
         });
     } else {
-        myIntro.create({
+        await myIntro.create({
             user_idx: inserted.insertId,
             intro_contents: "",
             intro_img_url: []
