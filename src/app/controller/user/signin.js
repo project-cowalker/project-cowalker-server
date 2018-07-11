@@ -7,9 +7,11 @@ const hash = require('../../module/hash.js');
 router.post('/', async(req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
+
     const fcm_token = req.body.fcm_token;
 
     //console.log(fcm_token);
+
 
     const QUERY = 'select * from USER where email = ?';
     let data = await db.execute2(QUERY, email);
@@ -24,6 +26,7 @@ router.post('/', async(req, res, next) => {
             message: 'wrong email'
         });
     }
+    
     //비밀번호가 틀릴 경우
     else if (password != hash.decoding(data[0].password)) {
         res.status(401).send({
