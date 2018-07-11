@@ -31,7 +31,6 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                     _id : req.params.apply_idx,
                     applicant_idx : req.params.applicant_idx
                 },{ join : req.params.join }, async function(err, applies){
-
                     if(err){
                         return res.status(405).send({
                             message: "database failure"
@@ -42,7 +41,6 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                         _id : req.params.apply_idx,
                         applicant_idx : req.params.applicant_idx
                     }, async function(err, appliesFind){  
-
                         if(err){
                             return res.status(405).send({
                                 message: "database failure"
@@ -57,6 +55,7 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
 
                         if(req.params.join === 1){
                             data = await pool.execute2(QUERY, [project_idx, req.params.applicant_idx, position]);
+                            console.log(data);
                             //project_idx, join, ID
                             alarm.join(project_idx, 1, ID);
                         }
