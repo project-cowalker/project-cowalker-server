@@ -53,7 +53,7 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                         const QUERY = 'INSERT INTO TEAM (project_idx, member_idx, position) VALUES (?, ?, ?)';
                         var data;
 
-                        if(req.params.join === 1){
+                        if(req.params.join == 1){
                             data = await pool.execute2(QUERY, [project_idx, req.params.applicant_idx, position]);
                             console.log(data);
                             //project_idx, join, ID
