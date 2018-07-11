@@ -36,6 +36,7 @@ router.get('/', async (req, res, next) => {
     console.log(dday.dday(result[0].create_at));
     console.log(time.elapsedTime(result[0].create_at));
 
+    
 
     res.status(201).send();
 });

@@ -24,6 +24,7 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
     } else {
 
       for(let i = 0; i < result.length; i++) {
+        
         let temp = {
           recruit_idx: "",
           position : "",
@@ -56,7 +57,9 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
           });
       }        
   });
-  });
+});
+
+
 
 //프로젝트 선택 -> 모집 공고 세부 조회
 router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
