@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const alarm = require('../module/alarm.js');
 const point = require('../module/point.js');
+const dday = require('../module/dday');
+const time = require('../module/time');
+const project = require('../model/schema/project');
 
 router.get('/', async (req, res, next) => {
     console.log("내 프로젝트에 누군가 지원서 작성");
@@ -20,6 +23,21 @@ router.get('/', async (req, res, next) => {
     //console.log("합류");
     //console.log("추천 합류");
     //console.log("공유 합류");
+
+    let result;
+
+    try {
+        result = await project.find({}).sort({ create_at: -1 }).limit(12);
+    } catch (err) {
+        console.log(err);
+    }
+
+    console.log(result[0].create_at);
+    console.log(dday.dday(result[0].create_at));
+    console.log(time.elapsedTime(result[0].create_at));
+
+    
+
     res.status(201).send();
 });
 
