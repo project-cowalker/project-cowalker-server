@@ -26,7 +26,6 @@ router.get('/:project_id', function (req, res) {
                     message: "get project fail"
                 });
             } else {
-
                 let project_user_id = result[0].user_idx;
                 let select_project = await db.execute2(QUERY, project_user_id);
                 
@@ -60,7 +59,6 @@ router.get('/:project_id', function (req, res) {
 
                 // 개설자 
                 if (ID != -1) {
-
                     if (ID == project_user_id) {
                         user_status = "개설자";
                         res.status(201).send({

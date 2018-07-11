@@ -205,6 +205,7 @@ router.get('/enter_project/:user_idx', async(req, res) => {
 router.get('/:recruit_idx', async(req, res) => {
     const ID = jwt.verify(req.headers.authorization);
     var project_manage = false;
+
     if(ID != -1){
         // 1. apply 스키마에서 recruit_idx값이 일치하는 컬럼 중 지원 대기중인 상태의 컬럼 find 
         apply.find({
@@ -248,6 +249,7 @@ router.get('/:recruit_idx', async(req, res) => {
 
                         array.push(obj);
                     }
+                    
                     var resultObj = {
                         message : "success",
                         result : ''
