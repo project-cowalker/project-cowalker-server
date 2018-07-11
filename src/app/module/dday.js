@@ -1,4 +1,4 @@
-const recruit = require('../../model/schema/recruit');
+const recruit = require('../model/schema/recruit');
 
 var now = new Date();
 
@@ -15,7 +15,7 @@ module.exports = {
         	calculateDday='+'+calculateDday;
       	}
 
-      	return calculateDay;
+      	return calculateDday;
 	}
 
 };
