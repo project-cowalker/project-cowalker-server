@@ -10,13 +10,14 @@ module.exports = {
     let user_idx=args[0];
     let projet_name=args[1];
     let msg=args[2];
-
+    console.log(user_idx);
     // fcm_token 조회
     let fcmTokenQuery='select fcm_token from USER where user_idx=?'
     let fcmTokenResult= await db.execute2(fcmTokenQuery, user_idx);
 
      /** 발송할 Push 메시지 내용 */
     var client_token = fcmTokenResult[0].fcm_token;
+    console.log(client_token);
 
     var push_data = {
       
@@ -28,14 +29,19 @@ module.exports = {
         title: project_name,
         body: msg,
         sound: "default",
-        click_action: "FCM_PLUGIN_ACTIVITY",
-        icon: "fcm_push_icon"
+        click_action: "FCM_PLUGIN_ACTIVITY"
       },
 
     // 메시지 중요도
     priority: "high",
     // App 패키지 이름
     restricted_package_name: "com.jemcom.cowalker",
+    
+    // data:{
+    //   title: project_name,
+    //   body:msg
+    // }
+
   };
 
   fcm.send(push_data, function(err, response) {

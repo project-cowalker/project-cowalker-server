@@ -58,11 +58,13 @@ module.exports = {
                     contents: msg
                 });
 
-                // 푸시 알람 추가
-                    fcmmodule.fcmSend(target,project_name,msg);
-
+               // 푸시 알람 추가
+                // fcmmodule.fcmSend(target,project_name,msg);
                 return;
             }
+
+
+
         })
     },
 
@@ -106,7 +108,7 @@ module.exports = {
                     });
 
                     // 푸시 알람 추가
-                    fcmmodule.fcmSend(target,project_name,msg);
+                    // fcmmodule.fcmSend(target,project_name,msg);
 
                     return;
                 }
@@ -138,7 +140,7 @@ module.exports = {
                         });
 
                         // 푸시 알람 추가
-                        fcmmodule.fcmSend(target,project_name,msg);
+                        // fcmmodule.fcmSend(target,project_name,msg);
                         return;
                     });
                 }
@@ -179,6 +181,9 @@ module.exports = {
                     user_idx: ID,
                     contents: msg
                 });
+                
+                // 푸시 알람 추가
+                // fcmmodule.fcmSend(target,project_name,msg);
                 return;
             }
         })
