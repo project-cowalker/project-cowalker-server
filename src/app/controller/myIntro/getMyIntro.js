@@ -29,12 +29,11 @@ router.get('/', async (req, res, next) => {
 
     try {
         result = await myIntro.find({user_idx : ID});
-    }catch(err) {
+    } catch(err) {
         return res.status(405).send({
             message: 'get myIntro fail'
         });
     }
-
     return res.status(200).send({
         message: "success",
         result: introRes.res(result)
