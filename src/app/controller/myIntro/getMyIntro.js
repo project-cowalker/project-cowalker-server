@@ -17,7 +17,7 @@ router.get('/:user_idx', async (req, res, next) => {
     }
     return res.status(200).send({
         message: "success",
-        result: introRes.res(result),
+        result: introRes.res(result)
     });
 
 });
@@ -37,7 +37,7 @@ router.get('/', async (req, res, next) => {
 
     return res.status(200).send({
         message: "success",
-        result: introRes.res(result),
+        result: introRes.res(result)
     });
 });
 
