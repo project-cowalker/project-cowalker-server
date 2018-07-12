@@ -1,6 +1,21 @@
 #!/usr/bin/env node
 
 /**
+ * Https
+ */
+
+const fs = require('fs');
+const https = require('https');
+
+let options = {
+  key : fs.readFileSync('../src/config/key.pem'),
+  cert : fs.readFileSync('../src/config/cert.pem')
+}
+
+const secureServer = https.createServer(options, app);
+secureServer.listen(8443);
+
+/**
  * Module dependencies.
  */
 
