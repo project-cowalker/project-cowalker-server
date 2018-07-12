@@ -156,6 +156,7 @@ router.post('/', async (req, res, next) => {
                     return;
                 }
             }
+            
             if(req.query.recommend_idx === undefined 
                 && (req.query[0] === undefined || req.query.sharer_idx)){
                 alarm.apply(applies.project_idx, ID);

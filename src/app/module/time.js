@@ -3,10 +3,8 @@ const recruit = require('../model/schema/recruit');
 var now = new Date();
 
 module.exports = {
-
-	elapsedTime : async(...args) => {
-      const create = args[0];
-
+	elapsedTime : function(createTime) {
+      const create = createTime;
       
       var msecPerMinute = 1000 * 60;
       var msecPerHour = msecPerMinute * 60;
@@ -31,10 +29,8 @@ module.exports = {
           }
         }
       }
-      
 
-      console.log(calculateTime);
-
+      //console.log(elapsed);
     	return elapsed;
 	}
 };
