@@ -16,6 +16,11 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
     
     if(ID != -1){
         apply.find({ _id : req.params.apply_idx }, function(err, applies){
+            if(applies.length === 0){
+                return res.status(200).send({
+                    message: "no list"
+                });
+            };
 
             recruit.find({ _id : applies[0].recruit_idx }, function(err, recruits){
 
