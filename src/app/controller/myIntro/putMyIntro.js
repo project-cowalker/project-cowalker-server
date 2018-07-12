@@ -19,23 +19,37 @@ router.put('/', multiUpload, async (req, res, next) => {
         }
     }
 
-    console.log(tempArray);
-
     if (ID != -1) {
-        myIntro.update({
+        myIntro.find({
             user_idx: ID
-        }, {
-            intro_contents: req.body.contents,
-            intro_img_url: tempArray
-        }, function (err, result) {
-            if (err) {
-                return res.status(405).send({
-                    message: 'update myIntro fail'
+        }, function (err, myIntros) {
+            if(myIntros.length > 0 ){
+                myIntro.update({
+                    user_idx: ID
+                }, {
+                    intro_contents: req.body.contents,
+                    intro_img_url: tempArray
+                }, function (err, result) {
+                    if (err) {
+                        return res.status(405).send({
+                            message: 'update myIntro fail'
+                        });
+                    } else {
+                        if (!result.n) return res.status(404).json({
+                            error: 'intro not found'
+                        });
+                        return res.status(201).send({
+                            message: 'update myIntro success'
+                        });
+                    }
                 });
             } else {
-                if (!result.n) return res.status(404).json({
-                    error: 'intro not found'
+                myIntro.create({
+                    user_idx: ID,
+                    intro_contents: req.body.contents,
+                    intro_img_url: tempArray
                 });
+
                 return res.status(201).send({
                     message: 'update myIntro success'
                 });
