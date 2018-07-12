@@ -54,6 +54,7 @@ router.get('/:project_id', function (req, res) {
                     temp.img_url = result[i].img_url;
                     temp.project_user_name = select_project[i].name;
                     temp.project_user_profile_url = select_project[i].profile_url;
+
                     data.push(temp);
                 }
 
@@ -61,6 +62,7 @@ router.get('/:project_id', function (req, res) {
                 if (ID != -1) {
                     if (ID == project_user_id) {
                         user_status = "개설자";
+
                         res.status(201).send({
                             message: "success",
                             result: data,
@@ -68,15 +70,13 @@ router.get('/:project_id', function (req, res) {
                         });
                         return;
                     } else {
-
                         apply.find({
                                 project_idx: project_idx,
                                 applicant_idx: ID
                             },
-
                             function (err, obj) {
-
                                 if (err) {
+                                    console.log(err);
                                     res.status(405).send({
                                         message: "database failure"
                                     });
@@ -87,6 +87,7 @@ router.get('/:project_id', function (req, res) {
                                         user_status = "참여하기";
                                         console.log(user_status);
                                     } else {
+                                        console.log(obj[0].join);
                                         // case 2-1: 개설자가 아닌데, 팀에 지원은 했고, 아직 수락/거절을 못받은 경우 -> "참여 대기"
                                         if (obj[0].join == 0) {
                                             user_status = "참여대기";
@@ -106,9 +107,7 @@ router.get('/:project_id', function (req, res) {
                                     });
 
                                 }
-
-                            });
-
+                            }).sort({'recruit_at' : -1});
                     }
 
                 } else {
