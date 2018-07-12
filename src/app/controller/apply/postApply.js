@@ -63,6 +63,13 @@ router.post('/', async (req, res, next) => {
                     return;
                 }
 
+                if(!req.query.project_idx || !req.query.recruit_idx){
+                    res.status(400).send({
+                        message: "please check data"
+                    });
+                    return;
+                }
+
                 let UPDATERECOMMEND = 'UPDATE RECOMMEND SET recommendee_idx = ?, status = true '
                                     + 'WHERE recommend_idx = ? and project_idx = ? and recruit_idx = ?';
                 const UPDATEUSER = 'UPDATE USER SET point = point + 20 WHERE user_idx in (?, ?)';
@@ -79,12 +86,10 @@ router.post('/', async (req, res, next) => {
 
                 //(4) 추천을 통한 지원서가 처음 작성되면 지원자 정보 insert
                 //    status : (true = 지원 완료) || (false = 지원 대기)
-                console.log(req.query.recruit_idx);
-
                 let updateRecommend = await pool.execute2(UPDATERECOMMEND, 
                         [ID, req.query.recommend_idx, req.query.project_idx, req.query.recruit_idx]);
                 
-                if(!updateRecommend && updateRecommend != undefined){
+                if(!updateRecommend){
                     res.status(405).send({
                         message: "database failure"
                     });
@@ -104,7 +109,7 @@ router.post('/', async (req, res, next) => {
                 //(6) 추천자와 지원자에 대한 point 증가
                 let updatePoint = await pool.execute2(UPDATEUSER, [ID, selectRecommend[0].recommender_idx]);
 
-                if(!updatePoint && updatePoint != undefined){
+                if(!updatePoint){
                     res.status(405).send({
                         message: "database failure"
                     });
@@ -119,6 +124,13 @@ router.post('/', async (req, res, next) => {
                 let UPDATESHARE = 'UPDATE SHARE SET shared_idx = ?, status = true WHERE sharer_idx = ? and project_idx = ? and recruit_idx = ?';
                 const UPDATEUSER = 'UPDATE USER SET point = point + 20 WHERE user_idx in (?, ?)';
                 
+                if(!req.query.project_idx || !req.query.recruit_idx){
+                    res.status(400).send({
+                        message: "please check data"
+                    });
+                    return;
+                }
+
                 let data = {
                     project_idx : '',
                     recruit_idx : ''
@@ -136,7 +148,7 @@ router.post('/', async (req, res, next) => {
                         [ID, req.query.recommend_idx, req.query.project_idx, req.query.recruit_idx]);
 
                 
-                if(!updateShare && updateShare != undefined){
+                if(!updateShare){
                     res.status(405).send({
                         message: "database failure"
                     });
@@ -146,7 +158,7 @@ router.post('/', async (req, res, next) => {
                 //(3) 공유자와 지원자에 대한 point 증가
                 let updatePoint = await pool.execute2(UPDATEUSER, [ID, req.query.sharer_idx]);
 
-                if(!updatePoint && updatePoint != undefined){
+                if(!updatePoint){
                     res.status(405).send({
                         message: "database failure"
                     });
