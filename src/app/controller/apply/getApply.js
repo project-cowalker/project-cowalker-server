@@ -78,10 +78,10 @@ router.get('/', async(req, res) => {
 // 지원한 프로젝트 모아보기
 router.get('/apply_project', async (req, res) => {
     const ID = jwt.verify(req.headers.authorization);
-    console.log(ID);
+
     if (ID != -1) {
         apply.find({
-            'applicant_idx': 34,
+            'applicant_idx': ID,
             'join': 0
         }, function (err, applies) {
             if (err) {
@@ -235,7 +235,6 @@ router.get('/:recruit_idx', async (req, res) => {
                     message: 'database failure'
                 });
             }
-            console.log(applies[0]);
             if(applies.length === 0)
                 return res.status(200).send({
                     message: "no list"
