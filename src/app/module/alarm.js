@@ -167,7 +167,6 @@ module.exports = {
             if (err) {
                 return -1;
             } else {
-                console.log(docs);
                 let project_name = docs[0].title;
                 //합격
                 if (join == 1) {
@@ -184,7 +183,7 @@ module.exports = {
                 });
                 
                 // 푸시 알람 추가
-                // fcmmodule.fcmSend(target,project_name,msg);
+                fcmmodule.fcmSend(target,project_name,msg);
                 return;
             }
         })
