@@ -29,7 +29,7 @@ router.get('/', async (req, res, next) => {
     try {
         result = await project.find({}).sort({ create_at: -1 }).limit(12);
     } catch (err) {
-        console.log(err);
+        console.log(err);   
     }
 
     console.log(result[0].create_at);
