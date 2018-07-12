@@ -63,30 +63,26 @@ router.post('/', async (req, res, next) => {
                     return;
                 }
 
-                let UPDATERECOMMEND = 'UPDATE RECOMMEND SET recommendee_idx = ?, status = true WHERE recommend_idx = ? and project_idx = ? ';
+                let UPDATERECOMMEND = 'UPDATE RECOMMEND SET recommendee_idx = ?, status = true '
+                                    + 'WHERE recommend_idx = ? and project_idx = ? and recruit_idx = ?';
                 const UPDATEUSER = 'UPDATE USER SET point = point + 20 WHERE user_idx in (?, ?)';
                 
-                let data = {};
-                data.project_idx = req.query.project_idx;
+                let data = {
+                    project_idx : '',
+                    recruit_idx : ''
+                };
 
-                let updateRecommend;
+                data.project_idx = req.query.project_idx;
+                data.recruit_idx = req.query.recruit_idx;
 
                 //(3) - 2. 모집 공고를 추천한 경우 
 
                 //(4) 추천을 통한 지원서가 처음 작성되면 지원자 정보 insert
                 //    status : (true = 지원 완료) || (false = 지원 대기)
-                console.log(req.query.project_idx);
+                console.log(req.query.recruit_idx);
 
-                if(req.query.recruit_idx != undefined){ 
-                    UPDATERECOMMEND += 'and recruit_idx = ?';
-                    data.recruit_idx = req.query.recruit_idx;
-
-                    updateRecommend = await pool.execute2(UPDATERECOMMEND, 
+                let updateRecommend = await pool.execute2(UPDATERECOMMEND, 
                         [ID, req.query.recommend_idx, req.query.project_idx, req.query.recruit_idx]);
-                } else {
-                    updateRecommend = await pool.execute2(UPDATERECOMMEND, 
-                        [ID, req.query.recommend_idx, req.query.project_idx]);
-                }
                 
                 if(!updateRecommend && updateRecommend != undefined){
                     res.status(405).send({
@@ -120,32 +116,25 @@ router.post('/', async (req, res, next) => {
 
             //2. 공유해서 지원할 경우
             if(req.query.sharer_idx){
-                let UPDATESHARE = 'UPDATE SHARE SET shared_idx = ?, status = true WHERE sharer_idx = ? and project_idx = ?';
+                let UPDATESHARE = 'UPDATE SHARE SET shared_idx = ?, status = true WHERE sharer_idx = ? and project_idx = ? and recruit_idx = ?';
                 const UPDATEUSER = 'UPDATE USER SET point = point + 20 WHERE user_idx in (?, ?)';
                 
-                let data = {};
-                data.project_idx = req.query.project_idx;
+                let data = {
+                    project_idx : '',
+                    recruit_idx : ''
+                };
 
-                let updateShare;
-                
+                data.project_idx = req.query.project_idx;
+                data.recruit_idx = req.query.recruit_idx;
+
                 //(1) - 1. 모집 공고를 공유한 경우
 
                 //(2) 공유를 통한 지원서가 작성되면 지원자 정보 insert
                 //    status : (true = 지원 완료) || (false = 지원 대기)
-                if(req.query.recruit_idx){ 
-                    UPDATERECOMMEND += ' and recruit_idx = ?';
-                    data.recruit_idx = req.query.recruit_idx;
 
-                    updateShare = await pool.execute2(UPDATESHARE, 
-                        [ID, req.query.recommend_idx, req.query.project_idx, data]);
-                } else {
-                //(1) - 2. 프로젝트 공유를 한 경우
-                    updateShare = await pool.execute2(UPDATESHARE, 
-                        [ID, req.query.recommend_idx, req.query.project_idx]);
-                }
+                let updateShare = await pool.execute2(UPDATESHARE, 
+                        [ID, req.query.recommend_idx, req.query.project_idx, req.query.recruit_idx]);
 
-                //(2) 공유를 통한 지원서가 작성되면 지원자 정보 insert
-                //    status : (true = 지원 완료) || (false = 지원 대기)
                 
                 if(!updateShare && updateShare != undefined){
                     res.status(405).send({

@@ -80,24 +80,19 @@ module.exports = {
         let user = await db.execute2(QUERY, applicant_idx);
         let temp = await db.execute2(QUERY1, recommend_idx);
 
-        let selectQuery;        
         let target;
-        let projectQuery;
 
         let project_idx = insertData.project_idx;
 
         console.log(insertData);
 
         //1. 프로젝트를 추천한 경우
-        if(!insertData.recruit_idx){
-            selectQuery = "SELECT * FROM RECOMMEND WHERE project_idx = ? ";
-            projectQuery = await db.execute2(selectQuery, insertData.project_idx);
-        } else {
-            selectQuery += "and recruit_idx = ?";
-            projectQuery = await db.execute2(selectQuery, insertData.project_idx, insertData.recruit_idx);
-        }
+        let selectQuery = "SELECT * FROM RECOMMEND WHERE project_idx = ? and recruit_idx = ?";
+        let projectQuery = await db.execute2(selectQuery, insertData.project_idx, insertData.recruit_idx);
+        
         if(!projectQuery)
             return -1;
+        
         let recommender = await db.execute2(QUERY, projectQuery[0].recommender_idx);
 
         await project.find({
