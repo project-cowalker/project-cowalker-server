@@ -53,7 +53,7 @@ router.get('/:partner_idx', async (req, res, next) => {
                     result: data
                 });
             }
-        });
+        }).sort({'create_at' : -1});
         return; 
     }
 
