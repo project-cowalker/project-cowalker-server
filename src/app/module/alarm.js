@@ -58,8 +58,8 @@ module.exports = {
                     contents: msg
                 });
 
-               // 푸시 알람 추가
-                // fcmmodule.fcmSend(target,project_name,msg);
+                // 푸시 알람 추가
+                fcmmodule.fcmSend(target,project_name,msg);
                 return;
             }
 
@@ -74,78 +74,54 @@ module.exports = {
     //[(추천인 이름) 님이 추천한 (추천멤버) 님이 참여를 희망했습니다.]
     recommendation: async (...args) => {
         const recommend_idx = args[0];
-        const idxName = args[1];
-        const idxData = args[2];
-        const applicant_idx = args[3];
+        const insertData = args[1];
+        const applicant_idx = args[2];
 
         let user = await db.execute2(QUERY, applicant_idx);
         let temp = await db.execute2(QUERY1, recommend_idx);
 
         let selectQuery;        
         let target;
+        let projectQuery;
+
+        let project_idx = insertData.project_idx;
+
+        console.log(insertData);
 
         //1. 프로젝트를 추천한 경우
-        if(idxName === "project_idx"){
-            selectQuery = "SELECT * FROM RECOMMEND WHERE project_idx = ?"
-            
-            let project = await db.execute2(selectQuery, idxData);
-            let recommender = await db.execute2(QUERY, project[0].recommender_idx);
-
-            await project.find({
-                _id: idxData
-            }, function (err, projects) {
-                if (err) {
-                    return -1;
-                } else {
-                    target = projects[0].user_idx;
-                    project_name = projects[0].title;
-                    let msg = recommender[0].name + "님이 추천한 " + user[0].name + "님이 참여를 희망했습니다.";
-
-                    alarm.create({
-                        user_idx: target,
-                        project_name: project_name,
-                        contents: msg
-                    });
-
-                    // 푸시 알람 추가
-                    // fcmmodule.fcmSend(target,project_name,msg);
-
-                    return;
-                }
-            });
+        if(!insertData.recruit_idx){
+            selectQuery = "SELECT * FROM RECOMMEND WHERE project_idx = ? ";
+            projectQuery = await db.execute2(selectQuery, insertData.project_idx);
         } else {
-            //2. 모집 공고를 추천한 경우
-            selectQuery = "SELECT * FROM RECOMMEND WHERE recruit_idx = ?";
-
-            let recruitData = await db.execute2(selectQuery, idxData);
-            let recommender = await db.execute2(QUERY, recruitData[0].recommender_idx);
-
-            await recruit.find({
-                _id: idxData
-            }, async function (err, recruits) {
-                if (err) {
-                    return -1;
-                } else {
-                    await project.find({
-                        _id : recruits[0].project_idx
-                    }, function(err, projects) {
-                        target = projects[0].user_idx;
-                        project_name = projects[0].title;
-                        let msg = recommender[0].name + "님이 추천한 " + user[0].name + "님이 참여를 희망했습니다.";
-
-                        alarm.create({
-                            user_idx: target,
-                            project_name: project_name,
-                            contents: msg
-                        });
-
-                        // 푸시 알람 추가
-                        // fcmmodule.fcmSend(target,project_name,msg);
-                        return;
-                    });
-                }
-            });
+            selectQuery += "and recruit_idx = ?";
+            projectQuery = await db.execute2(selectQuery, insertData.project_idx, insertData.recruit_idx);
         }
+        if(!projectQuery)
+            return -1;
+        let recommender = await db.execute2(QUERY, projectQuery[0].recommender_idx);
+
+        await project.find({
+            _id: project_idx
+        }, function (err, projects) {
+            if (err) {
+                return -1;
+            } else {
+                target = projects[0].user_idx;
+                project_name = projects[0].title;
+                let msg = recommender[0].name + "님이 추천한 " + user[0].name + "님이 참여를 희망했습니다.";
+
+                alarm.create({
+                    user_idx: target,
+                    project_name: project_name,
+                    contents: msg
+                });
+
+                // 푸시 알람 추가
+                //fcmmodule.fcmSend(target,project_name,msg);
+
+                return;
+            }
+        });
     },
 
     //공유 없고
