@@ -235,77 +235,69 @@ router.get('/:recruit_idx', async (req, res) => {
                     message: 'database failure'
                 });
             }
+            console.log(applies);
             if(applies.length === 0)
                 return res.status(200).send({
                     message: "no list"
                 });
+           
+            const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
             //2. (1)에서 조회한 결과를 바탕으로 recruit 스키마에서 해당 공고의 개설자가 누구인지 find
             recruit.find({
-                _id : applies[0].recruit_idx
-            }, async function(err, recruits){
-                if(err) {
+                _id: applies[0].recruit_idx
+            }, async function (err, recruits) {
+                if (err) {
                     console.log(err);
-                    return res.status(500).send({message: 'database failure'});
-                }   
+                    return res.status(500).send({
+                        message: 'database failure'
+                    });
+                }
 
-                const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
-                //2. (1)에서 조회한 결과를 바탕으로 recruit 스키마에서 해당 공고의 개설자가 누구인지 find
-                recruit.find({
-                    _id: applies[0].recruit_idx
-                }, async function (err, recruits) {
-                    if (err) {
-                        console.log(err);
-                        return res.status(500).send({
-                            message: 'database failure'
-                        });
-                    }
+                if (ID == recruits[0].user_idx)
+                    project_manage = true;
 
-                    if (ID == recruits[0].user_idx)
-                        project_manage = true;
+                //3. 개설자이면 조회 가능
+                if (project_manage) {
+                    var array = new Array();
 
-                    //3. 개설자이면 조회 가능
-                    if (project_manage) {
-                        var array = new Array();
-
-                        for(let i = 0; i < applies.length; i++){
-                            let obj = {
-                                applicant_idx : '',
-                                profile_url : '',
-                                user_name : '',
-                                position : '',
-                                apply_idx : ''
-                            }
-                            const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
-                            let userQuery = await pool.execute2(QUERY, applies[i].applicant_idx);
-                            
-                            obj.applicant_idx = applies[i].applicant_idx;
-                            obj.profile_url = userQuery[0].profile_url;
-                            obj.user_name = userQuery[0].name;
-                            obj.position = userQuery[0].position;
-                            obj.apply_idx = applies[i]._id;
-
-                            array.push(obj);
+                    for(let i = 0; i < applies.length; i++){
+                        let obj = {
+                            applicant_idx : '',
+                            profile_url : '',
+                            user_name : '',
+                            position : '',
+                            apply_idx : ''
                         }
-                    
-                        var resultObj = {
-                            message : "success",
-                            result : ''
-                        }
+                        const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
+                        let userQuery = await pool.execute2(QUERY, applies[i].applicant_idx);
                         
-                        resultObj.result = array;
-                        res.json(resultObj);
+                        obj.applicant_idx = applies[i].applicant_idx;
+                        obj.profile_url = userQuery[0].profile_url;
+                        obj.user_name = userQuery[0].name;
+                        obj.position = applies[0].position;
+                        obj.apply_idx = applies[i]._id;
 
-                        return;
-
-                    } else {
-                        //4. 개설자가 아니면 권한 없음
-                        res.status(400).send({
-                            message: "fail (no rights)"
-                        });
+                        array.push(obj);
                     }
-                });
-                return;
+                
+                    var resultObj = {
+                        message : "success",
+                        result : ''
+                    }
+                    
+                    resultObj.result = array;
+                    res.json(resultObj);
+
+                    return;
+
+                } else {
+                    //4. 개설자가 아니면 권한 없음
+                    res.status(400).send({
+                        message: "fail (no rights)"
+                    });
+                }
             });
+            return;
         });
     } else {
         //토큰이 유효하지 않을 경우
