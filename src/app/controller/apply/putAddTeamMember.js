@@ -55,13 +55,13 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
 
                         if(req.params.join == 1){
                             data = await pool.execute2(QUERY, [project_idx, req.params.applicant_idx, position]);
-                            console.log(data);
                             //project_idx, join, ID
-                            alarm.join(project_idx, 1, ID);
+                            alarm.join(project_idx, 1, req.params.applicant_idx);
                         }
                         else {
                             //project_idx, join, ID
-                            alarm.join(project_idx, 2, ID);
+                            alarm.join(project_idx, 2, req.params.applicant_idx);
+
                         }
 
                         if(!data && data != undefined){
@@ -70,8 +70,7 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                             });
                             return;
                         }
-
-                        res.status(201).send({
+                        return res.status(201).send({
                             message: "success"
                         });
                     });

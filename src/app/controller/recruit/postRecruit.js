@@ -20,7 +20,7 @@ router.post('/', async (req, res, next) => {
         let end_date = req.body.end_date;
         var startdate = new Date(start_date);
         var enddate = new Date(end_date);
-
+        
         // db insert 
         recruit.create({
             project_idx: req.body.project_idx,

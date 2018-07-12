@@ -167,7 +167,8 @@ module.exports = {
             if (err) {
                 return -1;
             } else {
-                project_name = docs[0].title;
+                console.log(docs);
+                let project_name = docs[0].title;
                 //합격
                 if (join == 1) {
                     var msg = "축하합니다! " + project_name + "의 참여 멤버가 되셨습니다.";
