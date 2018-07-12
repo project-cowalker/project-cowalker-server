@@ -71,9 +71,8 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
 
      //1. 토큰 값 받아오기 
     const ID = jwt.verify(req.headers.authorization);
-    console.log("ID: "+ID);
 
-    if(ID!=-1){ // 로그인 하고 있는 사람                         
+                            
        recruit.find({
          _id : recruit_idx
        },async function(err,result){
@@ -121,7 +120,7 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
 
           if(result[0].user_idx==ID){     // case 1: 개발자인 경우, 
             btnResult="개발자";
-            console.log(btnResult);
+            //console.log(btnResult);
           }else{                          // case 2: 개발자가 아닌경우 
           // 4. recruit_idx로 apply테이블 접근해서 application_idx를 가지고 와야해 
           apply.find({
@@ -164,13 +163,6 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
         });    
       }
     });
-
-    }else{       
-      res.status(401).send({
-        message:"access denied"
-      })
-    }
-
   });
 
 
