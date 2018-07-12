@@ -51,7 +51,7 @@ router.put('/', multiUpload, async (req, res, next) => {
                 });
 
                 return res.status(201).send({
-                    message: 'insert myIntro success'
+                    message: 'update myIntro success'
                 });
             }
         });
