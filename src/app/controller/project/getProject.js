@@ -2,80 +2,125 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
-const hash = require('../../module/hash.js');
 let project = require('../../model/schema/project');
 let apply = require('../../model/schema/apply');
+let getProjectRes = require('../../model/res/getProjectRes');
 
 //프로젝트 id값으로 검색하기
-router.get('/:project_id', function(req, res){
-	const ID = jwt.verify(req.headers.authorization);
-	// 프로젝트 아이디와 유저 아이디 비교 => 같으면 개설자임을 보내주기
-	// 다르면, 프로젝트 참여자와 지원자로 나뉜다.
-	// 프로젝트 id로 team의 member_idx 확인(mysql) => select문
-	// 유저 id가 member_idx로 존재하면 => 참여완료
-	// 존재하지 않으면 => 참여대기
-	// 로그인하지않은 상태 -> 참여대기로 보내주기
+router.get('/:project_id', function (req, res) {
+
+    let project_idx = req.params.project_id;
+    const ID = jwt.verify(req.headers.authorization);
     const QUERY = 'select * from USER where user_idx = ?';
+
     var data = new Array();
     var user_status = "null";
 
-	if(ID!=-1){
-		project.find({
-			_id : req.params.project_id
-		}, async function(err, result){
-			if(err){
-				return res.status(500).send({
-					message : "get project fail"
-				});
-			} else{
-				//let project_user_id = result[0].user_idx;
-				//console.log(result);
-				for(let i=0;i<result.length;i++){
-					let project_user_id = result[0].user_idx;
-					let select_project = await db.execute2(QUERY, ID);
-					var temp = {
-				        title : "",
-				        summary : "",
-				        area : "",
-				        department : "",
-				        aim : "",
-				        explain : "",
-				        create_at : "",
-				        img_url : []
-				    }
+    project.find({
+            _id: project_idx
+        },
 
-					temp.title = result[i].title;
-					temp.summary = result[i].summary;
-					temp.area = result[i].area;
-					temp.department = result[i].department;
-					temp.aim = result[i].aim;
-					temp.explain = result[i].explain;
-					temp.create_at = result[i].create_at;
-					temp.img_url = result[i].img_url;
-					data.push(temp);
+        async function (err, result) {
+            if (err) {
+                return res.status(500).send({
+                    message: "get project fail"
+                });
+            } else {
+                let project_user_id = result[0].user_idx;
+                let select_project = await db.execute2(QUERY, project_user_id);
 
-					// 개설자
-					//참여중인지...대기인지..지원하기인지...
-					if (ID == project_user_id){
-						user_status = "개설자";
-					}	
-				}
-			}
-			res.status(201).send({
-				message : "success",
-				result : data,
-				user :user_status
-			});
-			return;
-		});
+                for (let i = 0; i < result.length; i++) {
+                    
+                    let temp = {
+                        user_idx : "",
+                        title: "",
+                        summary: "",
+                        area: "",
+                        department: "",
+                        aim: "",
+                        explain: "",
+                        create_at: "",
+                        img_url: [],
+                        project_user_name: "",
+                        project_user_profile_url: ""
+                    }
 
-	}else{
-		res.status(401).send({
-            message: "access denied"
+                    temp.user_idx = result[0].user_idx;
+                    temp.title = result[i].title;
+                    temp.summary = result[i].summary;
+                    temp.area = result[i].area;
+                    temp.department = result[i].department;
+                    temp.aim = result[i].aim;
+                    temp.explain = result[i].explain;
+                    temp.create_at = result[i].create_at;
+                    temp.img_url = result[i].img_url;
+                    temp.project_user_name = select_project[i].name;
+                    temp.project_user_profile_url = select_project[i].profile_url;
+
+                    data.push(temp);
+                }
+
+                // 개설자 
+                if (ID != -1) {
+                    if (ID == project_user_id) {
+                        user_status = "개설자";
+
+                        res.status(201).send({
+                            message: "success",
+                            result: data,
+                            user: user_status
+                        });
+                        return;
+                    } else {
+                        apply.find({
+                                project_idx: project_idx,
+                                applicant_idx: ID
+                            },
+                            function (err, obj) {
+                                if (err) {
+                                    res.status(405).send({
+                                        message: "database failure"
+                                    });
+                                } else {
+                                    // case 2-1: 개설자가 아니고, 팀에 아직 지원도 아직 안한 상태 ->"지원자"
+                                    if (!obj[0]) {
+                                        user_status = "참여하기";
+                                    } else {
+                                        // case 2-1: 개설자가 아닌데, 팀에 지원은 했고, 아직 수락/거절을 못받은 경우 -> "참여 대기"
+                                        if (obj[0].join == 0) {
+                                            user_status = "참여대기";
+                                            // case 2-2: 개설자가 아닌데, 팀에 지원은 했고, 수락을 받음 -> "참여 완료 "
+                                        } else if (obj[0].join == 1) {
+                                            user_status = "참여완료";
+                                        } else {
+                                            // case 2-3: 개설자가 아닌데, 팀에 지원은 했고, 거절을 당한경우 -> "참여 하기"
+                                            user_status = "참여하기"
+                                        }
+                                    }
+
+                                    res.status(201).send({
+                                        message: "success",
+                                        result: data,
+                                        user: user_status
+                                    });
+
+                                }
+                            }).sort({'recruit_at' : -1});
+                    }
+
+                } else {
+                    user_status = "참여하기";
+
+                    res.status(201).send({
+                        message: "success",
+                        result: data,
+                        user: user_status
+                    });
+                }
+
+            }
         });
-	}
+
 });
-
-
 
 module.exports = router;

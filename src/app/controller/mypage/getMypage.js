@@ -2,101 +2,139 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
-
+const apply = require('../../model/schema/apply');
 
 // 나의 마이페이지 get
-router.get('/', async(req, res) => {
-    const ID = jwt.verify(req.headers.authorization);
-    const profile = 'select * from USER where user_idx = ?';
-    
-    if(ID != -1) {
-        let result = await db.execute2(profile, ID);
+router.get('/', async (req, res) => {
+  const ID = jwt.verify(req.headers.authorization);
+  const profile = 'select * from USER where user_idx = ?';
+  let data = new Array();
 
-        //console.log(result);
-        
-        res.status(200).send({
+  if (ID != -1) {
+    let result = await db.execute2(profile, ID);
 
-        	profile_url : result[0].profile_url,
-        	background_url : result[0].background_url,
-        	email : result[0].email,
-       		name : result[0].name,
-       		point : result[0].point,
-       		position : result[0].position,
-       		introduce : result[0].introduce,
-       		portfolio_url : result[0].portfolio_url,
-       		aim : result[0].aim,
-       		department : result[0].department,
-       		area : result[0].area
+    //console.log(result);
 
-        });
-    }else {
-        res.status(401).send({
-            message : "access denied"
-        });
+    let temp = {
+      profile_url: '',
+      background_url: '',
+      name: '',
+      position: '',
+      point: '',
+      introduce: '',
+      portfolio_url: '',
+      aim: '',
+      department: '',
+      area: ''
     }
+
+    temp.profile_url = result[0].profile_url,
+      temp.background_url = result[0].background_url,
+      temp.name = result[0].name,
+      temp.position = result[0].position,
+      temp.point = result[0].point,
+      temp.introduce = result[0].introduce,
+      temp.portfolio_url = result[0].portfolio_url,
+      temp.aim = result[0].aim,
+      temp.department = result[0].department,
+      temp.area = result[0].area
+    data.push(temp);
+
+    if (data) {
+      res.status(200).send({
+        message: "success",
+        data: data
+      });
+
+    } else {
+      res.status(405).send({
+        error: "Get data fail"
+      });
+
+    }
+
+
+  } else {
+    res.status(401).send({
+      message: "access denied"
+    });
+  }
 });
 
 
 
 // 다른 사람 
-router.get('/:user_idx', async(req, res) => {
-	
-	const ID = jwt.verify(req.headers.authorization);
-	
-	let user_idx=req.params.user_idx;
+router.get('/:user_idx', async (req, res) => {
 
-    const profile = 'select * from USER where user_idx = ?';
-    let user_status = "null";
-   
-    if(user_idx) {
-    	//참여멤버에서 나의 페이지로 들어올 때 
-    	if(ID == user_idx){
-    		let result = await db.execute2(profile, ID);
-        
-	        res.status(200).send({
+  const ID = jwt.verify(req.headers.authorization);
 
-	        	profile_url : result[0].profile_url,
-	        	background_url : result[0].background_url,
-	        	email : result[0].email,
-	       		name : result[0].name,
-	       		point : result[0].point,
-	       		position : result[0].position,
-	       		introduce : result[0].introduce,
-	       		portfolio_url : result[0].portfolio_url,
-	       		aim : result[0].aim,
-	       		department : result[0].department,
-	       		area : result[0].area,
-	       		user_status : "나의 페이지"
+  let user_idx = req.params.user_idx;
+  let data = new Array();
 
-	        });
+  const profile = 'select * from USER where user_idx = ?';
+  let user_status = "null";
 
-	    // 참여멤버에서 타인 페이지 들어갈 때 
-    	}else{
-    		let result = await db.execute2(profile, user_idx);
-        
-	        res.status(200).send({
+  if (user_idx) {
+    let result = await db.execute2(profile, user_idx);
 
-	        	profile_url : result[0].profile_url,
-	        	background_url : result[0].background_url,
-	        	email : result[0].email,
-	       		name : result[0].name,
-	       		point : result[0].point,
-	       		position : result[0].position,
-	       		introduce : result[0].introduce,
-	       		portfolio_url : result[0].portfolio_url,
-	       		aim : result[0].aim,
-	       		department : result[0].department,
-	       		area : result[0].area,
-	       		user_status : "다른 사람의 페이지"
-
-	        });
-
-    	}
-    }else {
-    	res.status(401).send({
-            message: "access denied"
-        });
+    let temp = {
+      user_idx: '',
+      profile_url: '', //
+      background_url: '', //
+      name: '', //
+      position: '', //
+      point: '',
+      introduce: '', //
+      portfolio_url: '', //
+      aim: '',
+      department: '',
+      area: ''
     }
+    temp.user_idx = result[0].user_idx,
+      temp.profile_url = result[0].profile_url,
+      temp.background_url = result[0].background_url,
+      temp.name = result[0].name,
+      temp.position = result[0].position,
+      temp.point = result[0].point,
+      temp.introduce = result[0].introduce,
+      temp.portfolio_url = result[0].portfolio_url,
+      temp.aim = result[0].aim,
+      temp.department = result[0].department,
+      temp.area = result[0].area
+    data.push(temp);
+
+    if (data) {
+      //참여멤버에서 나의 페이지로 들어올 때 
+      if (ID == user_idx) {
+        res.status(200).send({
+          message: "success",
+          data: data,
+          user_status: "나의 페이지"
+        });
+
+        // 참여멤버에서 타인 페이지 들어갈 때 
+      } else {
+        res.status(200).send({
+          message: "success",
+          data: data,
+          user_status: "타인의 페이지"
+        });
+
+      }
+
+    } else {
+      res.status(405).send({
+        error: "Get data fail"
+      });
+
+    }
+
+
+  } else {
+    res.status(401).send({
+      message: "access denied"
+    });
+  }
 });
 
 

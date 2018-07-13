@@ -12,7 +12,7 @@ router.delete('/:apply_idx', async(req, res) => {
             applicant_idx : ID
         }, function(err, applies){
             if(err) 
-                return res.stauts(500).send({message: 'database failure'});
+                return res.status(500).send({message: 'database failure'});
             
             res.status(201).send({
                 message: "success"

@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const db = require('../../module/pool.js');
 const message = require('../../model/schema/message');
+const time = require('../../module/time');
 
 //to : 받는 사람
 //from : 보내는 사람
@@ -14,19 +15,7 @@ router.get('/', async (req, res, next) => {
     let data = new Array();
 
     if (ID != -1) {
-        // // 2. find( ) 함수에 query 입력
-        // message.find({$or : [{ to_idx : ID },{ from_idx : ID}]})
-        //         .distinct('to_idx', function(err, obj) {
-        //             if(err) {
-        //                 console.log(err);
-        //             }else {
-        //                 console.log(obj);
-        //             }
-        //         })
-        //         .sort({create_at : -1});
-
-        // ///////////
-
+        
         message.find({ $or : [{ to_idx : ID }, { from_idx : ID }] }, 
             async function(err, obj){
             if(err){
@@ -50,6 +39,7 @@ router.get('/', async (req, res, next) => {
                                 break;
                             }
                         }
+
                         //나에게 온 쪽지라면
                         else {
                             //보낸사람 있는지 검사, 있으면 탈출
@@ -75,7 +65,8 @@ router.get('/', async (req, res, next) => {
                             partner_name : "",
                             partner_profile_url : "",
                             contents : "",
-                            create_at : ""
+                            create_at : "",
+                            time:""
                         }
 
                         temp.partner_idx = partner;
@@ -83,6 +74,7 @@ router.get('/', async (req, res, next) => {
                         temp.partner_profile_url = partner_info[0].profile_url
                         temp.contents = obj[i].contents;
                         temp.create_at = obj[i].create_at;
+                        temp.time = time.elapsedTime(obj[i].create_at);
 
                         data.push(temp);
                     }

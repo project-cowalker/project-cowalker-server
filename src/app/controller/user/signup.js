@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../module/pool.js');
 const signup = require('../../model/req/SignupReq');
+const myIntro = require('../../model/schema/myIntro');
 
 // 이메일 중복 체크
 
@@ -37,6 +38,11 @@ router.post('/', async (req, res, next) => {
             message: 'please check email'
         });
     } else {
+        await myIntro.create({
+            user_idx: inserted.insertId,
+            intro_contents: "",
+            intro_img_url: []
+        });
         res.status(201).send({
             message: "success"
         });

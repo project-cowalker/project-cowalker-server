@@ -19,7 +19,7 @@ router.use('/', message);
 const project = require('./controller/project/project_routes');
 router.use('/', project);
 
-//project
+//search
 const search = require('./controller/search/search_routes');
 router.use('/', search);
 
@@ -30,5 +30,26 @@ router.use('/', question);
 //mypage
 const mypage = require('./controller/mypage/mypage_routes');
 router.use('/', mypage);
+
+//alarm
+const alarm = require('./controller/alarm/alarm_routes');
+router.use('/', alarm);
+
+//home
+const home = require('./controller/home/home_routes');
+router.use('/', home);
+
+//recommend
+const recommend = require('./controller/recommend/recommend_routes');
+router.use('/', recommend);
+
+//share
+const share = require('./controller/share/share_routes');
+router.use('/', share);
+
+//myIntro
+const myIntro = require('./controller/myIntro/myIntro_routes');
+router.use('/', myIntro);
+
 
 module.exports = router;
