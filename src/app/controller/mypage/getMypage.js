@@ -16,16 +16,16 @@ router.get('/', async (req, res) => {
     //console.log(result);
 
     let temp = {
-      profile_url: "",
-      background_url: "",
-      name: "",
-      position: "",
-      point: "",
-      introduce: "",
-      portfolio_url: "",
-      aim: "",
-      department: "",
-      area: ""
+      profile_url: '',
+      background_url: '',
+      name: '',
+      position: '',
+      point: '',
+      introduce: '',
+      portfolio_url: '',
+      aim: '',
+      department: '',
+      area: ''
     }
 
     temp.profile_url = result[0].profile_url,
