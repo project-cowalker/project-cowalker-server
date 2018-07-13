@@ -145,7 +145,7 @@ router.post('/', async (req, res, next) => {
                 //    status : (true = 지원 완료) || (false = 지원 대기)
 
                 let updateShare = await pool.execute2(UPDATESHARE, 
-                        [ID, req.query.recommend_idx, req.query.project_idx, req.query.recruit_idx]);
+                        [ID, req.query.sharer_idx, req.query.project_idx, req.query.recruit_idx]);
 
                 
                 if(!updateShare){
