@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
     //console.log(result);
 
-    var temp = {
+    let temp = {
       profile_url: "",
       background_url: "",
       name: "",
@@ -77,8 +77,8 @@ router.get('/:user_idx', async (req, res) => {
   if (user_idx) {
     let result = await db.execute2(profile, user_idx);
 
-    var temp = {
-      user_idx : "",
+    let temp = {
+      user_idx: "",
       profile_url: "", //
       background_url: "", //
       name: "", //
@@ -91,7 +91,7 @@ router.get('/:user_idx', async (req, res) => {
       area: ""
     }
     temp.user_idx = result[0].user_idx,
-    temp.profile_url = result[0].profile_url,
+      temp.profile_url = result[0].profile_url,
       temp.background_url = result[0].background_url,
       temp.name = result[0].name,
       temp.position = result[0].position,

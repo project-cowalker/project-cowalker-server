@@ -52,11 +52,11 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                             });
                         }
 
-                        var project_idx = appliesFind[0].project_idx;
-                        var position = appliesFind[0].position;
+                        let project_idx = appliesFind[0].project_idx;
+                        let position = appliesFind[0].position;
                         
                         const QUERY = 'INSERT INTO TEAM (project_idx, member_idx, position) VALUES (?, ?, ?)';
-                        var data;
+                        let data;
 
                         if(req.params.join == 1){
                             data = await pool.execute2(QUERY, [project_idx, req.params.applicant_idx, position]);
@@ -66,7 +66,6 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                         else {
                             //project_idx, join, ID
                             alarm.join(project_idx, 2, req.params.applicant_idx);
-
                         }
 
                         if(!data && data != undefined){

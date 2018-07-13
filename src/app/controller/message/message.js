@@ -14,7 +14,6 @@ router.post('/', async (req, res, next) => {
             content : req.body.content
         }, function(err, obj){
             if(err){
-                console.log(err);
                 return res.status(405).send("실패");
             }
             res.status(200).send(obj);

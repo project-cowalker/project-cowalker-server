@@ -13,13 +13,10 @@ const recruitQuestion=require('../../model/schema/recruit_question');
 router.delete('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
 
     const ID = jwt.verify(req.headers.authorization);
-    console.log(ID);
 
   if (ID != -1) {                    // case 1: -1이 아니면, 즉, token값이 제대로 들어오면,  
        let project_idx=req.params.project_idx;
        let recruit_idx=req.params.recruit_idx;
-       console.log(project_idx);
-       console.log(recruit_idx);
 
 
       recruit.remove({ _id: recruit_idx }, function(err, result){

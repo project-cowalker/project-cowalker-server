@@ -18,7 +18,6 @@ router.put('/:project_id', multiUpload, async (req, res, next) => {
     
     project.update({ _id: req.params.project_id }, { $set: req.body, img_url: tempArray }, function(err, output){
         if(err) res.status(500).json({ error: 'database failure' });
-        console.log(output);
         if(!output.n) return res.status(404).json({ error: 'project not found' });
         res.json( { message: 'success' } );
     })

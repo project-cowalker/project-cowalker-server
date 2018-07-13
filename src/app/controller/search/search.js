@@ -18,14 +18,12 @@ router.get('/', async (req, res, next) => {
 
     //탐색
     if ((aim == undefined || aim == '') && (area == undefined || area == '') && (position == undefined || position == '') && (department == undefined || department == '') && (keyword == undefined || keyword == '')) {
-        console.log("탐색");
 
         let result;
 
         try {
             result = await project.find({}).sort({ create_at: -1 }).limit(12);
         } catch (err) {
-            console.log(err);
             return res.status(405).send({
                 message: "get project list fail"
             });
@@ -99,30 +97,12 @@ router.get('/', async (req, res, next) => {
             });
         }
 
-        console.log(query);
-        console.log("검색");
-
-        // let result;
-
-        // try {
-        //     console.log(query);
-        //     result = await project.find({query}).sort({ create_at: -1 }).limit(12);
-        // } catch (err) {
-        //     console.log(err);
-        //     return res.status(405).send({
-        //         message: "get project list fail"
-        //     });
-        // }
-
-        // console.log(result);
-
         project.find(query, async function (err, result) {
             if (err) {
                 return res.status(405).send({
                     message: "get project fail"
                 });
             } else {
-                console.log( projectSearchRes.res(result));
                 return res.status(200).send({
                     message: "success",
                     result: projectSearchRes.res(result)

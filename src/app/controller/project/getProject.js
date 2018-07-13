@@ -29,20 +29,22 @@ router.get('/:project_id', function (req, res) {
                 let project_user_id = result[0].user_idx;
                 let select_project = await db.execute2(QUERY, project_user_id);
                 
+                let temp = {
+                    user_idx : "",
+                    title: "",
+                    summary: "",
+                    area: "",
+                    department: "",
+                    aim: "",
+                    explain: "",
+                    create_at: "",
+                    img_url: [],
+                    project_user_name: "",
+                    project_user_profile_url: ""
+                }
+
                 for (let i = 0; i < result.length; i++) {
-                    var temp = {
-                        user_idx : "",
-                        title: "",
-                        summary: "",
-                        area: "",
-                        department: "",
-                        aim: "",
-                        explain: "",
-                        create_at: "",
-                        img_url: [],
-                        project_user_name: "",
-                        project_user_profile_url: ""
-                    }
+                    
                     temp.user_idx = result[0].user_idx;
                     temp.title = result[i].title;
                     temp.summary = result[i].summary;

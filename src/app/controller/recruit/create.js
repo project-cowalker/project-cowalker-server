@@ -15,7 +15,6 @@ router.post('/', async(req, res) => {
        join : req.body.join
    },
    function(err, docs){
-       console.log(err);
        if(err) return res.status(405).send("실패");
        res.status(200).send(docs);
    })
