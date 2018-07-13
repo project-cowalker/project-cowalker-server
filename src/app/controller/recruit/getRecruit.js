@@ -119,7 +119,6 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
 
       if (result[0].user_idx == ID) { // case 1-1: 개설자인 경우, 
         btnResult = "개설자";
-        console.log(btnResult);
            res.status(200).send({
             message: "success",
             result: data,
@@ -136,11 +135,9 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
               message: "database failure"
             });
           } else {
-              console.log(result);
             // case 2-1: 개설자가 아니고, 팀에 아직 지원도 아직 안한 상태 ->"지원자"
             if (!result[0]) {
               btnResult = "참여하기" 
-              console.log("지원자체를 안한 경우");
             } else {
               // case 2-1: 개발자가 아닌데, 팀에 지원은 했고, 아직 수락을 못받은 경우 -> "참여 대기"
               if (result[0].join == 1) {
