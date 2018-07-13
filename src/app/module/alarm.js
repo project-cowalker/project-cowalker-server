@@ -57,7 +57,6 @@ module.exports = {
                     project_name: project_name,
                     contents: msg
                 });
-
                 // 푸시 알람 추가
                 fcmmodule.fcmSend(target, project_name,msg);
                 return;
@@ -124,6 +123,7 @@ module.exports = {
     //1이 수락, 2가 거절
     //내 아이디, 프로젝트 아이디
     join: async (...args) => {
+        console.log("join들어왔따 ");
         const project_idx = args[0];
         const join = args[1];
         const ID = args[2];
@@ -134,6 +134,9 @@ module.exports = {
             if (err) {
                 return -1;
             } else {
+                
+                console.log(docs);
+                console.log(docs[0].title);
                 let project_name = docs[0].title;
                 //합격
                 if (join == 1) {
