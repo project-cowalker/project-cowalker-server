@@ -16,6 +16,11 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
     
     if(ID != -1){
         apply.find({ _id : req.params.apply_idx }, function(err, applies){
+            if(applies.length === 0){
+                return res.status(200).send({
+                    message: "no list"
+                });
+            };
 
             recruit.find({ _id : applies[0].recruit_idx }, function(err, recruits){
 
@@ -31,7 +36,6 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                     _id : req.params.apply_idx,
                     applicant_idx : req.params.applicant_idx
                 },{ join : req.params.join }, async function(err, applies){
-
                     if(err){
                         return res.status(405).send({
                             message: "database failure"
@@ -42,7 +46,6 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                         _id : req.params.apply_idx,
                         applicant_idx : req.params.applicant_idx
                     }, async function(err, appliesFind){  
-
                         if(err){
                             return res.status(405).send({
                                 message: "database failure"
@@ -55,14 +58,15 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                         const QUERY = 'INSERT INTO TEAM (project_idx, member_idx, position) VALUES (?, ?, ?)';
                         var data;
 
-                        if(req.params.join === 1){
+                        if(req.params.join == 1){
                             data = await pool.execute2(QUERY, [project_idx, req.params.applicant_idx, position]);
                             //project_idx, join, ID
-                            alarm.join(project_idx, 1, ID);
+                            alarm.join(project_idx, 1, req.params.applicant_idx);
                         }
                         else {
                             //project_idx, join, ID
-                            alarm.join(project_idx, 2, ID);
+                            alarm.join(project_idx, 2, req.params.applicant_idx);
+
                         }
 
                         if(!data && data != undefined){
@@ -71,8 +75,7 @@ router.put('/:apply_idx/:applicant_idx/join/:join', async (req, res, next) => {
                             });
                             return;
                         }
-
-                        res.status(201).send({
+                        return res.status(201).send({
                             message: "success"
                         });
                     });

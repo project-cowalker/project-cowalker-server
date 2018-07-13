@@ -7,7 +7,7 @@ router.get('/:project_idx', async function (req, res) {
 	let project_idx = req.params.project_idx;
     //console.log('ID : ',ID);
 
-    const team = 'SELECT TEAM.member_idx,TEAM.position,USER.profile_url from TEAM,USER where TEAM.member_idx=USER.user_idx and project_idx=?';
+    const team = 'SELECT TEAM.member_idx, TEAM.position, USER.profile_url, USER.name from TEAM,USER where TEAM.member_idx=USER.user_idx and project_idx=?';
     // const profile = 'select * from USER where user_idx = ?';
     // var data = new Array();
 

@@ -45,7 +45,6 @@ router.put('/', multiUpload, async(req, res, next) => {
                 }); 
             }
         }
-
     }else{
     	res.status(401).send({
             message: "access denied"

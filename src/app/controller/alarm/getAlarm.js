@@ -18,12 +18,15 @@ router.get('/', async (req, res, next) => {
                 message: 'get alarm fail'
             });
         }
-
-        return res.status(200).send({
-            message: 'get alarm success',
-            result: alarmRes.res(result)
-        });
-        
+        if(result.length != 0)
+            return res.status(200).send({
+                message: 'get alarm success',
+                result: alarmRes.res(result)
+            });
+        else 
+            return res.status(200).send({
+                message: 'no alarm list'
+            });
     }else {
         return res.status(401).send({
             message: "access denied"

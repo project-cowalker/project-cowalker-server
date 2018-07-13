@@ -20,7 +20,7 @@ router.post('/', async (req, res, next) => {
         let end_date = req.body.end_date;
         var startdate = new Date(start_date);
         var enddate = new Date(end_date);
-
+        
         // db insert 
         recruit.create({
             project_idx: req.body.project_idx,
@@ -37,7 +37,7 @@ router.post('/', async (req, res, next) => {
             preference: req.body.preference,
             comment: req.body.comment,
             user_idx: ID
-        }, function (err, result) {
+        }, function (err, recruits) {
             if (err) { // 결과값이 만약 에러가 난다면, 405에서
                 console.log(err);
                 res.status(405).send({
@@ -45,7 +45,7 @@ router.post('/', async (req, res, next) => {
                 });
             } else { // 성공
                 recruitQuestion.create({
-                    recruit_idx: result._id,
+                    recruit_idx: recruits._id,
                     question: question_list
 
                 }, function (err, result) {
@@ -55,7 +55,7 @@ router.post('/', async (req, res, next) => {
                             message: "database failure"
                         });
                     } else {
-                        // console.log(result);
+                        console.log(recruits);
                         res.status(201).send({
                             message: "success"
                         });
