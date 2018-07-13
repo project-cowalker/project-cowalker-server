@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 const db = require('../../module/pool.js');
 const message = require('../../model/schema/message');
+const time = require('../../module/time');
 
 router.get('/:partner_idx', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
@@ -37,7 +38,6 @@ router.get('/:partner_idx', async (req, res, next) => {
                     create_at : ""
                 }
                 for(i = 0; i < obj.length; i++) {
-                    
                     if(obj[i].to_idx == ID) {
                         temp.to_user_name = "나";
                         temp.from_user_name = partner_info[0].name;
@@ -47,6 +47,7 @@ router.get('/:partner_idx', async (req, res, next) => {
                     }
                     temp.contents = obj[i].contents;
                     temp.create_at = obj[i].create_at;
+                    temp.time = time.elapsedTime(obj[i].create_at);
                     data.push(temp);
                 }
                 res.status(200).send({
