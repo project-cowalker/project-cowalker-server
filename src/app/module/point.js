@@ -135,7 +135,3 @@ module.exports = {
 
     }
 };
-
-const log = function() {
-    console.log("!!!!!!!!!!!!!!!!!!!");
-}
