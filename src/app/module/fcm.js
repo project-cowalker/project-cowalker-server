@@ -29,7 +29,7 @@ module.exports = {
         title: project_name,
         body: msg,
         sound: "default",
-        click_action: "FCM_PLUGIN_ACTIVITY"
+        vibrate : "default"
       },
 
     // 메시지 중요도

@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
     if(ID != -1) {
         
         try {
-            result = await alarm.find({user_idx : ID});
+            result = await alarm.find({user_idx : ID}).sort({ create_at: -1 });
         }catch(err) {
             return res.status(405).send({
                 message: 'get alarm fail'
