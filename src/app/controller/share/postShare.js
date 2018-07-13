@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
       }
       res.status(201).send({
         message: "success",
-        sharer_idx : ID
+        sharer_idx : ID.toString()
       });
     } else {                           
       res.status(401).send({
