@@ -44,7 +44,7 @@ let options = {
 }
 
 const secureServer = https.createServer(options, app);
-secureServer.listen(8443);
+secureServer.listen(443);
 
 /**
  * Normalize a port into a number, string, or false.
