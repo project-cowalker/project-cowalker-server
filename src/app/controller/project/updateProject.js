@@ -20,6 +20,10 @@ router.put('/:project_id', multiUpload, async (req, res, next) => {
             if(!output.n) return res.status(404).json({ error: 'project not found' });
             res.json( { message: 'success' } );
         })
+    }else{
+        res.status(405).send({
+            error: 'please put an image file'
+        }); 
     }
     
 });
