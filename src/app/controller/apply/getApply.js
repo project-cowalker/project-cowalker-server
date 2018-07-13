@@ -10,19 +10,21 @@ const pool = require('../../module/pool.js');
 var findApply = function (applies) {
     var resultObj = new Array();
 
+    let object = {
+        apply_idx: '',
+        introduce: '',
+        portfolio_url: '',
+        phone: '',
+        recruit_idx: '',
+        project_idx: '',
+        position: '',
+        applicant_idx: '',
+        recruit_at: '',
+        answers: []
+    };
+
     for (let i = 0; i < applies.length; i++) {
-        var object = {
-            apply_idx: '',
-            introduce: '',
-            portfolio_url: '',
-            phone: '',
-            recruit_idx: '',
-            project_idx: '',
-            position: '',
-            applicant_idx: '',
-            recruit_at: '',
-            answers: []
-        };
+        
 
         object.apply_idx = applies[i]._id;
         object.introduce = applies[i].introduce;
@@ -39,42 +41,6 @@ var findApply = function (applies) {
     return resultObj;
 }
 
-/*//참여 및 지원한 프로젝트 모아보기
-router.get('/', async(req, res) => {
-    const ID = jwt.verify(req.headers.authorization);
-
-    if(ID != -1){
-        apply.aggregate([{'$group' : {'_id' : {'project_idx' : "$project_idx", 'join' : '$join'}}}], function(err, applies){
-            if(err) {
-                console.log(err);
-                return res.status(500).send({message: 'database failure'});
-            }
-            console.log(applies[0]._id);
-            console.log(applies[1]._id.project_idx);
-            console.log(applies.length);
-
-            var data = new Array();
-
-            for(let i=0;i<applies.length;i++){
-                console.log(applies[i]._id.project_idx);
-
-                data.push(applies[i]._id.project_idx);
-
-            }
-
-            console.log(data);
-
-            res.json(applies);
-
-        });
-    } else {
-        res.status(401).send({  
-            message: "access denied"
-        });
-    }
-});
-*/
-
 // 지원한 프로젝트 모아보기
 router.get('/apply_project', async (req, res) => {
     const ID = jwt.verify(req.headers.authorization);
@@ -85,7 +51,6 @@ router.get('/apply_project', async (req, res) => {
             'join': 0
         }, function (err, applies) {
             if (err) {
-                console.log(err);
                 return res.status(500).send({
                     message: 'database failure'
                 });
@@ -103,7 +68,6 @@ router.get('/apply_project', async (req, res) => {
                 }
             }, function (err, projects) {
                 if (err) {
-                    console.log(err);
                     return res.status(500).send({
                         message: 'database failure'
                     });
@@ -135,7 +99,6 @@ router.get('/enter_project', async (req, res) => {
             'join': 1
         }, function (err, applies) {
             if (err) {
-                console.log(err);
                 return res.status(500).send({
                     message: 'database failure'
                 });
@@ -153,7 +116,6 @@ router.get('/enter_project', async (req, res) => {
                 }
             }, function (err, projects) {
                 if (err) {
-                    console.log(err);
                     return res.status(500).send({
                         message: 'database failure'
                     });
@@ -184,7 +146,6 @@ router.get('/enter_project/:user_idx', async (req, res) => {
         'join': 1
     }, function (err, applies) {
         if (err) {
-            console.log(err);
             return res.status(500).send({
                 message: 'database failure'
             });
@@ -202,7 +163,6 @@ router.get('/enter_project/:user_idx', async (req, res) => {
             }
         }, function (err, projects) {
             if (err) {
-                console.log(err);
                 return res.status(500).send({
                     message: 'database failure'
                 });
@@ -230,12 +190,11 @@ router.get('/:recruit_idx', async (req, res) => {
             join : 0 //참여 대기 상태
         }, function (err, applies) {
             if (err) {
-                console.log(err);
                 return res.status(500).send({
                     message: 'database failure'
                 });
             }
-            console.log(applies);
+
             if(applies.length === 0)
                 return res.status(200).send({
                     message: "no list"
@@ -247,7 +206,6 @@ router.get('/:recruit_idx', async (req, res) => {
                 _id: applies[0].recruit_idx
             }, async function (err, recruits) {
                 if (err) {
-                    console.log(err);
                     return res.status(500).send({
                         message: 'database failure'
                     });

@@ -9,7 +9,6 @@ var multiUpload = upload.fields([{
 }]);
 
 router.put('/', multiUpload, async (req, res, next) => {
-    console.log(req.files);
     const ID = jwt.verify(req.headers.authorization);
 
     let tempArray = [];

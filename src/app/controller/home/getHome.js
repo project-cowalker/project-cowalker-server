@@ -22,9 +22,7 @@ router.get('/', async function (req, res) {
         let aim = queryResult[0].aim;
         let deparment = queryResult[0].department;
         let area = queryResult[0].area;
-        console.log(aim);
-        console.log(deparment);
-        console.log(area);
+
         
         // case 1-1: 모두 null값인 경우
         if((aim==undefined||aim=='')&&(deparment==undefined||deparment=='')&&(area==undefined||area=='')){
@@ -47,7 +45,7 @@ router.get('/', async function (req, res) {
      
 
           if (aim != undefined && aim != '') {					// 1. aim이 있을 경우, 
-            console.log("aim exist");
+
             query.$or.push({ aim: aim });
           }
          if (deparment != undefined&&deparment!='') {			// 2. department가있을 경우 

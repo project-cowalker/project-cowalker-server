@@ -51,9 +51,5 @@ router.use('/', share);
 const myIntro = require('./controller/myIntro/myIntro_routes');
 router.use('/', myIntro);
 
-//test
-const test = require('./controller/test');
-router.use('/test', test);
-
 
 module.exports = router;

@@ -31,14 +31,13 @@ router.get('/:partner_idx', async (req, res, next) => {
                     message: 'get message fail'
                 });
             }else {
+                let temp = {
+                    to_user_name : "",
+                    from_user_name : "",
+                    contents : "",
+                    create_at : ""
+                }
                 for(i = 0; i < obj.length; i++) {
-                    let temp = {
-                        to_user_name : "",
-                        from_user_name : "",
-                        contents : "",
-                        create_at : "",
-                        time : ""
-                    }
                     if(obj[i].to_idx == ID) {
                         temp.to_user_name = "나";
                         temp.from_user_name = partner_info[0].name;

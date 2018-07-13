@@ -37,29 +37,6 @@ router.post('/', multiUpload, async (req, res, next) => {
         });
     }
 
-    // if (ID != -1) {
-    //     myIntro.create({
-    //         user_idx: ID,
-    //         intro_contents: req.body.contents,
-    //         intro_img_url: tempArray
-    //     }, function (err, result) {
-    //         if (err) {
-    //             return res.status(405).send({
-    //                 message: 'save myIntro fail'
-    //             });
-    //         } else {
-    //             return res.status(201).send({
-    //                 message: 'save myIntro success'
-    //             });
-    //         }
-    //     });
-    // }
-    // else {
-    //     return res.status(401).send({
-    //         message: "access denied"
-    //     });
-    // }
-
 });
 
 module.exports = router;
