@@ -33,6 +33,7 @@ router.put('/', multiUpload, async(req, res, next) => {
                 profile_url : req.files.profile_img ? req.files.profile_img[0].location : profile[0].profile_url,
                 background_url : req.files.background_img ? req.files.background_img[0].location : profile[0].background_url,
             };
+            console.log(data);
             let result = await db.execute3(updateProfile, data, ID);
             //console.log(result);
             if(result){

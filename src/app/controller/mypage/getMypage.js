@@ -79,13 +79,13 @@ router.get('/:user_idx', async (req, res) => {
 
     let temp = {
       user_idx: '',
-      profile_url: '', //
-      background_url: '', //
-      name: '', //
-      position: '', //
+      profile_url: '', 
+      background_url: '', 
+      name: '', 
+      position: '', 
       point: '',
-      introduce: '', //
-      portfolio_url: '', //
+      introduce: '', 
+      portfolio_url: '', 
       aim: '',
       department: '',
       area: ''
