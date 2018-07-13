@@ -139,8 +139,6 @@ router.post('/', async (req, res, next) => {
                 data.project_idx = req.query.project_idx;
                 data.recruit_idx = req.query.recruit_idx;
 
-                //(1) - 1. 모집 공고를 공유한 경우
-
                 //(2) 공유를 통한 지원서가 작성되면 지원자 정보 insert
                 //    status : (true = 지원 완료) || (false = 지원 대기)
 
