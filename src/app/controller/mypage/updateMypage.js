@@ -15,7 +15,6 @@ router.put('/', multiUpload, async(req, res, next) => {
     let readProfile = 'select * from USER where user_idx = ?';
     let updateProfile = 'update USER set ? where user_idx = ?';
 
-
     if(ID!=-1){
     	let profile = await db.execute3(readProfile, ID);
     	if (profile.length === 0)
