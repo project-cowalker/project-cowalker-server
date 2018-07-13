@@ -1,8 +1,9 @@
 module.exports = {
     res : function(result) {
         let data = new Array();
+        
         for (let i = 0; i < result.length; i++) {
-            var temp = {
+            let temp = {
                 user_idx : "",
                 title: "",
                 summary: "",

@@ -17,8 +17,8 @@ router.put('/photo', multiUpload, async (req, res, next) => {
     const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
 
     let data = {
-        profile_url: "",
-        background_url: ""
+        profile_url: '',
+        background_url: ''
     };
 
     let user = await db.execute2(QUERY, ID);

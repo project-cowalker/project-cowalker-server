@@ -11,7 +11,6 @@ const recruitQuestion=require('../../model/schema/recruit_question');
 //팀원 모집
 router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
-    console.log(ID);
 
     if (ID != -1) {						         // case 1: -1이 아니면, 즉, token값이 제대로 들어오면,  
         let question_list=req.body.question_list;   // 클라한테 배열형태로 질문 리스트를 받는다. 
@@ -20,8 +19,8 @@ router.post('/', async (req, res, next) => {
         // string to date 
         let start_date=req.body.start_date;
         let end_date=req.body.end_date;
-        var startdate=new Date(start_date);
-        var enddate=new Date(end_date);
+        let startdate=new Date(start_date);
+        let enddate=new Date(end_date);
 
         // db insert 
         recruit.create({
@@ -42,7 +41,6 @@ router.post('/', async (req, res, next) => {
         }, function(err, result){
 
             if(err){                        // 결과값이 만약 에러가 난다면, 405에서
-                console.log(err);
                 res.status(405).send({
                     message:"fail"
                 });

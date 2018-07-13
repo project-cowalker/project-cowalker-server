@@ -58,11 +58,9 @@ module.exports = {
                     contents: msg
                 });
                 // 푸시 알람 추가
-                fcmmodule.fcmSend(target,project_name,msg);
+                fcmmodule.fcmSend(target, project_name,msg);
                 return;
             }
-
-
 
         })
     },
@@ -82,8 +80,6 @@ module.exports = {
         let target;
 
         let project_idx = insertData.project_idx;
-
-        console.log(insertData);
 
         //1. 프로젝트를 추천한 경우
         let selectQuery = "SELECT * FROM RECOMMEND WHERE project_idx = ? and recruit_idx = ?";
@@ -110,8 +106,8 @@ module.exports = {
                     contents: msg
                 });
 
-                // 푸시 알람 추가
-                //fcmmodule.fcmSend(target,project_name,msg);
+                //푸시 알람 추가
+                rcmmodule.fcmSend(target,project_name,msg);
 
                 return;
             }
@@ -157,7 +153,7 @@ module.exports = {
                 });
                 
                 // 푸시 알람 추가
-                fcmmodule.fcmSend(target,project_name,msg);
+                fcmmodule.fcmSend(ID, project_name, msg);
                 return;
             }
         })

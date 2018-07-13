@@ -1,6 +1,7 @@
 module.exports = {
     res : function(result) {
         let data = new Array();
+        
         for (i = 0; i < result.length; i++) {
             let temp = {
                 project_idx : "",
