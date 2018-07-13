@@ -45,7 +45,7 @@ router.post('/', async (req, res, next) => {
                 });
             } else { // 성공
                 recruitQuestion.create({
-                    recruit_idx: result._id,
+                    recruit_idx: recruits._id,
                     question: question_list
 
                 }, function (err, result) {

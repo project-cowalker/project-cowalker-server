@@ -7,8 +7,9 @@ let project = require('../../model/schema/project');
 var multiUpload = upload.fields([{ name: 'img'}]);
 
 router.put('/:project_id', multiUpload, async (req, res, next) => {
-
+    
     let tempArray = [];
+
     if (req.files.img){
 	    for (let i = 0 ; i < req.files.img.length ; i++) {
 	    	tempArray.push(req.files.img[i].location);
