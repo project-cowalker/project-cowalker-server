@@ -40,7 +40,12 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
         // 양수면 앞에 +를 붙여야해 
         if (calculateDday > 0) {
           calculateDday = '+' + calculateDday;
+        }else if(calculateDday==0){
+          calculateDday='-'+calculateDday;
         }
+
+        console.log(calculateDday);
+
 
         temp.recruit_idx = result[i]._id;
         temp.position = result[i].position;
@@ -58,8 +63,6 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
     }
   });
 });
-
-
 
 //프로젝트 선택 -> 모집 공고 세부 조회
 router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
@@ -117,10 +120,16 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
 
       }
 
-      if (result[0].user_idx == ID) { // case 1: 개발자인 경우, 
-        btnResult = "개발자";
-        //console.log(btnResult);
-      } else { // case 2: 개발자가 아닌경우 
+      if(ID!=-1){                   // caee 1: 로그인을 했다면, 
+
+      if (result[0].user_idx == ID) { // case 1-1: 개설자인 경우, 
+        btnResult = "개설자";
+           res.status(200).send({
+            message: "success",
+            result: data,
+            btnResult: btnResult
+          });
+      } else {                        // case 1-2: 개설자가 아닌경우 
         // 4. recruit_idx로 apply테이블 접근해서 application_idx를 가지고 와야해 
         apply.find({
           recruit_idx: recruit_idx,
@@ -131,10 +140,9 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
               message: "database failure"
             });
           } else {
-
-            // case 2-1: 개발자가 아니고, 팀에 아직 지원도 아직 안한 상태 ->"지원자"
+            // case 2-1: 개설자가 아니고, 팀에 아직 지원도 아직 안한 상태 ->"지원자"
             if (!result[0]) {
-              btnResult = "참여하기";
+              btnResult = "참여하기" 
             } else {
               // case 2-1: 개발자가 아닌데, 팀에 지원은 했고, 아직 수락을 못받은 경우 -> "참여 대기"
               if (result[0].join == 1) {
@@ -148,21 +156,31 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
               }
 
             }
+             res.status(200).send({
+                message: "success",
+                result: data,
+                btnResult: btnResult
+              });
 
 
           }
 
         });
       }
+    }else{                  //case 2: 로그인을 하지 않았다면, 
+        btnResult="참여하기"
+           res.status(200).send({
+              message: "success",
+              result: data,
+              btnResult: btnResult
+            });
 
-      res.status(200).send({
-        message: "success",
-        result: data,
-        btnResult: btnResult
-      });
+    }
+   
     }
   });
 });
+
 
 
 

@@ -35,16 +35,16 @@ server.on('listening', onListening);
  * Https
  */
 
-const fs = require('fs');
-const https = require('https');
+// const fs = require('fs');
+// const https = require('https');
 
-let options = {
-  key : fs.readFileSync('./src/config/key.pem'),
-  cert : fs.readFileSync('./src/config/cert.pem')
-}
+// let options = {
+//   key : fs.readFileSync('./src/config/key.pem'),
+//   cert : fs.readFileSync('./src/config/cert.pem')
+// }
 
-const secureServer = https.createServer(options, app);
-secureServer.listen(443);
+// const secureServer = https.createServer(options, app);
+// secureServer.listen(443);
 
 /**
  * Normalize a port into a number, string, or false.

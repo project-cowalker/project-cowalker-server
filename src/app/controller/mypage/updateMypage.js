@@ -15,7 +15,6 @@ router.put('/', multiUpload, async(req, res, next) => {
     let readProfile = 'select * from USER where user_idx = ?';
     let updateProfile = 'update USER set ? where user_idx = ?';
 
-
     if(ID!=-1){
     	let profile = await db.execute3(readProfile, ID);
     	if (profile.length === 0)
@@ -33,6 +32,7 @@ router.put('/', multiUpload, async(req, res, next) => {
                 profile_url : req.files.profile_img ? req.files.profile_img[0].location : profile[0].profile_url,
                 background_url : req.files.background_img ? req.files.background_img[0].location : profile[0].background_url,
             };
+            console.log(data);
             let result = await db.execute3(updateProfile, data, ID);
             //console.log(result);
             if(result){

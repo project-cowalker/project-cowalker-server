@@ -13,7 +13,9 @@ module.exports = {
      	// 양수면 앞에 +를 붙여야해 
       	if(calculateDday>0){
         	calculateDday='+'+calculateDday;
-      	}
+      	}else if(calculateDday==0){
+          calculateDday='-'+calculateDday;
+        }
 
       	return calculateDday;
 	},

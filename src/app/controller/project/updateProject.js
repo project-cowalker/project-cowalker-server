@@ -14,13 +14,18 @@ router.put('/:project_id', multiUpload, async (req, res, next) => {
 	    for (let i = 0 ; i < req.files.img.length ; i++) {
 	    	tempArray.push(req.files.img[i].location);
         }
+
+        project.update({ _id: req.params.project_id }, { $set: req.body, img_url: tempArray }, function(err, output){
+            if(err) res.status(500).json({ error: 'database failure' });
+            if(!output.n) return res.status(404).json({ error: 'project not found' });
+            res.json( { message: 'success' } );
+        })
+    }else{
+        res.status(405).send({
+            error: 'please put an image file'
+        }); 
     }
     
-    project.update({ _id: req.params.project_id }, { $set: req.body, img_url: tempArray }, function(err, output){
-        if(err) res.status(500).json({ error: 'database failure' });
-        if(!output.n) return res.status(404).json({ error: 'project not found' });
-        res.json( { message: 'success' } );
-    })
 });
 
 module.exports = router;
