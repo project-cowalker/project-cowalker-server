@@ -19,11 +19,13 @@ router.get('/:recruit_idx', function (req, res) {
 				message: "database failure"
 			});
 		} else {
-			if (!result[0].question) // question이 없는 경우 
+			if(result.length != 0) {
+				resultmessage = result[0].question;
+			}else {
 				resultmessage = "";
-			else
-				resultmessage = result[0].question; // question이 있는 경우
-			res.status(200).send({
+			}
+			console.log(result);
+			return res.status(200).send({
 				message: "success",
 				result: resultmessage
 			});
