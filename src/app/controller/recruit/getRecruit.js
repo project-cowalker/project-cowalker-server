@@ -40,7 +40,12 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
         // 양수면 앞에 +를 붙여야해 
         if (calculateDday > 0) {
           calculateDday = '+' + calculateDday;
+        }else if(calculateDday==0){
+          calculateDday='-'+calculateDday;
         }
+
+        console.log(calculateDday);
+
 
         temp.recruit_idx = result[i]._id;
         temp.position = result[i].position;
