@@ -41,7 +41,6 @@ router.post('/', async (req, res, next) => {
         }, function(err, result){
 
             if(err){                        // 결과값이 만약 에러가 난다면, 405에서
-                console.log(err);
                 res.status(405).send({
                     message:"fail"
                 });

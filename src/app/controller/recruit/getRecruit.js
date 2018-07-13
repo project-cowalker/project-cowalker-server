@@ -81,7 +81,6 @@ router.get('/:project_idx/recruit/:recruit_idx', async (req, res, next) => {
         message: "database failure"
       });
     } else {
-      console.log("result: " + result[0]);
 
       for (let i = 0; i < result.length; i++) {
 

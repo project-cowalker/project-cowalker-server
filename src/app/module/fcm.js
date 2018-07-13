@@ -46,7 +46,6 @@ module.exports = {
     fcm.send(push_data, function (err, response) {
 
       if (err) {
-        console.error(err);
         return -1;
       }
 

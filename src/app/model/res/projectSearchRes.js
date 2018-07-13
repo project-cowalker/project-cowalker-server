@@ -1,20 +1,20 @@
 module.exports = {
     res : function(result) {
         let data = new Array();
-        let temp = {
-            project_idx: "",
-            title: "",
-            summary: "",
-            area: "",
-            department: "",
-            aim: "",
-            explain: "",
-            user_idx: "",
-            create_at: "",
-            img_url: "",
-        }
+        
         for (i = 0; i < result.length; i++) {
-            
+            let temp = {
+                project_idx: "",
+                title: "",
+                summary: "",
+                area: "",
+                department: "",
+                aim: "",
+                explain: "",
+                user_idx: "",
+                create_at: "",
+                img_url: "",
+            }
             temp.project_idx = result[i]._id;
             temp.title = result[i].title;
             temp.summary = result[i].summary;

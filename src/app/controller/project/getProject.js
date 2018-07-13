@@ -28,23 +28,23 @@ router.get('/:project_id', function (req, res) {
             } else {
                 let project_user_id = result[0].user_idx;
                 let select_project = await db.execute2(QUERY, project_user_id);
-                
-                let temp = {
-                    user_idx : "",
-                    title: "",
-                    summary: "",
-                    area: "",
-                    department: "",
-                    aim: "",
-                    explain: "",
-                    create_at: "",
-                    img_url: [],
-                    project_user_name: "",
-                    project_user_profile_url: ""
-                }
 
                 for (let i = 0; i < result.length; i++) {
                     
+                    let temp = {
+                        user_idx : "",
+                        title: "",
+                        summary: "",
+                        area: "",
+                        department: "",
+                        aim: "",
+                        explain: "",
+                        create_at: "",
+                        img_url: [],
+                        project_user_name: "",
+                        project_user_profile_url: ""
+                    }
+
                     temp.user_idx = result[0].user_idx;
                     temp.title = result[i].title;
                     temp.summary = result[i].summary;
@@ -78,18 +78,14 @@ router.get('/:project_id', function (req, res) {
                             },
                             function (err, obj) {
                                 if (err) {
-                                    console.log(err);
                                     res.status(405).send({
                                         message: "database failure"
                                     });
                                 } else {
-                                    console.log(obj[0]);
                                     // case 2-1: 개설자가 아니고, 팀에 아직 지원도 아직 안한 상태 ->"지원자"
                                     if (!obj[0]) {
                                         user_status = "참여하기";
-                                        console.log(user_status);
                                     } else {
-                                        console.log(obj[0].join);
                                         // case 2-1: 개설자가 아닌데, 팀에 지원은 했고, 아직 수락/거절을 못받은 경우 -> "참여 대기"
                                         if (obj[0].join == 0) {
                                             user_status = "참여대기";

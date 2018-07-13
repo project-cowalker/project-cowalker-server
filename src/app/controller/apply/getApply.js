@@ -8,23 +8,22 @@ const pool = require('../../module/pool.js');
 
 //applies, applyAnswer을 하나의 response data로 합침
 var findApply = function (applies) {
-    var resultObj = new Array();
-
-    let object = {
-        apply_idx: '',
-        introduce: '',
-        portfolio_url: '',
-        phone: '',
-        recruit_idx: '',
-        project_idx: '',
-        position: '',
-        applicant_idx: '',
-        recruit_at: '',
-        answers: []
-    };
+    let resultObj = new Array();
 
     for (let i = 0; i < applies.length; i++) {
-        
+
+        let object = {
+            apply_idx: '',
+            introduce: '',
+            portfolio_url: '',
+            phone: '',
+            recruit_idx: '',
+            project_idx: '',
+            position: '',
+            applicant_idx: '',
+            recruit_at: '',
+            answers: []
+        };
 
         object.apply_idx = applies[i]._id;
         object.introduce = applies[i].introduce;
@@ -186,8 +185,8 @@ router.get('/:recruit_idx', async (req, res) => {
     if (ID != -1) {
         // 1. apply 스키마에서 recruit_idx값이 일치하는 컬럼 중 지원 대기중인 상태의 컬럼 find 
         apply.find({
-            recruit_idx : req.params.recruit_idx,
-            join : 0 //참여 대기 상태
+            recruit_idx: req.params.recruit_idx,
+            join: 0 //참여 대기 상태
         }, function (err, applies) {
             if (err) {
                 return res.status(500).send({
@@ -195,11 +194,11 @@ router.get('/:recruit_idx', async (req, res) => {
                 });
             }
 
-            if(applies.length === 0)
+            if (applies.length === 0)
                 return res.status(200).send({
                     message: "no list"
                 });
-           
+
             const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
             //2. (1)에서 조회한 결과를 바탕으로 recruit 스키마에서 해당 공고의 개설자가 누구인지 find
             recruit.find({
@@ -218,17 +217,17 @@ router.get('/:recruit_idx', async (req, res) => {
                 if (project_manage) {
                     var array = new Array();
 
-                    for(let i = 0; i < applies.length; i++){
+                    for (let i = 0; i < applies.length; i++) {
                         let obj = {
-                            applicant_idx : '',
-                            profile_url : '',
-                            user_name : '',
-                            position : '',
-                            apply_idx : ''
+                            applicant_idx: '',
+                            profile_url: '',
+                            user_name: '',
+                            position: '',
+                            apply_idx: ''
                         }
                         const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
                         let userQuery = await pool.execute2(QUERY, applies[i].applicant_idx);
-                        
+
                         obj.applicant_idx = applies[i].applicant_idx;
                         obj.profile_url = userQuery[0].profile_url;
                         obj.user_name = userQuery[0].name;
@@ -237,12 +236,12 @@ router.get('/:recruit_idx', async (req, res) => {
 
                         array.push(obj);
                     }
-                
+
                     var resultObj = {
-                        message : "success",
-                        result : ''
+                        message: "success",
+                        result: ''
                     }
-                    
+
                     resultObj.result = array;
                     res.json(resultObj);
 
