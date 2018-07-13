@@ -3,8 +3,7 @@ const router = express.Router();
 const db = require('../../module/pool.js');
 const jwt = require('../../module/jwt.js');
 
-
-// //프로젝트 선택 -> 모집 공고 수정
+//프로젝트 선택 -> 모집 공고 수정
 router.post('/', async (req, res, next) => {
     const ID = jwt.verify(req.headers.authorization);
 
