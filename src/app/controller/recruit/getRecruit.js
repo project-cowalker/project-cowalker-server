@@ -37,14 +37,17 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
         var gap = result[i].end_date.getTime() - now.getTime();
         var calculateDday = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
 
+
         // 양수면 앞에 +를 붙여야해 
         if (calculateDday > 0) {
           calculateDday = '+' + calculateDday;
         }else if(calculateDday==0){
           calculateDday='-'+calculateDday;
+        }else{
+          calculateDday=calculateDday.toString();
         }
 
-        console.log(calculateDday);
+        // console.log(calculateDday);
 
 
         temp.recruit_idx = result[i]._id;
