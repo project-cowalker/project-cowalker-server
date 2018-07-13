@@ -78,17 +78,17 @@ router.get('/:user_idx', async (req, res) => {
     let result = await db.execute2(profile, user_idx);
 
     let temp = {
-      user_idx: "",
-      profile_url: "", //
-      background_url: "", //
-      name: "", //
-      position: "", //
-      point: "",
-      introduce: "", //
-      portfolio_url: "", //
-      aim: "",
-      department: "",
-      area: ""
+      user_idx: '',
+      profile_url: '', //
+      background_url: '', //
+      name: '', //
+      position: '', //
+      point: '',
+      introduce: '', //
+      portfolio_url: '', //
+      aim: '',
+      department: '',
+      area: ''
     }
     temp.user_idx = result[0].user_idx,
       temp.profile_url = result[0].profile_url,
