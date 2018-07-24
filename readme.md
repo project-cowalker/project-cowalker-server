@@ -2,7 +2,7 @@
 
 ![logo.png](https://github.com/project-cowalker/project-cowalker-server/blob/master/img/logo.png)
 * 2018 SOPT 22기 팀빌딩 서비스 'cowalker'
-* 프로젝트 기간 : 2018년 6월 30일 ~ 2018년 7월 14일]
+* 프로젝트 기간 : 2018년 6월 30일 ~ 2018년 7월 14일
 * **API** - (https://github.com/project-cowalker/project-cowalker-server/wiki)
 ![logical db.jpg](https://github.com/project-cowalker/project-cowalker-server/blob/master/img/logical%20db.png)
 * 논리적 DB 모델링
