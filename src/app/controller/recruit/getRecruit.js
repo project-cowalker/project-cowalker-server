@@ -33,8 +33,9 @@ router.get('/:project_idx/recruit', async (req, res, next) => {
           dday: ""
         }
 
-        // dday계산
-        var gap = result[i].end_date.getTime() - now.getTime();
+        let gap;
+        if(result[i].end_date != null) gap = result[i].end_date.getTime() - now.getTime();
+        else gap = 0;
         var calculateDday = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
 
 
