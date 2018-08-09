@@ -36,7 +36,7 @@
 
 모든 소스코드는 vscode/sublimetext + Windows10 + Node.js 8 환경에서 작성되었습니다.
 
-- Node.js의 Async/Await을사용해 (Promise) 비동기 제어를 하고 있습니다.
+- Node.js의 Async/Await을 사용해 (Promise) 비동기 제어를 하고 있습니다.
 - Node.js의 버전을 7.6 이상으로 유지해햐 합니다.
 
 ### 설치하기
