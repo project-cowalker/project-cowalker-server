@@ -218,21 +218,28 @@ router.get('/:recruit_idx', async (req, res) => {
                     var array = new Array();
 
                     for (let i = 0; i < applies.length; i++) {
-                        let obj = {
-                            applicant_idx: '',
-                            profile_url: '',
-                            user_name: '',
-                            position: '',
-                            apply_idx: ''
-                        }
+                        // let obj = {
+                        //     applicant_idx: '',
+                        //     profile_url: '',
+                        //     user_name: '',
+                        //     position: '',
+                        //     apply_idx: ''
+                        // }
+                        let obj = {}
                         const QUERY = 'SELECT * FROM USER WHERE user_idx = ?';
                         let userQuery = await pool.execute2(QUERY, applies[i].applicant_idx);
+
+                        //추천받은 사람일경우
+                        const QUERY2 = 'SELECT * FROM RECOMMEND WHERE recommendee_idx = ? and recruit_idx = ?';
+                        let recommendRes = await pool.execute3(QUERY2, applies[i].applicant_idx, req.params.recruit_idx);
 
                         obj.applicant_idx = applies[i].applicant_idx;
                         obj.profile_url = userQuery[0].profile_url;
                         obj.user_name = userQuery[0].name;
                         obj.position = applies[0].position;
                         obj.apply_idx = applies[i]._id;
+                        if(recommendRes.length != 0) obj.recommend_idx = recommendRes[0].recommend_idx;
+                        else obj.recommend_idx = null;
 
                         array.push(obj);
                     }
